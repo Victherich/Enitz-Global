@@ -6,139 +6,235 @@ import {
   MapPin, 
   Phone, 
   Mail, 
-  Clock, 
   Send, 
   Sparkles, 
-  CheckCircle, 
-  Building2
+  Building2,
+  Camera
 } from "lucide-react";
 import Swal from "sweetalert2";
 
 // Animations
-const fadeIn = keyframes`
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+const floatAnimation = keyframes`
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-4px) rotate(1deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
 `;
 
-// Styled Components (Blue & Gold Theme & Maximum 10px Padding/Margin/Gap)
+// Styled Components (Completely Redesigned Light Mode Split-Hero Pattern with Unsplash Craft Imagery & Generous Spacing)
 const ContactPageWrapper = styled.div`
   min-height: 100vh;
   background-color: #f8fafc;
   color: #0f172a;
-  padding: 10px;
-  
-  @media (min-width: 640px) {
-    padding: 10px;
+  padding: 40px 20px 80px 20px;
+  position: relative;
+  overflow: hidden;
+
+  @media (min-width: 768px) {
+    padding: 60px 40px 100px 40px;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 10% 20%, rgba(236, 72, 153, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(245, 158, 11, 0.05) 0%, transparent 40%);
+    pointer-events: none;
+    z-index: 1;
   }
 `;
 
 const HeaderContainer = styled.div`
-  max-width: 48rem;
-  margin: 0 auto 10px auto;
+  max-width: 50rem;
+  margin: 0 auto 40px auto;
   text-align: center;
-  animation: ${fadeIn} 0.8s ease-out forwards;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 `;
 
 const Badge = styled.div`
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 4px 8px;
+  gap: 8px;
+  padding: 8px 18px;
   border-radius: 9999px;
-  background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(217, 119, 6, 0.1));
-  border: 1px solid rgba(217, 119, 6, 0.3);
-  color: #1e40af;
-  font-size: 0.8rem;
-  font-weight: 500;
-  margin-bottom: 8px;
+  background: #fdf2f8;
+  border: 1px solid rgba(236, 72, 153, 0.3);
+  color: #db2777;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0 auto;
+  animation: ${floatAnimation} 4s ease-in-out infinite;
 `;
 
 const MainTitle = styled.h1`
-  font-size: 2rem;
-  font-weight: 700;
-  letter-spacing: -0.025em;
+  font-size: 2.5rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
   color: #0f172a;
-  line-height: 1.2;
-  margin-bottom: 8px;
+  line-height: 1.15;
+  margin: 0;
 
   @media (min-width: 640px) {
-    font-size: 2.75rem;
+    font-size: 3.5rem;
   }
 `;
 
 const HighlightSpan = styled.span`
-  background: linear-gradient(135deg, #2563eb, #1d4ed8, #d97706, #f59e0b);
+  background: linear-gradient(135deg, #ec4899 0%, #f59e0b 50%, #06b6d4 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 `;
 
 const Subtitle = styled.p`
-  font-size: 0.95rem;
+  font-size: 1.1rem;
   color: #475569;
-  line-height: 1.5;
-  margin: 0;
+  line-height: 1.6;
+  margin: 0 auto;
+  max-width: 40rem;
 `;
 
 const ContentGrid = styled.div`
-  max-width: 80rem;
+  max-width: 1200px;
   margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr;
-  gap: 10px;
+  gap: 32px;
+  position: relative;
+  z-index: 2;
 
   @media (min-width: 1024px) {
-    grid-template-columns: 1fr 1.25fr;
-    gap: 10px;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 40px;
   }
 `;
 
 const InfoColumn = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 24px;
+`;
+
+// Image Showcase Banner utilizing Unsplash Craft Imagery
+const ImageShowcaseCard = styled.div`
+  position: relative;
+  height: 240px;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.08);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+  }
+
+  &:hover img {
+    transform: scale(1.05);
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(15, 23, 42, 0.05) 0%, rgba(15, 23, 42, 0.75) 100%);
+  }
+
+  @media (min-width: 768px) {
+    height: 280px;
+  }
+`;
+
+const ImageOverlayText = styled.div`
+  position: absolute;
+  bottom: 24px;
+  left: 24px;
+  right: 24px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  div {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    span:first-child {
+      font-size: 0.85rem;
+      color: #f472b6;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    span:last-child {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #ffffff;
+    }
+  }
+`;
+
+const ImageBadgeTag = styled.div`
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(8px);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
 `;
 
 const InfoCard = styled.div`
   background: #ffffff;
   border: 1px solid #e2e8f0;
-  border-radius: 10px;
-  padding: 10px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-  transition: transform 0.3s ease, border-color 0.3s ease;
+  border-radius: 20px;
+  padding: 32px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.03);
+  transition: all 0.3s ease;
 
   &:hover {
-    border-color: rgba(37, 99, 235, 0.4);
-    transform: translateY(-2px);
+    border-color: #ec4899;
+    transform: translateY(-4px);
+    box-shadow: 0 15px 30px rgba(236, 72, 153, 0.08);
   }
 `;
 
 const InfoCardTitle = styled.h3`
-  font-size: 1.1rem;
-  font-weight: 600;
-  color:#1e40af;
-  margin-bottom: 8px;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 24px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
 
   svg {
-    color: #2563eb;
-    width: 1.1rem;
-    height: 1.1rem;
+    color: #ec4899;
+    width: 1.25rem;
+    height: 1.25rem;
   }
 `;
 
 const ContactDetailItem = styled.div`
   display: flex;
   align-items: flex-start;
-  gap: 8px;
-  margin-bottom: 8px;
+  gap: 16px;
+  margin-bottom: 20px;
 
   &:last-child {
     margin-bottom: 0;
@@ -149,34 +245,35 @@ const IconWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2rem;
-  height: 2rem;
-  border-radius: 8px;
-  background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(217, 119, 6, 0.1));
-  color: #2563eb;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 10px;
+  background: #fdf2f8;
+  color: #db2777;
   flex-shrink: 0;
+  border: 1px solid rgba(236, 72, 153, 0.2);
 
   svg {
-    width: 1rem;
-    height: 1rem;
+    width: 1.15rem;
+    height: 1.15rem;
   }
 `;
 
 const DetailContent = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 4px;
 
   span:first-child {
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     color: #64748b;
-    font-weight: 500;
+    font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
   }
 
   span:last-child {
-    font-size: 0.9rem;
+    font-size: 1rem;
     color: #334155;
     font-weight: 500;
   }
@@ -185,79 +282,90 @@ const DetailContent = styled.div`
 const FormColumn = styled.div`
   background: #ffffff;
   border: 1px solid #e2e8f0;
-  border-radius: 10px;
-  padding: 10px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  border-radius: 24px;
+  padding: 32px;
+  box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.05);
 
   @media (min-width: 640px) {
-    padding: 10px;
+    padding: 40px;
   }
 `;
 
 const FormTitle = styled.h3`
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #1e40af;
-  margin-bottom: 4px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 8px;
 `;
 
 const FormSubtitle = styled.p`
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   color: #475569;
-  margin-bottom: 10px;
+  margin-bottom: 24px;
+  line-height: 1.5;
 `;
 
 const FormGrid = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 20px;
 `;
 
 const InputGroup = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 8px;
 `;
 
 const Label = styled.label`
-  font-size: 0.8rem;
-  font-weight: 500;
+  font-size: 0.85rem;
+  font-weight: 600;
   color: #334155;
 `;
 
 const Input = styled.input`
   width: 100%;
-  padding: 8px 10px;
-  border-radius: 8px;
+  padding: 12px 16px;
+  border-radius: 10px;
   background-color: #f8fafc !important;
   color: #0f172a !important;
   border: 1px solid #cbd5e1;
-  font-size: 0.95rem;
+  font-size: 1rem;
   outline: none;
   transition: all 0.2s ease;
 
+  &::placeholder {
+    color: #94a3b8;
+  }
+
   &:focus {
-    border-color: #2563eb;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    border-color: #ec4899;
+    background-color: #ffffff !important;
+    box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.15);
   }
 `;
 
 const TextArea = styled.textarea`
   width: 100%;
-  padding: 8px 10px;
-  border-radius: 8px;
+  padding: 12px 16px;
+  border-radius: 10px;
   background-color: #f8fafc !important;
   color: #0f172a !important;
   border: 1px solid #cbd5e1;
-  font-size: 0.95rem;
+  font-size: 1rem;
   outline: none;
-  min-height: 100px;
+  min-height: 140px;
   resize: vertical;
   transition: all 0.2s ease;
 
+  &::placeholder {
+    color: #94a3b8;
+  }
+
   &:focus {
-    border-color: #2563eb;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    border-color: #ec4899;
+    background-color: #ffffff !important;
+    box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.15);
   }
 `;
 
@@ -266,22 +374,23 @@ const SubmitButton = styled.button`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  padding: 10px;
-  border-radius: 8px;
-  background: linear-gradient(135deg, #2563eb, #d97706);
+  gap: 8px;
+  padding: 14px 24px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #ec4899 0%, #f59e0b 50%, #06b6d4 100%);
   color: #ffffff;
-  font-weight: 600;
-  font-size: 0.95rem;
+  font-weight: 700;
+  font-size: 1rem;
   border: none;
   cursor: pointer;
-  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25);
+  box-shadow: 0 4px 16px rgba(236, 72, 153, 0.25);
   transition: all 0.3s ease;
-  margin-top: 4px;
+  margin-top: 8px;
 
   &:hover {
-    background: linear-gradient(135deg, #1d4ed8, #b45309);
+    opacity: 0.92;
     transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(236, 72, 153, 0.35);
   }
 
   &:disabled {
@@ -305,76 +414,94 @@ export default function ContactUsPage() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  setIsSubmitting(true);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
 
-  try {
-    const response = await fetch('/api/send-contact-email', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formData),
-    });
+    try {
+      const response = await fetch('/api/send-contact-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
 
-    const data = await response.json();
+      const data = await response.json();
 
-    if (data.success) {
+      if (data.success) {
+        Swal.fire({
+          title: "Message Sent Successfully!",
+          text: "Thank you for connecting with Kingsword Couture. We appreciate your interest and are dedicated to delivering exceptional craftsmanship and service, ensuring a lasting and meaningful relationship with every customer.",
+          icon: "success",
+          confirmButtonText: "Done",
+          confirmButtonColor: "#ec4899",
+          background: "#ffffff",
+          color: "#0f172a"
+        });
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          message: ""
+        });
+      } else {
+        throw new Error(data.error || 'Failed to send message.');
+      }
+    } catch (error) {
+      console.error('Submission error:', error);
       Swal.fire({
-        title: "Message Sent Successfully!",
-        text: "Thank you for reaching out to Bees Interior. One of our design consultants will get back to you shortly.",
-        icon: "success",
-        confirmButtonText: "Done",
-        confirmButtonColor: "#2563eb",
+        title: "Error!",
+        text: "Something went wrong while sending your message. Please try again later.",
+        icon: "error",
+        confirmButtonText: "Okay",
+        confirmButtonColor: "#ec4899",
         background: "#ffffff",
         color: "#0f172a"
       });
-      setFormData({
-        name: "",
-        email: "",
-        phone: "",
-        message: ""
-      });
-    } else {
-      throw new Error(data.error || 'Failed to send message.');
+    } finally {
+      setIsSubmitting(false);
     }
-  } catch (error) {
-    console.error('Submission error:', error);
-    Swal.fire({
-      title: "Error!",
-      text: "Something went wrong while sending your message. Please try again later.",
-      icon: "error",
-      confirmButtonText: "Okay",
-      confirmButtonColor: "#2563eb",
-    });
-  } finally {
-    setIsSubmitting(false);
-  }
-};
-
-
+  };
 
   return (
     <ContactPageWrapper>
       {/* Page Header */}
       <HeaderContainer>
         <Badge>
-          <Sparkles className="w-4 h-4 text-blue-600" />
+          <Sparkles className="w-4 h-4 text-pink-600" />
           <span>Get In Touch With Us</span>
         </Badge>
         <MainTitle>
-          Let’s Create Your <HighlightSpan>Dream Space</HighlightSpan> Together
+          Contact <HighlightSpan>Us</HighlightSpan>
         </MainTitle>
         <Subtitle>
-          Whether you are looking to revamp a single room or commission a full-scale luxury architectural transformation, our expert team is ready to bring your vision to life.
+          We’d love to hear from you. Whether you have questions, enquiries, custom bag requests, or need assistance with an order, our team is here to help.
         </Subtitle>
       </HeaderContainer>
 
       {/* Grid Content */}
       <ContentGrid>
-        {/* Left Column: Contact Details & Office Info */}
+        {/* Left Column: Image Banner & Contact Details */}
         <InfoColumn>
+          {/* Unsplash Visual Craft Card */}
+          <ImageShowcaseCard>
+            <img 
+              src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?q=80&w=1000&auto=format&fit=crop" 
+              alt="Leather craftsmanship and luxury bags workshop" 
+            />
+            <ImageOverlayText>
+              <div>
+                <span>Kingsword Atelier</span>
+                <span>Handcrafted Excellence</span>
+              </div>
+              <ImageBadgeTag>
+                <Camera className="w-3.5 h-3.5 text-pink-300" />
+                <span>Showroom</span>
+              </ImageBadgeTag>
+            </ImageOverlayText>
+          </ImageShowcaseCard>
+
           {/* Direct Contacts Card */}
           <InfoCard>
             <InfoCardTitle>
@@ -388,7 +515,7 @@ const handleSubmit = async (e) => {
               </IconWrapper>
               <DetailContent>
                 <span>Location</span>
-                <span>24 Oseni street, Anthony Village Lagos state Nigeria</span>
+                <span>Oluku/Ugbowo, Benin City, Edo State</span>
               </DetailContent>
             </ContactDetailItem>
 
@@ -398,7 +525,7 @@ const handleSubmit = async (e) => {
               </IconWrapper>
               <DetailContent>
                 <span>Direct Line</span>
-                <span>+234 812 549 4597</span>
+                <span>0813 237 1949</span>
               </DetailContent>
             </ContactDetailItem>
 
@@ -408,35 +535,7 @@ const handleSubmit = async (e) => {
               </IconWrapper>
               <DetailContent>
                 <span>Email Support</span>
-                <span>beesinterior@gmail.com</span>
-              </DetailContent>
-            </ContactDetailItem>
-          </InfoCard>
-
-          {/* Operating Hours Card */}
-          <InfoCard>
-            <InfoCardTitle>
-              <Clock />
-              Working Hours
-            </InfoCardTitle>
-
-            <ContactDetailItem>
-              <IconWrapper>
-                <Clock />
-              </IconWrapper>
-              <DetailContent>
-                <span>Monday — Friday</span>
-                <span>9:00 AM – 6:00 PM (WAT)</span>
-              </DetailContent>
-            </ContactDetailItem>
-
-            <ContactDetailItem>
-              <IconWrapper>
-                <CheckCircle />
-              </IconWrapper>
-              <DetailContent>
-                <span>Saturday Consultations</span>
-                <span>10:00 AM – 4:00 PM (By Appointment)</span>
+                <span>admin@kingswordcraft.com</span>
               </DetailContent>
             </ContactDetailItem>
           </InfoCard>
@@ -444,9 +543,9 @@ const handleSubmit = async (e) => {
 
         {/* Right Column: Interactive Consultation & Message Form */}
         <FormColumn>
-          <FormTitle>Send Us a Message</FormTitle>
+          <FormTitle>Send Message</FormTitle>
           <FormSubtitle>
-            Fill out the form below and our client relations team will respond within 24 hours.
+            Your information is safe and will only be used to respond to your enquiry.
           </FormSubtitle>
 
           <FormGrid onSubmit={handleSubmit}>
@@ -463,7 +562,7 @@ const handleSubmit = async (e) => {
               />
             </InputGroup>
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
               <InputGroup>
                 <Label htmlFor="email">Email Address</Label>
                 <Input
@@ -486,7 +585,7 @@ const handleSubmit = async (e) => {
                   required
                   value={formData.phone}
                   onChange={handleChange}
-                  placeholder="+234..."
+                  placeholder="0813..."
                 />
               </InputGroup>
             </div>
@@ -499,7 +598,7 @@ const handleSubmit = async (e) => {
                 required
                 value={formData.message}
                 onChange={handleChange}
-                placeholder="Describe your space, style preference, or project goals..."
+                placeholder="Describe your enquiry, custom bag request, or order assistance..."
               />
             </InputGroup>
 

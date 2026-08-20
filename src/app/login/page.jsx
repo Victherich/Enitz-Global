@@ -1,3 +1,344 @@
+// "use client";
+
+// import { useState, useEffect } from "react";
+// import { useRouter } from "next/navigation";
+// import styled from "styled-components";
+// import Swal from "sweetalert2";
+// import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+// import { auth } from "@/firebaseConfig";
+
+// // 🎨 BEES INTERIOR THEME COLORS
+// const Blue = "#2563eb";
+// const Dark = "#0f172a";
+// const Border = "#e5eaf2";
+// const White = "#ffffff";
+// const Gold = "#D4AF37";
+// const TextMuted = "#475569";
+// const LightBg = "#f8fafc";
+
+// // 🌟 Styled Components (Matching the SignUp layout & 10px spacing guidelines)
+// const PageContainer = styled.div`
+//   min-height: 100vh;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   background: ${LightBg};
+//   padding: 10px;
+// `;
+
+// const AuthWrapper = styled.div`
+//   display: grid;
+//   grid-template-columns: 1fr 1fr;
+//   width: 100%;
+//   max-width: 1000px;
+//   background: ${White};
+//   border-radius: 10px;
+//   border: 1px solid ${Border};
+//   box-shadow: 0 12px 30px rgba(15, 23, 42, 0.05);
+//   overflow: hidden;
+
+//   @media (max-width: 768px) {
+//     grid-template-columns: 1fr;
+//   }
+// `;
+
+// const BrandingSide = styled.div`
+//   background: ${Blue};
+//   color: ${White};
+//   padding: 10px;
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: space-between;
+//   position: relative;
+//   overflow: hidden;
+
+//   &::after {
+//     content: "";
+//     position: absolute;
+//     inset: 0;
+//     background: linear-gradient(135deg, rgba(15, 23, 42, 0.2) 0%, rgba(212, 175, 55, 0.2) 100%);
+//     z-index: 1;
+//   }
+// `;
+
+// const BrandingContent = styled.div`
+//   position: relative;
+//   z-index: 2;
+//   display: flex;
+//   flex-direction: column;
+//   gap: 10px;
+//   margin: auto 0;
+// `;
+
+// const BrandLogo = styled.h3`
+//   font-size: 1.25rem;
+//   font-weight: 800;
+//   letter-spacing: -0.5px;
+//   color: ${White};
+
+//   span {
+//     color: ${Gold};
+//   }
+// `;
+
+// const Headline = styled.h1`
+//   font-size: clamp(1.8rem, 3vw, 2.4rem);
+//   font-weight: 800;
+//   line-height: 1.2;
+//   letter-spacing: -0.5px;
+// `;
+
+// const Subtext = styled.p`
+//   font-size: 0.95rem;
+//   line-height: 1.6;
+//   color: ${Border};
+// `;
+
+// const FormSide = styled.div`
+//   padding: 10px;
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: center;
+//   color: ${TextMuted};
+// `;
+
+// const FormHeader = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   gap: 10px;
+//   margin-bottom: 10px;
+// `;
+
+// const Title = styled.h2`
+//   font-size: 1.5rem;
+//   font-weight: 700;
+//   color: ${Blue};
+//   text-align: left;
+// `;
+
+// const FormGrid = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   gap: 10px;
+// `;
+
+// const InputGroup = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   gap: 10px;
+// `;
+
+// const Label = styled.label`
+//   font-size: 0.85rem;
+//   font-weight: 600;
+//   color: ${TextMuted};
+//   text-align: left;
+// `;
+
+// const Input = styled.input`
+//   width: 100%;
+//   padding: 10px;
+//   border: 1px solid ${Border};
+//   border-radius: 6px;
+//   font-size: 0.9rem;
+//   background: ${White};
+//   color: ${Dark};
+//   outline: none;
+//   transition: border-color 0.2s ease;
+
+//   &:focus {
+//     border-color: ${Blue};
+//   }
+// `;
+
+// const PasswordWrapper = styled.div`
+//   position: relative;
+//   width: 100%;
+// `;
+
+// const EyeButton = styled.button`
+//   position: absolute;
+//   right: 10px;
+//   top: 50%;
+//   transform: translateY(-50%);
+//   background: transparent;
+//   border: none;
+//   cursor: pointer;
+//   font-size: 0.8rem;
+//   color: ${Blue};
+//   font-weight: 600;
+
+//   &:hover {
+//     text-decoration: underline;
+//   }
+// `;
+
+// const Button = styled.button`
+//   width: 100%;
+//   background: linear-gradient(135deg, ${Blue} 0%, ${Gold} 100%);
+//   color: ${White};
+//   padding: 10px;
+//   font-size: 0.95rem;
+//   border: none;
+//   border-radius: 6px;
+//   cursor: pointer;
+//   font-weight: 700;
+//   transition: opacity 0.2s ease, transform 0.2s ease;
+
+//   &:hover {
+//     opacity: 0.9;
+//     transform: translateY(-1px);
+//   }
+// `;
+
+// const LinkText = styled.p`
+//   margin-top: 10px;
+//   cursor: pointer;
+//   color: ${TextMuted};
+//   font-size: 0.9rem;
+//   text-align: center;
+
+//   span {
+//     color: ${Blue};
+//     font-weight: 600;
+
+//     &:hover {
+//       text-decoration: underline;
+//     }
+//   }
+// `;
+
+// const LoadingContainer = styled.div`
+//   min-height: 100vh;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   background: ${LightBg};
+//   color: ${Dark};
+//   font-size: 1.1rem;
+//   font-weight: 600;
+// `;
+
+// // ✨ LOGIN COMPONENT
+// export default function UserLogin() {
+//   const router = useRouter();
+//   const [loading, setLoading] = useState(true);
+//   const [authenticated, setAuthenticated] = useState(false);
+//   const [form, setForm] = useState({ email: "", password: "" });
+//   const [showPassword, setShowPassword] = useState(false);
+
+//   const handleChange = (e) => {
+//     setForm({ ...form, [e.target.name]: e.target.value });
+//   };
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+
+//     Swal.fire({
+//       title: "Please wait...",
+//       text: "Logging into Bees Interior...",
+//       allowOutsideClick: false,
+//       didOpen: () => Swal.showLoading(),
+//     });
+
+//     try {
+//       const { email, password } = form;
+//       await signInWithEmailAndPassword(auth, email, password);
+//       Swal.fire("Success ✅", "Logged in successfully", "success");
+//       router.push("/dashboard");
+//     } catch (error) {
+//       Swal.fire("Login Failed ❌", error.message, "error");
+//     }
+//   };
+
+//   useEffect(() => {
+//     const unsubscribe = onAuthStateChanged(auth, (user) => {
+//       setAuthenticated(!!user);
+//       setLoading(false);
+//       if (user) router.push("/dashboard");
+//     });
+
+//     return () => unsubscribe();
+//   }, [router]);
+
+//   if (loading) return <LoadingContainer>Loading...</LoadingContainer>;
+
+//   return (
+//     <PageContainer>
+//       <AuthWrapper>
+//         {/* Left Visual Branding Panel */}
+//         <BrandingSide>
+//           <BrandLogo>
+//             BEES <span>INTERIOR</span>
+//           </BrandLogo>
+//           <BrandingContent>
+//             <Headline>Welcome Back to Your Sanctuary</Headline>
+//             <Subtext>
+//               Log in to access your luxury interior collections, track consultations, and manage your personalized living spaces.
+//             </Subtext>
+//           </BrandingContent>
+//           <div />
+//         </BrandingSide>
+
+//         {/* Right Form Panel */}
+//         <FormSide>
+//           <FormHeader>
+//             <Title>Login</Title>
+//           </FormHeader>
+
+//           <form onSubmit={handleSubmit}>
+//             <FormGrid>
+//               <InputGroup>
+//                 <Label>Email Address</Label>
+//                 <Input
+//                   name="email"
+//                   type="email"
+//                   placeholder="john@example.com"
+//                   value={form.email}
+//                   onChange={handleChange}
+//                   required
+//                 />
+//               </InputGroup>
+
+//               <InputGroup>
+//                 <Label>Password</Label>
+//                 <PasswordWrapper>
+//                   <Input
+//                     name="password"
+//                     type={showPassword ? "text" : "password"}
+//                     placeholder="••••••••"
+//                     value={form.password}
+//                     onChange={handleChange}
+//                     required
+//                   />
+//                   <EyeButton type="button" onClick={() => setShowPassword((prev) => !prev)}>
+//                     {showPassword ? "Hide" : "Show"}
+//                   </EyeButton>
+//                 </PasswordWrapper>
+//               </InputGroup>
+
+//               <Button type="submit">Login</Button>
+
+//               <LinkText onClick={() => router.push("/signup")}>
+//                 Don't have an account? <span>Sign Up</span>
+//               </LinkText>
+
+//                <LinkText onClick={() => router.push("/forgot-password")}>
+//                 <span>Forgot Password</span>
+//               </LinkText>
+//             </FormGrid>
+//           </form>
+//         </FormSide>
+//       </AuthWrapper>
+//     </PageContainer>
+//   );
+// }
+
+
+
+
+
+
 "use client";
 
 import { useState, useEffect } from "react";
@@ -7,16 +348,18 @@ import Swal from "sweetalert2";
 import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/firebaseConfig";
 
-// 🎨 BEES INTERIOR THEME COLORS
-const Blue = "#2563eb";
+// 🎨 KINGSWORD CRAFT THEME COLORS (Vibrant Luxury & Modern Palette)
+const PrimaryPink = "#ec4899";
+const AccentGold = "#f59e0b";
+const AccentCyan = "#06b6d4";
 const Dark = "#0f172a";
-const Border = "#e5eaf2";
+const Border = "rgba(226, 232, 240, 0.9)";
 const White = "#ffffff";
-const Gold = "#D4AF37";
-const TextMuted = "#475569";
 const LightBg = "#f8fafc";
+const TextMuted = "#475569";
+const ThemeGradient = "linear-gradient(135deg, #ec4899 0%, #f59e0b 50%, #06b6d4 100%)";
 
-// 🌟 Styled Components (Matching the SignUp layout & 10px spacing guidelines)
+// 🌟 Styled Components (Strict max 10px spacing/gaps/margins/padding rule)
 const PageContainer = styled.div`
   min-height: 100vh;
   display: flex;
@@ -24,6 +367,7 @@ const PageContainer = styled.div`
   justify-content: center;
   background: ${LightBg};
   padding: 10px;
+  box-sizing: border-box;
 `;
 
 const AuthWrapper = styled.div`
@@ -43,7 +387,7 @@ const AuthWrapper = styled.div`
 `;
 
 const BrandingSide = styled.div`
-  background: ${Blue};
+  background: ${ThemeGradient};
   color: ${White};
   padding: 10px;
   display: flex;
@@ -56,7 +400,7 @@ const BrandingSide = styled.div`
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, rgba(15, 23, 42, 0.2) 0%, rgba(212, 175, 55, 0.2) 100%);
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.15) 0%, rgba(0, 0, 0, 0.1) 100%);
     z-index: 1;
   }
 `;
@@ -75,9 +419,10 @@ const BrandLogo = styled.h3`
   font-weight: 800;
   letter-spacing: -0.5px;
   color: ${White};
+  margin: 0;
 
   span {
-    color: ${Gold};
+    color: ${AccentGold};
   }
 `;
 
@@ -86,12 +431,15 @@ const Headline = styled.h1`
   font-weight: 800;
   line-height: 1.2;
   letter-spacing: -0.5px;
+  margin: 0;
 `;
 
 const Subtext = styled.p`
   font-size: 0.95rem;
   line-height: 1.6;
-  color: ${Border};
+  color: #f8fafc;
+  opacity: 0.95;
+  margin: 0;
 `;
 
 const FormSide = styled.div`
@@ -100,6 +448,7 @@ const FormSide = styled.div`
   flex-direction: column;
   justify-content: center;
   color: ${TextMuted};
+  box-sizing: border-box;
 `;
 
 const FormHeader = styled.div`
@@ -111,8 +460,11 @@ const FormHeader = styled.div`
 
 const Title = styled.h2`
   font-size: 1.5rem;
-  font-weight: 700;
-  color: ${Blue};
+  font-weight: 800;
+  margin: 0;
+  background: ${ThemeGradient};
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   text-align: left;
 `;
 
@@ -126,34 +478,40 @@ const InputGroup = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+  margin: 0;
 `;
 
 const Label = styled.label`
   font-size: 0.85rem;
-  font-weight: 600;
+  font-weight: 700;
   color: ${TextMuted};
   text-align: left;
+  margin: 0;
 `;
 
 const Input = styled.input`
   width: 100%;
-  padding: 10px;
+  padding: 8px 10px;
   border: 1px solid ${Border};
   border-radius: 6px;
   font-size: 0.9rem;
   background: ${White};
   color: ${Dark};
   outline: none;
-  transition: border-color 0.2s ease;
+  box-sizing: border-box;
+  margin: 0;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.02);
 
   &:focus {
-    border-color: ${Blue};
+    border-color: ${PrimaryPink};
+    box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.15);
   }
 `;
 
 const PasswordWrapper = styled.div`
   position: relative;
   width: 100%;
+  margin: 0;
 `;
 
 const EyeButton = styled.button`
@@ -165,8 +523,8 @@ const EyeButton = styled.button`
   border: none;
   cursor: pointer;
   font-size: 0.8rem;
-  color: ${Blue};
-  font-weight: 600;
+  color: #db2777;
+  font-weight: 700;
 
   &:hover {
     text-decoration: underline;
@@ -175,32 +533,34 @@ const EyeButton = styled.button`
 
 const Button = styled.button`
   width: 100%;
-  background: linear-gradient(135deg, ${Blue} 0%, ${Gold} 100%);
+  background: ${ThemeGradient};
   color: ${White};
   padding: 10px;
   font-size: 0.95rem;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
   font-weight: 700;
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  margin: 0;
 
   &:hover {
-    opacity: 0.9;
-    transform: translateY(-1px);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(236, 72, 153, 0.45);
   }
 `;
 
 const LinkText = styled.p`
-  margin-top: 10px;
+  margin: 5px 0 0 0;
   cursor: pointer;
   color: ${TextMuted};
   font-size: 0.9rem;
   text-align: center;
 
   span {
-    color: ${Blue};
-    font-weight: 600;
+    color: #db2777;
+    font-weight: 700;
 
     &:hover {
       text-decoration: underline;
@@ -217,6 +577,8 @@ const LoadingContainer = styled.div`
   color: ${Dark};
   font-size: 1.1rem;
   font-weight: 600;
+  padding: 10px;
+  box-sizing: border-box;
 `;
 
 // ✨ LOGIN COMPONENT
@@ -236,7 +598,7 @@ export default function UserLogin() {
 
     Swal.fire({
       title: "Please wait...",
-      text: "Logging into Bees Interior...",
+      text: "Logging in...",
       allowOutsideClick: false,
       didOpen: () => Swal.showLoading(),
     });
@@ -269,12 +631,12 @@ export default function UserLogin() {
         {/* Left Visual Branding Panel */}
         <BrandingSide>
           <BrandLogo>
-            BEES <span>INTERIOR</span>
+            KINGSWORD CRAFT
           </BrandLogo>
           <BrandingContent>
-            <Headline>Welcome Back to Your Sanctuary</Headline>
+            <Headline>Welcome Back</Headline>
             <Subtext>
-              Log in to access your luxury interior collections, track consultations, and manage your personalized living spaces.
+              Log in to access your dashboard, manage items, and experience modern shopping.
             </Subtext>
           </BrandingContent>
           <div />
@@ -323,7 +685,7 @@ export default function UserLogin() {
                 Don't have an account? <span>Sign Up</span>
               </LinkText>
 
-               <LinkText onClick={() => router.push("/forgot-password")}>
+              <LinkText onClick={() => router.push("/forgot-password")}>
                 <span>Forgot Password</span>
               </LinkText>
             </FormGrid>

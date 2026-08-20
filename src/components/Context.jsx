@@ -113,8 +113,8 @@ const router = useRouter();
       const docRef = await addDoc(collection(db, "orders"), orderPayload);
 
       const buyerEmail = orderPayload.accountInfo?.email || '';
-      // const sellerEmail = 'victorndu393@gmail.com';
-      const sellerEmail = 'beesinterior@gmail.com';
+      const sellerEmail = 'victorndu393@gmail.com';
+      // const sellerEmail = 'beesinterior@gmail.com';
 
       await fetch('/api/send-order-email', {
         method: 'POST',

@@ -1,3 +1,5 @@
+
+
 // "use client";
 
 // import { useState, useEffect } from "react";
@@ -6,14 +8,12 @@
 // import { usePathname } from "next/navigation";
 // import { auth, db } from "../firebaseConfig";
 // import { onAuthStateChanged } from "firebase/auth";
-// import { doc, getDoc } from "firebase/firestore";
+// import { doc, onSnapshot } from "firebase/firestore"; // Changed getDoc to onSnapshot
 // import PaymentInProgressModal from "./PaymentInProgressModal";
 // import { useAppContext } from "./Context";
 // import { useCart } from "@/components/CartContext";
 
-
 // /* ================= COLORS ================= */
-
 // const Blue = "#2563eb";
 // const Dark = "#0f172a";
 // const Border = "#e5eaf2";
@@ -21,7 +21,6 @@
 // const Gold = "#D4AF37";
 
 // /* ================= HEADER ================= */
-
 // const HeaderContainer = styled.header`
 //   position: fixed;
 //   top: 0;
@@ -40,16 +39,13 @@
 // const Inner = styled.div`
 //   max-width: 1200px;
 //   margin: auto;
-
 //   display: flex;
 //   justify-content: space-between;
 //   align-items: center;
-
 //   padding: 0.3rem 1.5rem;
 // `;
 
 // /* ================= LOGO ================= */
-
 // const Logo = styled.div`
 //   font-size: 1.25rem;
 //   font-weight: 800;
@@ -67,7 +63,6 @@
 // `;
 
 // /* ================= NAV ================= */
-
 // const Nav = styled.nav`
 //   display: flex;
 //   align-items: center;
@@ -77,27 +72,22 @@
 //     position: fixed;
 //     top: 73px;
 //     right: 0;
-
 //     width: 80%;
 //     max-width: 320px;
 //     height: calc(100vh - 73px);
-
 //     background: ${White};
 //     border-left: 1px solid ${Border};
 //     box-shadow: -10px 0 30px rgba(0, 0, 0, 0.05);
-
 //     flex-direction: column;
 //     align-items: flex-start;
 //     padding: 2.5rem 2rem;
 //     gap: 1.5rem;
-
 //     transform: translateX(${(p) => (p.$open ? "0" : "100%")});
 //     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 //   }
 // `;
 
 // /* ================= LINKS ================= */
-
 // const NavLink = styled(Link)`
 //   text-decoration: none;
 //   font-size: 0.95rem;
@@ -126,7 +116,6 @@
 //     width: 100%;
 //     padding-bottom: 0.5rem;
 //     border-bottom: 1px solid ${Border};
-
 //     &::after {
 //       display: none;
 //     }
@@ -134,7 +123,6 @@
 // `;
 
 // /* ================= ACTION WRAPPER ================= */
-
 // const NavActions = styled.div`
 //   display: flex;
 //   align-items: center;
@@ -161,7 +149,7 @@
 
 //   background: ${(p) => (p.$isPrimary ? Blue : "transparent")};
 //   color: ${(p) => (p.$isPrimary ? White : Dark)};
-//   border: ${(p) => (p.$isPrimary ? "none" : `1px solid ${Border}`)});
+//   border: ${(p) => (p.$isPrimary ? "none" : `1px solid ${Border}`)};
 
 //   &:hover {
 //     opacity: 0.9;
@@ -176,7 +164,6 @@
 // `;
 
 // /* ================= HAMBURGER ================= */
-
 // const Hamburger = styled.button`
 //   display: none;
 //   background: none;
@@ -214,7 +201,6 @@
 // `;
 
 // /* ================= OVERLAY ================= */
-
 // const Overlay = styled.div`
 //   display: ${(p) => (p.$open ? "block" : "none")};
 //   position: fixed;
@@ -226,140 +212,105 @@
 // `;
 
 // /* ================= COMPONENT ================= */
-
 // export default function Header() {
 //   const [open, setOpen] = useState(false);
 //   const pathname = usePathname();
 //   const [userData, setUserData] = useState(null);
 //   const { paymentSession } = useAppContext();
-//   const { cartTotalItems } = useCart()
-
-//   const showMenu = [
-//     "/",
-//     "/about",
-//     "/store",
-//     "/contact",
-//     "/blogs",
-//     "/login",
-//     "/signup",
-//     "/profiles",
-//     "/privacy-policy",
-//     "/terms-conditions"
-//   ].some((path) => pathname === path || pathname.startsWith("/dashboard"));
+//   const { cartTotalItems } = useCart();
 
 //   useEffect(() => {
-//     const unsubscribe = onAuthStateChanged(auth, async (user) => {
-//       if (user) {
-//         try {
-//           const userRef = doc(db, "users", user.uid);
-//           const userSnap = await getDoc(userRef);
+//     let unsubscribeDoc = null;
 
+//     const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
+//       if (user) {
+//         // Fix: Listen in real-time. If the signup process is slightly delayed 
+//         // in creating the document, this will instantly catch it when it finishes.
+//         const userRef = doc(db, "users", user.uid);
+//         unsubscribeDoc = onSnapshot(userRef, (userSnap) => {
 //           if (userSnap.exists()) {
 //             setUserData(userSnap.data());
 //           }
-//         } catch (error) {
-//           console.log(error);
-//         }
+//         });
 //       } else {
 //         setUserData(null);
+//         if (unsubscribeDoc) {
+//           unsubscribeDoc(); // Clean up doc listener when user logs out
+//         }
 //       }
 //     });
 
-//     return () => unsubscribe();
+//     return () => {
+//       unsubscribeAuth();
+//       if (unsubscribeDoc) unsubscribeDoc();
+//     };
 //   }, []);
 
 //   return (
 //     <>
-//       {/* OVERLAY */}
 //       <Overlay $open={open} onClick={() => setOpen(false)} />
 
 //       <HeaderContainer>
 //         {paymentSession && <PaymentInProgressModal />}
 //         <Inner>
-//           {/* LOGO - Fixed by removing legacyBehavior */}
-
 //           <Link href="/" onClick={() => setOpen(false)} style={{ textDecoration: 'none' }}> 
-//           <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-//   <img src="/logo.jpeg" alt="Bees Interior Logo" style={{ height: "50px", borderRadius:"10px" }} />    
-//             <Logo>
-//               Bees<span>Interior</span>
-//             </Logo>
-//           </div>
-        
+//             <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+//               <img src="/logo1.png" alt="Bees Interior Logo" style={{ height: "50px", borderRadius:"10px" }} />    
+//               <Logo>
+//                 {/* Bees<span>Interior</span> */}
+//               </Logo>
+//             </div>
 //           </Link>
 
-//           {/* MENU (conditional) */}
-          
-//             <>
-//               <Nav $open={open}>
-//                 <NavLink href="/" $active={pathname === "/"} onClick={() => setOpen(false)}>
-//                   Home
-//                 </NavLink>
+//           <>
+//             <Nav $open={open}>
+//               <NavLink href="/" $active={pathname === "/"} onClick={() => setOpen(false)}>Home</NavLink>
+//               <NavLink href="/about" $active={pathname === "/about"} onClick={() => setOpen(false)}>About</NavLink>
+//               <NavLink href="/store" $active={pathname === "/store"} onClick={() => setOpen(false)}>Store</NavLink>
+//               <NavLink href="/blogs" $active={pathname === "/blogs"} onClick={() => setOpen(false)}>Blogs</NavLink>
+//               <NavLink href="/contact" $active={pathname === "/contact"} onClick={() => setOpen(false)}>Contact</NavLink>
+//               <NavLink href="/cart" $active={pathname === "/cart"} onClick={() => setOpen(false)}>
+//                 Cart ({cartTotalItems})
+//               </NavLink>
 
-//                 <NavLink href="/about" $active={pathname === "/about"} onClick={() => setOpen(false)}>
-//                   About
-//                 </NavLink>
-
-//                 <NavLink href="/store" $active={pathname === "/store"} onClick={() => setOpen(false)}>
-//                   Store
-//                 </NavLink>
-
-//                 <NavLink href="/blogs" $active={pathname === "/blogs"} onClick={() => setOpen(false)}>
-//                   Blogs
-//                 </NavLink>
-
-//                 <NavLink href="/contact" $active={pathname === "/contact"} onClick={() => setOpen(false)}>
-//                   Contact
-//                 </NavLink>
-
-//                    <NavLink href="/cart" $active={pathname === "/cart"} onClick={() => setOpen(false)}>
-//                   Cart ({cartTotalItems})
-//                 </NavLink>
-
-//                 <NavActions>
-//                   {!userData && (
-//                     <AuthButton 
-//                       href="/signup" 
-//                       $isPrimary={false}
-//                       onClick={() => setOpen(false)}
-//                     >
-//                       Sign Up
-//                     </AuthButton>
-//                   )}
-
+//               <NavActions>
+//                 {!userData && (
 //                   <AuthButton 
-//                     href={userData ? "/dashboard" : "/login"} 
-//                     $isPrimary={true}
+//                     href="/signup" 
+//                     $isPrimary={false}
 //                     onClick={() => setOpen(false)}
 //                   >
-//                     {userData ? "My Dashboard" : "Login"}
+//                     Sign Up
 //                   </AuthButton>
-//                 </NavActions>
-//               </Nav>
+//                 )}
 
-//               <Hamburger
-//                 onClick={() => setOpen(!open)}
-//                 className={open ? "open" : ""}
-//                 aria-label="Toggle navigation menu"
-//               >
-//                 <div />
-//                 <div />
-//                 <div />
-//               </Hamburger>
-//             </>
-          
+//                 <AuthButton 
+//                   href={userData ? "/dashboard" : "/login"} 
+//                   $isPrimary={true}
+//                   onClick={() => setOpen(false)}
+//                 >
+//                   {userData ? "My Dashboard" : "Login"}
+//                 </AuthButton>
+//               </NavActions>
+//             </Nav>
+
+//             <Hamburger
+//               onClick={() => setOpen(!open)}
+//               className={open ? "open" : ""}
+//               aria-label="Toggle navigation menu"
+//             >
+//               <div />
+//               <div />
+//               <div />
+//             </Hamburger>
+//           </>
 //         </Inner>
 //       </HeaderContainer>
 
-//       {/* spacer so content doesn't go under fixed header */}
 //       <div style={{ height: "73px" }} />
 //     </>
 //   );
 // }
-
-
-
-
 
 
 
@@ -373,17 +324,18 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { auth, db } from "../firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
-import { doc, onSnapshot } from "firebase/firestore"; // Changed getDoc to onSnapshot
+import { doc, onSnapshot } from "firebase/firestore";
 import PaymentInProgressModal from "./PaymentInProgressModal";
 import { useAppContext } from "./Context";
 import { useCart } from "@/components/CartContext";
 
 /* ================= COLORS ================= */
-const Blue = "#2563eb";
-const Dark = "#0f172a";
-const Border = "#e5eaf2";
+const PrimaryColor = "#ec4899"; // Vibrant Pink from the logo
+const AccentGradient = "linear-gradient(135deg, #ec4899 0%, #f59e0b 50%, #06b6d4 100%)"; // Pink -> Orange -> Turquoise
+const Dark = "#1e293b";
+const Border = "#e2e8f0";
 const White = "#ffffff";
-const Gold = "#D4AF37";
+const Turquoise = "#06b6d4";
 
 /* ================= HEADER ================= */
 const HeaderContainer = styled.header`
@@ -393,12 +345,12 @@ const HeaderContainer = styled.header`
   width: 100%;
   z-index: 300;
 
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
 
   border-bottom: 1px solid ${Border};
-  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.03);
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
 `;
 
 const Inner = styled.div`
@@ -421,7 +373,7 @@ const Logo = styled.div`
   gap: 4px;
 
   span {
-    background: linear-gradient(135deg, ${Blue} 0%, ${Gold} 100%);
+    background: ${AccentGradient};
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
@@ -457,12 +409,12 @@ const NavLink = styled(Link)`
   text-decoration: none;
   font-size: 0.95rem;
   font-weight: 600;
-  color: ${(p) => (p.$active ? Blue : Dark)};
+  color: ${(p) => (p.$active ? PrimaryColor : Dark)};
   position: relative;
   transition: color 0.2s ease;
 
   &:hover {
-    color: ${Blue};
+    color: ${PrimaryColor};
   }
 
   &::after {
@@ -472,7 +424,7 @@ const NavLink = styled(Link)`
     bottom: -4px;
     width: ${(p) => (p.$active ? "100%" : "0")};
     height: 2px;
-    background: ${Blue};
+    background: ${AccentGradient};
     transition: width 0.3s ease;
   }
 
@@ -512,14 +464,14 @@ const AuthButton = styled(Link)`
   text-align: center;
   transition: all 0.2s ease;
 
-  background: ${(p) => (p.$isPrimary ? Blue : "transparent")};
+  background: ${(p) => (p.$isPrimary ? AccentGradient : "transparent")};
   color: ${(p) => (p.$isPrimary ? White : Dark)};
   border: ${(p) => (p.$isPrimary ? "none" : `1px solid ${Border}`)};
 
   &:hover {
     opacity: 0.9;
     transform: translateY(-1px);
-    border-color: ${Blue};
+    border-color: ${PrimaryColor};
   }
 
   @media (max-width: 768px) {
@@ -554,6 +506,7 @@ const Hamburger = styled.button`
 
   &.open div:nth-child(1) {
     transform: translateY(9px) rotate(45deg);
+    background: ${PrimaryColor};
   }
 
   &.open div:nth-child(2) {
@@ -562,6 +515,7 @@ const Hamburger = styled.button`
 
   &.open div:nth-child(3) {
     transform: translateY(-9px) rotate(-45deg);
+    background: ${Turquoise};
   }
 `;
 
@@ -589,8 +543,6 @@ export default function Header() {
 
     const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
       if (user) {
-        // Fix: Listen in real-time. If the signup process is slightly delayed 
-        // in creating the document, this will instantly catch it when it finishes.
         const userRef = doc(db, "users", user.uid);
         unsubscribeDoc = onSnapshot(userRef, (userSnap) => {
           if (userSnap.exists()) {
@@ -600,7 +552,7 @@ export default function Header() {
       } else {
         setUserData(null);
         if (unsubscribeDoc) {
-          unsubscribeDoc(); // Clean up doc listener when user logs out
+          unsubscribeDoc();
         }
       }
     });
@@ -620,10 +572,7 @@ export default function Header() {
         <Inner>
           <Link href="/" onClick={() => setOpen(false)} style={{ textDecoration: 'none' }}> 
             <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-              <img src="/logo.jpeg" alt="Bees Interior Logo" style={{ height: "50px", borderRadius:"10px" }} />    
-              <Logo>
-                Bees<span>Interior</span>
-              </Logo>
+              <img src="/logo1.png" alt="Kingsword Bag Craft Logo" style={{ height: "45px", borderRadius: "8px" }} />    
             </div>
           </Link>
 
@@ -631,8 +580,10 @@ export default function Header() {
             <Nav $open={open}>
               <NavLink href="/" $active={pathname === "/"} onClick={() => setOpen(false)}>Home</NavLink>
               <NavLink href="/about" $active={pathname === "/about"} onClick={() => setOpen(false)}>About</NavLink>
+              <NavLink href="/services" $active={pathname === "/services"} onClick={() => setOpen(false)}>Services</NavLink>
+              
               <NavLink href="/store" $active={pathname === "/store"} onClick={() => setOpen(false)}>Store</NavLink>
-              <NavLink href="/blogs" $active={pathname === "/blogs"} onClick={() => setOpen(false)}>Blogs</NavLink>
+              <NavLink href="/pricing" $active={pathname === "/pricing"} onClick={() => setOpen(false)}>Pricing</NavLink>
               <NavLink href="/contact" $active={pathname === "/contact"} onClick={() => setOpen(false)}>Contact</NavLink>
               <NavLink href="/cart" $active={pathname === "/cart"} onClick={() => setOpen(false)}>
                 Cart ({cartTotalItems})

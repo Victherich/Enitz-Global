@@ -1,5 +1,361 @@
 
 
+// "use client";
+
+// import { useEffect, useState } from "react";
+// import { onAuthStateChanged } from "firebase/auth";
+// import { auth } from "@/firebaseConfig";
+// import { useRouter } from "next/navigation";
+// import styled from "styled-components";
+// import Swal from "sweetalert2";
+// import { usePathname } from "next/navigation";
+
+// // 🎨 BEES INTERIOR THEME COLORS
+// const Blue = "#2563eb";
+// const Dark = "#0f172a";
+// const Border = "#e5eaf2";
+// const White = "#ffffff";
+// const Gold = "#D4AF37";
+// const TextMuted = "#475569";
+// const LightBg = "#f8fafc";
+
+// /* ---------------- LAYOUT WRAPPER ---------------- */
+// const LayoutWrapper = styled.div`
+//   display: flex;
+//   min-height: 100vh;
+//   position: relative;
+//   background: ${LightBg};
+//   font-family: inherit;
+// `;
+
+// /* ---------------- SIDEBAR ---------------- */
+// const Sidebar = styled.div`
+//   width: 260px;
+//   background: ${White};
+//   border-right: 1px solid ${Border};
+//   color: ${Dark};
+//   padding: 10px;
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: space-between;
+//   transition: 0.35s ease;
+//   z-index: 200;
+
+//   @media (max-width: 768px) {
+//     position: fixed;
+//     top: 0;
+//     left: ${(props) => (props.$open ? "0" : "-260px")};
+//     height: 100vh;
+//     box-shadow: ${(props) => (props.$open ? "4px 0 15px rgba(15, 23, 42, 0.1)" : "none")};
+//   }
+// `;
+
+// const SidebarTop = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   gap: 10px;
+// `;
+
+// const BrandLogo = styled.h2`
+//   font-size: 1.15rem;
+//   font-weight: 800;
+//   letter-spacing: -0.5px;
+//   color: ${Dark};
+//   padding: 10px 0;
+//   border-bottom: 1px solid ${Border};
+//   margin-bottom: 10px;
+
+//   span {
+//     color: ${Gold};
+//   }
+// `;
+
+// const NavLinks = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   gap: 10px;
+// `;
+
+// const MenuItem = styled.div`
+//   padding: 10px;
+//   cursor: pointer;
+//   border-radius: 6px;
+//   font-size: 0.95rem;
+//   font-weight: 600;
+//   color: ${(props) => (props.$active ? White : TextMuted)};
+//   background: ${(props) => (props.$active ? Blue : "transparent")};
+//   display: flex;
+//   align-items: center;
+//   gap: 10px;
+//   transition: all 0.2s ease;
+
+//   &:hover {
+//     background: ${(props) => (props.$active ? Blue : LightBg)};
+//     color: ${(props) => (props.$active ? White : Dark)};
+//   }
+// `;
+
+// const LogoutButton = styled.div`
+//   padding: 10px;
+//   cursor: pointer;
+//   border-radius: 6px;
+//   font-size: 0.95rem;
+//   font-weight: 600;
+//   color: #ef4444;
+//   background: rgba(239, 68, 68, 0.05);
+//   display: flex;
+//   align-items: center;
+//   gap: 10px;
+//   transition: background 0.2s ease;
+
+//   &:hover {
+//     background: rgba(239, 68, 68, 0.1);
+//   }
+// `;
+
+// /* ---------------- MAIN CONTENT AREA ---------------- */
+// const MainContentArea = styled.div`
+//   flex: 1;
+//   display: flex;
+//   flex-direction: column;
+//   min-width: 0;
+// `;
+
+// const Topbar = styled.header`
+//   height: 10px;
+//   background: ${White};
+//   border-bottom: 1px solid ${Border};
+//   padding: 10px;
+//   display: flex;
+//   align-items: center;
+//   justify-content: space-between;
+//   position: sticky;
+//   top: 0;
+//   z-index: 100;
+// `;
+
+// const TopbarLeft = styled.div`
+//   display: flex;
+//   align-items: center;
+//   gap: 10px;
+// `;
+
+// const TopbarRight = styled.div`
+//   display: flex;
+//   align-items: center;
+//   gap: 10px;
+// `;
+
+// const Content = styled.main`
+//   flex: 1;
+//   padding: 10px;
+//   background: ${LightBg};
+//   overflow-y: auto;
+//   display: flex;
+//   flex-direction: column;
+//   gap: 10px;
+// `;
+
+// /* ---------------- OVERLAY (click-away) ---------------- */
+// const Overlay = styled.div`
+//   display: none;
+
+//   @media (max-width: 768px) {
+//     display: ${(props) => (props.$open ? "block" : "none")};
+//     position: fixed;
+//     top: 0;
+//     left: 0;
+//     width: 100vw;
+//     height: 100vh;
+//     background: rgba(15, 23, 42, 0.4);
+//     z-index: 150;
+//   }
+// `;
+
+// /* ---------------- HAMBURGER ---------------- */
+// const Hamburger = styled.button`
+//   width: 40px;
+//   height: 40px;
+//   background: ${White};
+//   border: 1px solid ${Border};
+//   border-radius: 6px;
+//   color: ${Dark};
+//   font-size: 1.2rem;
+//   display: none;
+//   align-items: center;
+//   justify-content: center;
+//   cursor: pointer;
+//   transition: border-color 0.2s ease;
+
+//   &:hover {
+//     border-color: ${Blue};
+//   }
+
+//   @media (max-width: 768px) {
+//     display: flex;
+//   }
+// `;
+
+// /* ---------------- HOME BUTTON ---------------- */
+// const HomeButton = styled.button`
+//   width: 40px;
+//   height: 40px;
+//   border-radius: 6px;
+//   background: ${White};
+//   color: ${Dark};
+//   border: 1px solid ${Border};
+//   font-size: 1.1rem;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   cursor: pointer;
+//   transition: all 0.2s ease;
+
+//   &:hover {
+//     border-color: ${Blue};
+//     color: ${Blue};
+//   }
+// `;
+
+// /* ---------------- LOADING STATE ---------------- */
+// const LoadingWrapper = styled.div`
+//   min-height: 100vh;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   background: ${LightBg};
+//   color: ${Dark};
+//   font-size: 1.1rem;
+//   font-weight: 600;
+// `;
+
+// export default function DashboardLayout({ children }) {
+//   const router = useRouter();
+//   const pathname = usePathname();
+//   const [loading, setLoading] = useState(true);
+//   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+//   const showHomeButton = pathname !== "/dashboard";
+
+//   useEffect(() => {
+//     const unsub = onAuthStateChanged(auth, (user) => {
+//       if (!user) {
+//         router.replace("/login");
+//       }
+//       setLoading(false);
+//     });
+
+//     return () => unsub();
+//   }, [router]);
+
+//   if (loading) {
+//     return (
+//       <LoadingWrapper>
+//         <p>Loading dashboard...</p>
+//       </LoadingWrapper>
+//     );
+//   }
+
+//   /* ---------------- SIGN OUT ---------------- */
+//   const signOut = () => {
+//     Swal.fire({
+//       title: "Are you sure?",
+//       text: "You will be signed out of your account.",
+//       icon: "warning",
+//       showCancelButton: true,
+//       confirmButtonColor: Blue,
+//       cancelButtonColor: "#ef4444",
+//       confirmButtonText: "Yes, Sign Out",
+//     }).then((result) => {
+//       if (result.isConfirmed) {
+//         auth.signOut();
+//         Swal.fire("Signed Out", "You have been logged out successfully.", "success");
+//         router.push("/login");
+//       }
+//     });
+//   };
+
+//   /* ---------------- CLOSE SIDEBAR ON MOBILE ---------------- */
+//   const closeSidebar = () => {
+//     if (window.innerWidth <= 768) {
+//       setSidebarOpen(false);
+//     }
+//   };
+
+//   return (
+//     <LayoutWrapper>
+//       {/* CLICK-AWAY OVERLAY */}
+//       <Overlay $open={sidebarOpen} onClick={() => setSidebarOpen(false)} />
+
+//       {/* SIDEBAR */}
+//       <Sidebar $open={sidebarOpen}>
+//         <SidebarTop>
+//           <BrandLogo>
+//             BEES <span>INTERIOR</span>
+//           </BrandLogo>
+
+//           <NavLinks>
+//             <MenuItem
+//               $active={pathname === "/dashboard"}
+//               onClick={() => {
+//                 router.push("/dashboard");
+//                 closeSidebar();
+//               }}
+//             >
+//               📊 My Dashboard
+//             </MenuItem>
+          
+//           </NavLinks>
+//         </SidebarTop>
+
+//         <LogoutButton
+//           onClick={() => {
+//             signOut();
+//             closeSidebar();
+//           }}
+//         >
+//           🚪 Sign Out
+//         </LogoutButton>
+//       </Sidebar>
+
+//       {/* MAIN CONTENT AREA */}
+//       <MainContentArea>
+//         {/* TOPBAR */}
+//         <Topbar>
+//           <TopbarLeft>
+//             <Hamburger onClick={() => setSidebarOpen(!sidebarOpen)}>
+//               ☰
+//             </Hamburger>
+//           </TopbarLeft>
+// {/* 
+//           <TopbarRight>
+//             {showHomeButton && (
+//               <HomeButton
+//                 onClick={() => {
+//                   router.push("/dashboard");
+//                   closeSidebar();
+//                 }}
+//                 title="Return to Dashboard"
+//               >
+//                 🏠
+//               </HomeButton>
+//             )}
+//           </TopbarRight> */}
+//         </Topbar>
+
+//         {/* CONTENT */}
+//         <Content onClick={closeSidebar}>
+//           {children}
+//         </Content>
+//       </MainContentArea>
+//     </LayoutWrapper>
+//   );
+// }
+
+
+
+
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -10,14 +366,16 @@ import styled from "styled-components";
 import Swal from "sweetalert2";
 import { usePathname } from "next/navigation";
 
-// 🎨 BEES INTERIOR THEME COLORS
-const Blue = "#2563eb";
+// 🎨 KINGSWORD BAG CRAFT THEME COLORS (Vibrant luxury palette)
+const ThemePrimary = "#ec4899"; // Pink accent
+const ThemeSecondary = "#06b6d4"; // Cyan accent
 const Dark = "#0f172a";
-const Border = "#e5eaf2";
+const Border = "rgba(226, 232, 240, 0.9)";
 const White = "#ffffff";
-const Gold = "#D4AF37";
+const Gold = "#f59e0b";
 const TextMuted = "#475569";
 const LightBg = "#f8fafc";
+const ThemeGradient = "linear-gradient(135deg, #ec4899 0%, #f59e0b 50%, #06b6d4 100%)";
 
 /* ---------------- LAYOUT WRAPPER ---------------- */
 const LayoutWrapper = styled.div`
@@ -30,86 +388,94 @@ const LayoutWrapper = styled.div`
 
 /* ---------------- SIDEBAR ---------------- */
 const Sidebar = styled.div`
-  width: 260px;
+  width: 280px;
   background: ${White};
   border-right: 1px solid ${Border};
   color: ${Dark};
-  padding: 10px;
+  padding: 1.5rem 1.25rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  transition: 0.35s ease;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   z-index: 200;
+  box-shadow: 10px 0 30px rgba(15, 23, 42, 0.02);
 
   @media (max-width: 768px) {
     position: fixed;
     top: 0;
-    left: ${(props) => (props.$open ? "0" : "-260px")};
+    left: 0;
+    transform: translateX(${(props) => (props.$open ? "0" : "-100%")});
     height: 100vh;
-    box-shadow: ${(props) => (props.$open ? "4px 0 15px rgba(15, 23, 42, 0.1)" : "none")};
+    box-shadow: ${(props) => (props.$open ? "20px 0 50px rgba(15, 23, 42, 0.15)" : "none")};
   }
 `;
 
 const SidebarTop = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 1.5rem;
 `;
 
 const BrandLogo = styled.h2`
-  font-size: 1.15rem;
-  font-weight: 800;
-  letter-spacing: -0.5px;
+  font-size: 1.2rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
   color: ${Dark};
-  padding: 10px 0;
+  padding-bottom: 1rem;
   border-bottom: 1px solid ${Border};
-  margin-bottom: 10px;
+  margin: 0;
 
   span {
-    color: ${Gold};
+    background: ${ThemeGradient};
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 `;
 
 const NavLinks = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 0.5rem;
 `;
 
 const MenuItem = styled.div`
-  padding: 10px;
+  padding: 0.85rem 1rem;
   cursor: pointer;
-  border-radius: 6px;
+  border-radius: 0.85rem;
   font-size: 0.95rem;
-  font-weight: 600;
+  font-weight: 700;
   color: ${(props) => (props.$active ? White : TextMuted)};
-  background: ${(props) => (props.$active ? Blue : "transparent")};
+  background: ${(props) => (props.$active ? ThemeGradient : "transparent")};
   display: flex;
   align-items: center;
-  gap: 10px;
-  transition: all 0.2s ease;
+  gap: 0.75rem;
+  box-shadow: ${(props) => (props.$active ? "0 10px 20px -5px rgba(236, 72, 153, 0.4)" : "none")};
+  transition: all 0.25s ease;
 
   &:hover {
-    background: ${(props) => (props.$active ? Blue : LightBg)};
-    color: ${(props) => (props.$active ? White : Dark)};
+    background: ${(props) => (props.$active ? ThemeGradient : "rgba(236, 72, 153, 0.06)")};
+    color: ${(props) => (props.$active ? White : ThemePrimary)};
+    transform: translateX(3px);
   }
 `;
 
 const LogoutButton = styled.div`
-  padding: 10px;
+  padding: 0.85rem 1rem;
   cursor: pointer;
-  border-radius: 6px;
+  border-radius: 0.85rem;
   font-size: 0.95rem;
-  font-weight: 600;
+  font-weight: 700;
   color: #ef4444;
   background: rgba(239, 68, 68, 0.05);
+  border: 1px solid rgba(239, 68, 68, 0.1);
   display: flex;
   align-items: center;
-  gap: 10px;
-  transition: background 0.2s ease;
+  gap: 0.75rem;
+  transition: all 0.25s ease;
 
   &:hover {
-    background: rgba(239, 68, 68, 0.1);
+    background: rgba(239, 68, 68, 0.12);
+    transform: translateY(-2px);
   }
 `;
 
@@ -122,10 +488,11 @@ const MainContentArea = styled.div`
 `;
 
 const Topbar = styled.header`
-  height: 10px;
-  background: ${White};
+  height: 0px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(12px);
   border-bottom: 1px solid ${Border};
-  padding: 10px;
+  padding: 0 1.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -137,23 +504,27 @@ const Topbar = styled.header`
 const TopbarLeft = styled.div`
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 1rem;
 `;
 
 const TopbarRight = styled.div`
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 1rem;
 `;
 
 const Content = styled.main`
   flex: 1;
-  padding: 10px;
+  padding: 2rem;
   background: ${LightBg};
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 1.5rem;
+
+  @media (max-width: 768px) {
+    padding: 1.25rem;
+  }
 `;
 
 /* ---------------- OVERLAY (click-away) ---------------- */
@@ -167,28 +538,31 @@ const Overlay = styled.div`
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(15, 23, 42, 0.4);
+    background: rgba(15, 23, 42, 0.5);
+    backdrop-filter: blur(4px);
     z-index: 150;
   }
 `;
 
 /* ---------------- HAMBURGER ---------------- */
 const Hamburger = styled.button`
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   background: ${White};
   border: 1px solid ${Border};
-  border-radius: 6px;
+  border-radius: 0.85rem;
   color: ${Dark};
-  font-size: 1.2rem;
+  font-size: 1.25rem;
   display: none;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: border-color 0.2s ease;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+  transition: all 0.2s ease;
 
   &:hover {
-    border-color: ${Blue};
+    border-color: ${ThemePrimary};
+    color: ${ThemePrimary};
   }
 
   @media (max-width: 768px) {
@@ -198,22 +572,24 @@ const Hamburger = styled.button`
 
 /* ---------------- HOME BUTTON ---------------- */
 const HomeButton = styled.button`
-  width: 40px;
-  height: 40px;
-  border-radius: 6px;
+  width: 44px;
+  height: 44px;
+  border-radius: 0.85rem;
   background: ${White};
   color: ${Dark};
   border: 1px solid ${Border};
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
   transition: all 0.2s ease;
 
   &:hover {
-    border-color: ${Blue};
-    color: ${Blue};
+    border-color: ${ThemePrimary};
+    color: ${ThemePrimary};
+    transform: translateY(-2px);
   }
 `;
 
@@ -225,8 +601,8 @@ const LoadingWrapper = styled.div`
   justify-content: center;
   background: ${LightBg};
   color: ${Dark};
-  font-size: 1.1rem;
-  font-weight: 600;
+  font-size: 1.2rem;
+  font-weight: 700;
 `;
 
 export default function DashboardLayout({ children }) {
@@ -263,7 +639,7 @@ export default function DashboardLayout({ children }) {
       text: "You will be signed out of your account.",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: Blue,
+      confirmButtonColor: ThemePrimary,
       cancelButtonColor: "#ef4444",
       confirmButtonText: "Yes, Sign Out",
     }).then((result) => {
@@ -291,7 +667,7 @@ export default function DashboardLayout({ children }) {
       <Sidebar $open={sidebarOpen}>
         <SidebarTop>
           <BrandLogo>
-            BEES <span>INTERIOR</span>
+            KINGSWORD <span>BAG CRAFT</span>
           </BrandLogo>
 
           <NavLinks>
@@ -304,7 +680,6 @@ export default function DashboardLayout({ children }) {
             >
               📊 My Dashboard
             </MenuItem>
-          
           </NavLinks>
         </SidebarTop>
 
@@ -327,7 +702,7 @@ export default function DashboardLayout({ children }) {
               ☰
             </Hamburger>
           </TopbarLeft>
-{/* 
+
           <TopbarRight>
             {showHomeButton && (
               <HomeButton
@@ -340,7 +715,7 @@ export default function DashboardLayout({ children }) {
                 🏠
               </HomeButton>
             )}
-          </TopbarRight> */}
+          </TopbarRight>
         </Topbar>
 
         {/* CONTENT */}

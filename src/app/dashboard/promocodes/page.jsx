@@ -16,12 +16,16 @@ import {
 import styled from "styled-components";
 import Swal from "sweetalert2";
 
-// 🎨 BEES INTERIOR THEME COLORS
-const Blue = "#2563eb";
+
+
+
+// 🎨 NEW THEME COLORS & GRADIENTS (Vibrant Pink, Turquoise & Dynamic Accent)
+const PrimaryColor = "#ec4899";
+const AccentGradient = "linear-gradient(135deg, #ec4899 0%, #f59e0b 50%, #06b6d4 100%)";
+const Turquoise = "#06b6d4";
 const Dark = "#0f172a";
 const Border = "#e5eaf2";
 const White = "#ffffff";
-const Gold = "#D4AF37";
 const TextMuted = "#475569";
 const Danger = "#ef4444";
 
@@ -37,30 +41,31 @@ const Container = styled.div`
 `;
 
 const HeaderBanner = styled.div`
-  background: linear-gradient(135deg, ${Blue} 0%, ${Gold} 100%);
+  background: ${AccentGradient};
   color: ${White};
   padding: 10px;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  box-shadow: 0 4px 15px rgba(15, 23, 42, 0.05);
+  box-shadow: 0 6px 20px rgba(236, 72, 153, 0.15);
 `;
 
 const ColorfulTitle = styled.h1`
   font-size: 1.6rem;
   font-weight: 800;
   margin: 0;
-  background: linear-gradient(90deg, #ffffff 0%, #fef08a 100%);
+  background: linear-gradient(90deg, #ffffff 0%, #fbcfe8 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   letter-spacing: -0.5px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 `;
 
 const ColorfulSub = styled.p`
   font-size: 0.95rem;
   margin: 0;
-  color: #f8fafc;
+  color: #fdf2f8;
   opacity: 0.95;
 `;
 
@@ -80,13 +85,13 @@ const ColorfulSectionTitle = styled.h2`
   font-size: 1.25rem;
   font-weight: 800;
   margin: 0;
-  background: linear-gradient(135deg, ${Blue} 0%, ${Gold} 100%);
+  background: ${AccentGradient};
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 `;
 
 const PrimaryButton = styled.button`
-  background: linear-gradient(135deg, ${Blue} 0%, #1d4ed8 100%);
+  background: ${AccentGradient};
   color: ${White};
   border: none;
   border-radius: 8px;
@@ -97,11 +102,12 @@ const PrimaryButton = styled.button`
   display: flex;
   align-items: center;
   gap: 6px;
-  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
-  transition: transform 0.2s ease;
+  box-shadow: 0 4px 15px rgba(236, 72, 153, 0.25);
+  transition: transform 0.2s ease, opacity 0.2s ease;
 
   &:hover {
     transform: translateY(-2px);
+    opacity: 0.95;
   }
 `;
 
@@ -116,11 +122,17 @@ const CategoryCard = styled.div`
   border-radius: 10px;
   padding: 10px;
   border: 1px solid ${Border};
-  border-left: 4px solid ${Gold};
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+  border-left: 4px solid ${Turquoise};
+  box-shadow: 0 4px 15px rgba(15, 23, 42, 0.04);
   display: flex;
   flex-direction: column;
   gap: 10px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(236, 72, 153, 0.08);
+  }
 `;
 
 const CardHeader = styled.div`
@@ -151,17 +163,18 @@ const ButtonGroup = styled.div`
 `;
 
 const EditButton = styled.button`
-  background: rgba(37, 99, 235, 0.1);
-  color: ${Blue};
+  background: rgba(236, 72, 153, 0.1);
+  color: ${PrimaryColor};
   border: none;
   border-radius: 6px;
   padding: 6px 10px;
   font-size: 0.8rem;
   font-weight: 700;
   cursor: pointer;
+  transition: background 0.2s ease;
 
   &:hover {
-    background: rgba(37, 99, 235, 0.2);
+    background: rgba(236, 72, 153, 0.2);
   }
 `;
 
@@ -174,6 +187,7 @@ const DeleteButton = styled.button`
   font-size: 0.8rem;
   font-weight: 700;
   cursor: pointer;
+  transition: background 0.2s ease;
 
   &:hover {
     background: rgba(239, 68, 68, 0.2);
@@ -183,7 +197,7 @@ const DeleteButton = styled.button`
 const LoadingContainer = styled.div`
   padding: 10px;
   text-align: center;
-  color: ${Dark};
+  color: ${PrimaryColor};
   font-weight: 600;
 `;
 
@@ -194,7 +208,8 @@ const ModalOverlay = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(15, 23, 42, 0.5);
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -210,7 +225,7 @@ const ModalContainer = styled.div`
   width: 100%;
   max-width: 400px;
   border: 1px solid ${Border};
-  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.1);
+  box-shadow: 0 15px 35px rgba(15, 23, 42, 0.15);
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -220,7 +235,7 @@ const ModalTitle = styled.h3`
   margin: 0;
   font-size: 1.1rem;
   font-weight: 800;
-  background: linear-gradient(135deg, ${Blue} 0%, ${Gold} 100%);
+  background: ${AccentGradient};
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 `;
@@ -235,9 +250,12 @@ const StyledInput = styled.input`
   width: 100%;
   box-sizing: border-box;
   margin: 0;
+  background: ${White};
+  transition: all 0.2s ease;
 
   &:focus {
-    border-color: ${Blue};
+    border-color: ${PrimaryColor};
+    box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.15);
   }
 `;
 
@@ -252,9 +270,11 @@ const StyledSelect = styled.select`
   box-sizing: border-box;
   margin: 0;
   background: ${White};
+  transition: all 0.2s ease;
 
   &:focus {
-    border-color: ${Blue};
+    border-color: ${PrimaryColor};
+    box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.15);
   }
 `;
 
@@ -270,9 +290,12 @@ const StyledTextarea = styled.textarea`
   resize: vertical;
   min-height: 70px;
   margin: 0;
+  background: ${White};
+  transition: all 0.2s ease;
 
   &:focus {
-    border-color: ${Blue};
+    border-color: ${PrimaryColor};
+    box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.15);
   }
 `;
 
@@ -292,6 +315,7 @@ const CancelButton = styled.button`
   font-size: 0.85rem;
   font-weight: 700;
   cursor: pointer;
+  transition: background 0.2s ease;
 
   &:hover {
     background: #cbd5e1;
@@ -299,7 +323,7 @@ const CancelButton = styled.button`
 `;
 
 const SaveButton = styled.button`
-  background: ${Blue};
+  background: ${AccentGradient};
   color: ${White};
   border: none;
   border-radius: 6px;
@@ -307,11 +331,14 @@ const SaveButton = styled.button`
   font-size: 0.85rem;
   font-weight: 700;
   cursor: pointer;
+  transition: opacity 0.2s ease;
 
   &:hover {
-    background: #1d4ed8;
+    opacity: 0.92;
   }
 `;
+
+
 
 export default function PromoCodesCrudPage() {
   const [promoCodes, setPromoCodes] = useState([]);

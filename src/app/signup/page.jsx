@@ -1,3 +1,510 @@
+// "use client";
+
+// import { useState } from "react";
+// import { useRouter } from "next/navigation";
+// import styled from "styled-components";
+// import Swal from "sweetalert2";
+// import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+// import { doc, setDoc } from "firebase/firestore";
+// import { auth, db } from "@/firebaseConfig";
+
+// // 🎨 BEES INTERIOR THEME COLORS
+// const Blue = "#2563eb";
+// const Dark = "#0f172a";
+// const Border = "#e5eaf2";
+// const White = "#ffffff";
+// const Gold = "#D4AF37";
+// const TextMuted = "#475569"; // Softer, lighter shade for form text instead of pitch black
+// const LightBg = "#f8fafc";
+
+// // 🌟 Styled Components
+// const PageContainer = styled.div`
+//   min-height: 100vh;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   background: ${LightBg};
+//   padding: 10px;
+// `;
+
+// const AuthWrapper = styled.div`
+//   display: grid;
+//   grid-template-columns: 1fr 1fr;
+//   width: 100%;
+//   max-width: 1000px;
+//   background: ${White};
+//   border-radius: 10px;
+//   border: 1px solid ${Border};
+//   box-shadow: 0 12px 30px rgba(15, 23, 42, 0.05);
+//   overflow: hidden;
+
+//   @media (max-width: 768px) {
+//     grid-template-columns: 1fr;
+//   }
+// `;
+
+// const BrandingSide = styled.div`
+//   background: ${Blue}; // Changed from dark to normal button blue
+//   color: ${White};
+//   padding: 10px;
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: space-between;
+//   position: relative;
+//   overflow: hidden;
+
+//   &::after {
+//     content: "";
+//     position: absolute;
+//     inset: 0;
+//     background: linear-gradient(135deg, rgba(15, 23, 42, 0.2) 0%, rgba(212, 175, 55, 0.2) 100%);
+//     z-index: 1;
+//   }
+// `;
+
+// const BrandingContent = styled.div`
+//   position: relative;
+//   z-index: 2;
+//   display: flex;
+//   flex-direction: column;
+//   gap: 10px;
+//   margin: auto 0;
+// `;
+
+// const BrandLogo = styled.h3`
+//   font-size: 1.25rem;
+//   font-weight: 800;
+//   letter-spacing: -0.5px;
+//   color: ${White};
+
+//   span {
+//     color: ${Gold};
+//   }
+// `;
+
+// const Headline = styled.h1`
+//   font-size: clamp(1.8rem, 3vw, 2.4rem);
+//   font-weight: 800;
+//   line-height: 1.2;
+//   letter-spacing: -0.5px;
+// `;
+
+// const Subtext = styled.p`
+//   font-size: 0.95rem;
+//   line-height: 1.6;
+//   color: ${Border};
+// `;
+
+// const FormSide = styled.div`
+//   padding: 10px;
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: center;
+//   color: ${TextMuted}; // Applied softer text color across the form
+// `;
+
+// const FormHeader = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   gap: 10px;
+//   margin-bottom: 10px;
+// `;
+
+// const Title = styled.h2`
+//   font-size: 1.5rem;
+//   font-weight: 700;
+//   color: ${Blue};
+//   text-align: left;
+// `;
+
+// const FormGrid = styled.div`
+//   display: grid;
+//   grid-template-columns: 1fr 1fr;
+//   gap: 10px;
+
+//   @media (max-width: 500px) {
+//     grid-template-columns: 1fr;
+//   }
+// `;
+
+// const InputGroup = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   gap: 10px;
+//   grid-column: ${(props) => (props.$full ? "span 2" : "span 1")};
+
+//   @media (max-width: 500px) {
+//     grid-column: span 1;
+//   }
+// `;
+
+// const Label = styled.label`
+//   font-size: 0.85rem;
+//   font-weight: 600;
+//   color: ${TextMuted}; // Adjusted form label color from pure black to softer tone
+//   text-align: left;
+// `;
+
+// const Input = styled.input`
+//   width: 100%;
+//   padding: 10px;
+//   border: 1px solid ${Border};
+//   border-radius: 6px;
+//   font-size: 0.9rem;
+//   background: ${White};
+//   color: ${Dark};
+//   outline: none;
+//   transition: border-color 0.2s ease;
+
+//   &:focus {
+//     border-color: ${Blue};
+//   }
+// `;
+
+// const PasswordWrapper = styled.div`
+//   position: relative;
+//   width: 100%;
+// `;
+
+// const EyeButton = styled.button`
+//   position: absolute;
+//   right: 10px;
+//   top: 50%;
+//   transform: translateY(-50%);
+//   background: transparent;
+//   border: none;
+//   cursor: pointer;
+//   font-size: 0.8rem;
+//   color: ${Blue};
+//   font-weight: 600;
+
+//   &:hover {
+//     text-decoration: underline;
+//   }
+// `;
+
+// const CheckboxWrapper = styled.div`
+//   display: flex;
+//   align-items: flex-start;
+//   gap: 10px;
+//   font-size: 0.85rem;
+//   line-height: 1.4;
+//   color: ${TextMuted};
+//   grid-column: span 2;
+
+//   @media (max-width: 500px) {
+//     grid-column: span 1;
+//   }
+// `;
+
+// const Checkbox = styled.input`
+//   margin-top: 2px;
+//   width: 16px;
+//   height: 16px;
+//   cursor: pointer;
+//   accent-color: ${Blue};
+// `;
+
+// const PolicyText = styled.span`
+//   text-align: left;
+//   a {
+//     color: ${Blue};
+//     font-weight: 600;
+//     text-decoration: underline;
+
+//     &:hover {
+//       color: ${Dark};
+//     }
+//   }
+// `;
+
+// const Button = styled.button`
+//   grid-column: span 2;
+//   width: 100%;
+//   background: linear-gradient(135deg, ${Blue} 0%, ${Gold} 100%); // Gold and blue gradient button
+//   color: ${White};
+//   padding: 10px;
+//   font-size: 0.95rem;
+//   border: none;
+//   border-radius: 6px;
+//   cursor: pointer;
+//   font-weight: 700;
+//   transition: opacity 0.2s ease, transform 0.2s ease;
+
+//   &:hover {
+//     opacity: 0.9;
+//     transform: translateY(-1px);
+//   }
+
+//   @media (max-width: 500px) {
+//     grid-column: span 1;
+//   }
+// `;
+
+// const LinkText = styled.p`
+//   grid-column: span 2;
+//   margin-top: 10px;
+//   cursor: pointer;
+//   color: ${TextMuted};
+//   font-size: 0.9rem;
+//   text-align: center;
+
+//   span {
+//     color: ${Blue};
+//     font-weight: 600;
+
+//     &:hover {
+//       text-decoration: underline;
+//     }
+//   }
+
+//   @media (max-width: 500px) {
+//     grid-column: span 1;
+//   }
+// `;
+
+// // ✨ SIGNUP COMPONENT
+// export default function UserSignup() {
+//   const router = useRouter();
+//   const [form, setForm] = useState({
+//     name: "",
+//     email: "",
+//     confirmEmail: "",
+//     phone: "",
+//     password: "",
+//     confirmPassword: "",
+//     role: "customer", // Hidden role field set by default, never displayed to user
+//   });
+//   const [agreed, setAgreed] = useState(false);
+//   const [showPassword, setShowPassword] = useState(false);
+//   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+//   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+
+//   // const handleSubmit = async (e) => {
+//   //   e.preventDefault();
+
+//   //   if (form.email !== form.confirmEmail) {
+//   //     return Swal.fire("Error", "Emails do not match", "error");
+//   //   }
+
+//   //   if (form.password !== form.confirmPassword) {
+//   //     return Swal.fire("Error", "Passwords do not match", "error");
+//   //   }
+
+//   //   if (!agreed) {
+//   //     return Swal.fire(
+//   //       "Required",
+//   //       "You must agree to the Terms & Privacy Policy to continue",
+//   //       "warning"
+//   //     );
+//   //   }
+
+//   //   Swal.fire({
+//   //     title: "Please wait...",
+//   //     text: "Setting up your Bees Interior account...",
+//   //     allowOutsideClick: false,
+//   //     didOpen: () => Swal.showLoading(),
+//   //   });
+
+//   //   try {
+//   //     const { name, email, phone, password, role } = form;
+//   //     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+//   //     const user = userCredential.user;
+
+//   //     await updateProfile(user, { displayName: name });
+
+//   //     await setDoc(doc(db, "users", user.uid), {
+//   //       uid: user.uid,
+//   //       name,
+//   //       email,
+//   //       phone,
+//   //       role, // Stored safely in Firestore backend
+//   //       createdAt: new Date(),
+//   //     });
+
+//   //     Swal.fire("Success 🎉", "Welcome to Bees Interior! Your account is ready.", "success");
+//   //     router.push("/login");
+//   //   } catch (err) {
+//   //     Swal.fire("Error ❌", err.message, "error");
+//   //   }
+//   // };
+
+
+
+// const handleSubmit = async (e) => {
+//     e.preventDefault();
+
+//     if (form.email !== form.confirmEmail) {
+//       return Swal.fire("Error", "Emails do not match", "error");
+//     }
+
+//     if (form.password !== form.confirmPassword) {
+//       return Swal.fire("Error", "Passwords do not match", "error");
+//     }
+
+//     if (!agreed) {
+//       return Swal.fire(
+//         "Required",
+//         "You must agree to the Terms & Privacy Policy to continue",
+//         "warning"
+//       );
+//     }
+
+//     Swal.fire({
+//       title: "Please wait...",
+//       text: "Setting up your Bees Interior account...",
+//       allowOutsideClick: false,
+//       didOpen: () => Swal.showLoading(),
+//     });
+
+//     try {
+//       const { name, email, phone, password, role } = form;
+      
+//       // 1. This creates the user AND automatically logs them into Firebase
+//       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+//       const user = userCredential.user;
+
+//       await updateProfile(user, { displayName: name });
+
+//       // 2. Creates their database record
+//       await setDoc(doc(db, "users", user.uid), {
+//         uid: user.uid,
+//         name,
+//         email,
+//         phone,
+//         role, 
+//         createdAt: new Date(),
+//       });
+
+//       Swal.fire("Success 🎉", "Welcome to Bees Interior! Your account is ready.", "success");
+      
+//       // 3. FIX: Redirect to Dashboard, NOT login, because they are already logged in
+//       router.push("/dashboard"); 
+      
+//     } catch (err) {
+//       Swal.fire("Error ❌", err.message, "error");
+//     }
+//   };
+
+
+
+//   return (
+//     <PageContainer>
+//       <AuthWrapper>
+//         {/* Left Visual Branding Panel */}
+//         <BrandingSide>
+//           <BrandLogo>
+//             BEES <span>INTERIOR</span>
+//           </BrandLogo>
+//           <BrandingContent>
+//             <Headline>Design Your Dream Space</Headline>
+//             <Subtext>
+//               Join our exclusive interior ecosystem to track consultations, curate luxury home products, and experience sophisticated living.
+//             </Subtext>
+//           </BrandingContent>
+//           <div /> {/* Spacer */}
+//         </BrandingSide>
+
+//         {/* Right Form Panel */}
+//         <FormSide>
+//           <FormHeader>
+//             <Title>Create Account</Title>
+//           </FormHeader>
+
+//           <form onSubmit={handleSubmit}>
+//             <FormGrid>
+//               <InputGroup $full>
+//                 <Label>Full Name</Label>
+//                 <Input name="name" placeholder="John Doe" value={form.name} onChange={handleChange} required />
+//               </InputGroup>
+
+//               <InputGroup>
+//                 <Label>Email Address</Label>
+//                 <Input name="email" type="email" placeholder="john@example.com" value={form.email} onChange={handleChange} required />
+//               </InputGroup>
+
+//               <InputGroup>
+//                 <Label>Confirm Email</Label>
+//                 <Input name="confirmEmail" type="email" placeholder="john@example.com" value={form.confirmEmail} onChange={handleChange} required />
+//               </InputGroup>
+
+//               <InputGroup $full>
+//                 <Label>Phone Number</Label>
+//                 <Input name="phone" type="tel" placeholder="+1 (555) 000-0000" value={form.phone} onChange={handleChange} required />
+//               </InputGroup>
+
+//               <InputGroup>
+//                 <Label>Password</Label>
+//                 <PasswordWrapper>
+//                   <Input
+//                     name="password"
+//                     type={showPassword ? "text" : "password"}
+//                     placeholder="••••••••"
+//                     value={form.password}
+//                     onChange={handleChange}
+//                     required
+//                   />
+//                   <EyeButton type="button" onClick={() => setShowPassword((prev) => !prev)}>
+//                     {showPassword ? "Hide" : "Show"}
+//                   </EyeButton>
+//                 </PasswordWrapper>
+//               </InputGroup>
+
+//               <InputGroup>
+//                 <Label>Confirm Password</Label>
+//                 <PasswordWrapper>
+//                   <Input
+//                     name="confirmPassword"
+//                     type={showConfirmPassword ? "text" : "password"}
+//                     placeholder="••••••••"
+//                     value={form.confirmPassword}
+//                     onChange={handleChange}
+//                     required
+//                   />
+//                   <EyeButton type="button" onClick={() => setShowConfirmPassword((prev) => !prev)}>
+//                     {showConfirmPassword ? "Hide" : "Show"}
+//                   </EyeButton>
+//                 </PasswordWrapper>
+//               </InputGroup>
+
+//               <CheckboxWrapper>
+//                 <Checkbox
+//                   type="checkbox"
+//                   checked={agreed}
+//                   onChange={(e) => setAgreed(e.target.checked)}
+//                 />
+//                 <PolicyText>
+//                   I agree to the{" "}
+//                   <a href="/terms-conditions" target="_blank" rel="noopener noreferrer">
+//                     Terms & Conditions
+//                   </a>{" "}
+//                   and{" "}
+//                   <a href="/privacy-policy" target="_blank" rel="noopener noreferrer">
+//                     Privacy Policy
+//                   </a>
+//                 </PolicyText>
+//               </CheckboxWrapper>
+
+//               <Button type="submit">Create Account</Button>
+
+//               <LinkText onClick={() => router.push("/login")}>
+//                 Already have an account? <span>Login</span>
+//               </LinkText>
+//             </FormGrid>
+//           </form>
+//         </FormSide>
+//       </AuthWrapper>
+//     </PageContainer>
+//   );
+// }
+
+
+
+
+
+
+
 "use client";
 
 import { useState } from "react";
@@ -8,16 +515,18 @@ import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { auth, db } from "@/firebaseConfig";
 
-// 🎨 BEES INTERIOR THEME COLORS
-const Blue = "#2563eb";
+// 🎨 KINGSWORD CRAFT THEME COLORS (Vibrant Luxury & Modern Palette)
+const PrimaryPink = "#ec4899";
+const AccentGold = "#f59e0b";
+const AccentCyan = "#06b6d4";
 const Dark = "#0f172a";
-const Border = "#e5eaf2";
+const Border = "rgba(226, 232, 240, 0.9)";
 const White = "#ffffff";
-const Gold = "#D4AF37";
-const TextMuted = "#475569"; // Softer, lighter shade for form text instead of pitch black
 const LightBg = "#f8fafc";
+const TextMuted = "#475569";
+const ThemeGradient = "linear-gradient(135deg, #ec4899 0%, #f59e0b 50%, #06b6d4 100%)";
 
-// 🌟 Styled Components
+// 🌟 Styled Components (Strict max 10px spacing/gaps/margins/padding rule)
 const PageContainer = styled.div`
   min-height: 100vh;
   display: flex;
@@ -25,6 +534,7 @@ const PageContainer = styled.div`
   justify-content: center;
   background: ${LightBg};
   padding: 10px;
+  box-sizing: border-box;
 `;
 
 const AuthWrapper = styled.div`
@@ -44,7 +554,7 @@ const AuthWrapper = styled.div`
 `;
 
 const BrandingSide = styled.div`
-  background: ${Blue}; // Changed from dark to normal button blue
+  background: ${ThemeGradient};
   color: ${White};
   padding: 10px;
   display: flex;
@@ -57,7 +567,7 @@ const BrandingSide = styled.div`
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, rgba(15, 23, 42, 0.2) 0%, rgba(212, 175, 55, 0.2) 100%);
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.15) 0%, rgba(0, 0, 0, 0.1) 100%);
     z-index: 1;
   }
 `;
@@ -76,9 +586,10 @@ const BrandLogo = styled.h3`
   font-weight: 800;
   letter-spacing: -0.5px;
   color: ${White};
+  margin: 0;
 
   span {
-    color: ${Gold};
+    color: ${AccentGold};
   }
 `;
 
@@ -87,12 +598,15 @@ const Headline = styled.h1`
   font-weight: 800;
   line-height: 1.2;
   letter-spacing: -0.5px;
+  margin: 0;
 `;
 
 const Subtext = styled.p`
   font-size: 0.95rem;
   line-height: 1.6;
-  color: ${Border};
+  color: #f8fafc;
+  opacity: 0.95;
+  margin: 0;
 `;
 
 const FormSide = styled.div`
@@ -100,7 +614,8 @@ const FormSide = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  color: ${TextMuted}; // Applied softer text color across the form
+  color: ${TextMuted};
+  box-sizing: border-box;
 `;
 
 const FormHeader = styled.div`
@@ -112,8 +627,11 @@ const FormHeader = styled.div`
 
 const Title = styled.h2`
   font-size: 1.5rem;
-  font-weight: 700;
-  color: ${Blue};
+  font-weight: 800;
+  margin: 0;
+  background: ${ThemeGradient};
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   text-align: left;
 `;
 
@@ -140,30 +658,35 @@ const InputGroup = styled.div`
 
 const Label = styled.label`
   font-size: 0.85rem;
-  font-weight: 600;
-  color: ${TextMuted}; // Adjusted form label color from pure black to softer tone
+  font-weight: 700;
+  color: ${TextMuted};
   text-align: left;
+  margin: 0;
 `;
 
 const Input = styled.input`
   width: 100%;
-  padding: 10px;
+  padding: 8px 10px;
   border: 1px solid ${Border};
   border-radius: 6px;
   font-size: 0.9rem;
   background: ${White};
   color: ${Dark};
   outline: none;
-  transition: border-color 0.2s ease;
+  box-sizing: border-box;
+  margin: 0;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.02);
 
   &:focus {
-    border-color: ${Blue};
+    border-color: ${PrimaryPink};
+    box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.15);
   }
 `;
 
 const PasswordWrapper = styled.div`
   position: relative;
   width: 100%;
+  margin: 0;
 `;
 
 const EyeButton = styled.button`
@@ -175,8 +698,8 @@ const EyeButton = styled.button`
   border: none;
   cursor: pointer;
   font-size: 0.8rem;
-  color: ${Blue};
-  font-weight: 600;
+  color: #db2777;
+  font-weight: 700;
 
   &:hover {
     text-decoration: underline;
@@ -191,6 +714,7 @@ const CheckboxWrapper = styled.div`
   line-height: 1.4;
   color: ${TextMuted};
   grid-column: span 2;
+  margin: 0;
 
   @media (max-width: 500px) {
     grid-column: span 1;
@@ -202,14 +726,15 @@ const Checkbox = styled.input`
   width: 16px;
   height: 16px;
   cursor: pointer;
-  accent-color: ${Blue};
+  accent-color: ${PrimaryPink};
 `;
 
 const PolicyText = styled.span`
   text-align: left;
+  margin: 0;
   a {
-    color: ${Blue};
-    font-weight: 600;
+    color: #db2777;
+    font-weight: 700;
     text-decoration: underline;
 
     &:hover {
@@ -221,19 +746,21 @@ const PolicyText = styled.span`
 const Button = styled.button`
   grid-column: span 2;
   width: 100%;
-  background: linear-gradient(135deg, ${Blue} 0%, ${Gold} 100%); // Gold and blue gradient button
+  background: ${ThemeGradient};
   color: ${White};
   padding: 10px;
   font-size: 0.95rem;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
   font-weight: 700;
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  margin: 0;
 
   &:hover {
-    opacity: 0.9;
-    transform: translateY(-1px);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(236, 72, 153, 0.45);
   }
 
   @media (max-width: 500px) {
@@ -243,15 +770,15 @@ const Button = styled.button`
 
 const LinkText = styled.p`
   grid-column: span 2;
-  margin-top: 10px;
+  margin: 10px 0 0 0;
   cursor: pointer;
   color: ${TextMuted};
   font-size: 0.9rem;
   text-align: center;
 
   span {
-    color: ${Blue};
-    font-weight: 600;
+    color: #db2777;
+    font-weight: 700;
 
     &:hover {
       text-decoration: underline;
@@ -273,7 +800,7 @@ export default function UserSignup() {
     phone: "",
     password: "",
     confirmPassword: "",
-    role: "customer", // Hidden role field set by default, never displayed to user
+    role: "customer",
   });
   const [agreed, setAgreed] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -281,58 +808,7 @@ export default function UserSignup() {
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   if (form.email !== form.confirmEmail) {
-  //     return Swal.fire("Error", "Emails do not match", "error");
-  //   }
-
-  //   if (form.password !== form.confirmPassword) {
-  //     return Swal.fire("Error", "Passwords do not match", "error");
-  //   }
-
-  //   if (!agreed) {
-  //     return Swal.fire(
-  //       "Required",
-  //       "You must agree to the Terms & Privacy Policy to continue",
-  //       "warning"
-  //     );
-  //   }
-
-  //   Swal.fire({
-  //     title: "Please wait...",
-  //     text: "Setting up your Bees Interior account...",
-  //     allowOutsideClick: false,
-  //     didOpen: () => Swal.showLoading(),
-  //   });
-
-  //   try {
-  //     const { name, email, phone, password, role } = form;
-  //     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-  //     const user = userCredential.user;
-
-  //     await updateProfile(user, { displayName: name });
-
-  //     await setDoc(doc(db, "users", user.uid), {
-  //       uid: user.uid,
-  //       name,
-  //       email,
-  //       phone,
-  //       role, // Stored safely in Firestore backend
-  //       createdAt: new Date(),
-  //     });
-
-  //     Swal.fire("Success 🎉", "Welcome to Bees Interior! Your account is ready.", "success");
-  //     router.push("/login");
-  //   } catch (err) {
-  //     Swal.fire("Error ❌", err.message, "error");
-  //   }
-  // };
-
-
-
-const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (form.email !== form.confirmEmail) {
@@ -353,7 +829,7 @@ const handleSubmit = async (e) => {
 
     Swal.fire({
       title: "Please wait...",
-      text: "Setting up your Bees Interior account...",
+      text: "Setting up your account...",
       allowOutsideClick: false,
       didOpen: () => Swal.showLoading(),
     });
@@ -361,13 +837,11 @@ const handleSubmit = async (e) => {
     try {
       const { name, email, phone, password, role } = form;
       
-      // 1. This creates the user AND automatically logs them into Firebase
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
       await updateProfile(user, { displayName: name });
 
-      // 2. Creates their database record
       await setDoc(doc(db, "users", user.uid), {
         uid: user.uid,
         name,
@@ -377,9 +851,7 @@ const handleSubmit = async (e) => {
         createdAt: new Date(),
       });
 
-      Swal.fire("Success 🎉", "Welcome to Bees Interior! Your account is ready.", "success");
-      
-      // 3. FIX: Redirect to Dashboard, NOT login, because they are already logged in
+      Swal.fire("Success 🎉", "Welcome! Your account is ready.", "success");
       router.push("/dashboard"); 
       
     } catch (err) {
@@ -387,20 +859,18 @@ const handleSubmit = async (e) => {
     }
   };
 
-
-
   return (
     <PageContainer>
       <AuthWrapper>
         {/* Left Visual Branding Panel */}
         <BrandingSide>
           <BrandLogo>
-            BEES <span>INTERIOR</span>
+            KINGSWORD CRAFT
           </BrandLogo>
           <BrandingContent>
-            <Headline>Design Your Dream Space</Headline>
+            <Headline>Create Your Account</Headline>
             <Subtext>
-              Join our exclusive interior ecosystem to track consultations, curate luxury home products, and experience sophisticated living.
+              Join our exclusive ecosystem to track purchases, manage items, and experience modern luxury shopping.
             </Subtext>
           </BrandingContent>
           <div /> {/* Spacer */}

@@ -1,866 +1,511 @@
-// "use client";
-
-// import styled from "styled-components";
-// import Image from "next/image";
-// import Link from "next/link";
-
-// /* ================= COLORS ================= */
-
-// const Blue = "#2563eb";
-// const Dark = "#0f172a";
-// const Border = "#e5eaf2";
-// const White = "#ffffff";
-// const Gold = "#D4AF37";
-// const TextMuted = "#64748b";
-// const LightBg = "#f8fafc";
-
-// /* ================= STYLED COMPONENTS ================= */
-
-// const PageContainer = styled.div`
-//   font-family: inherit;
-//   color: ${Dark};
-//   background: ${White};
-//   overflow-x: hidden;
-// `;
-
-// /* --- Hero Section --- */
-// const HeroSection = styled.section`
-//   position: relative;
-//   height: 60vh;
-//   min-height: 450px;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   text-align: center;
-//   background: ${Dark};
-//   overflow: hidden;
-
-//   &::after {
-//     content: "";
-//     position: absolute;
-//     inset: 0;
-//     background: rgba(15, 23, 42, 0.65);
-//     z-index: 1;
-//   }
-// `;
-
-// const HeroImageWrapper = styled.div`
-//   position: absolute;
-//   inset: 0;
-//   z-index: 0;
-// `;
-
-// const HeroContent = styled.div`
-//   position: relative;
-//   z-index: 2;
-//   max-width: 800px;
-//   padding: 0 1.5rem;
-//   display: flex;
-//   flex-direction: column;
-//   gap: 1rem;
-// `;
-
-// const HeroTitle = styled.h1`
-//   font-size: clamp(2.5rem, 5vw, 4rem);
-//   font-weight: 800;
-//   color: ${White};
-//   letter-spacing: -0.5px;
-
-//   span {
-//     background: linear-gradient(135deg, ${Blue} 0%, ${Gold} 100%);
-//     -webkit-background-clip: text;
-//     -webkit-text-fill-color: transparent;
-//   }
-// `;
-
-// const HeroSubtitle = styled.p`
-//   font-size: clamp(1rem, 2vw, 1.2rem);
-//   color: ${Border};
-//   line-height: 1.6;
-// `;
-
-// /* --- Story Section --- */
-// const StorySection = styled.section`
-//   max-width: 1200px;
-//   margin: auto;
-//   padding: 6rem 1.5rem;
-//   display: grid;
-//   grid-template-columns: 1fr 1fr;
-//   gap: 4rem;
-//   align-items: center;
-
-//   @media (max-width: 968px) {
-//     grid-template-columns: 1fr;
-//     gap: 3rem;
-//     padding: 4rem 1.5rem;
-//   }
-// `;
-
-// const StoryTextContent = styled.div`
-//   display: flex;
-//   flex-direction: column;
-//   gap: 1.5rem;
-// `;
-
-// const SectionTag = styled.span`
-//   font-size: 0.85rem;
-//   font-weight: 700;
-//   text-transform: uppercase;
-//   letter-spacing: 1.5px;
-//   color: ${Blue};
-// `;
-
-// const SectionTitle = styled.h2`
-//   font-size: clamp(2rem, 3.5vw, 2.75rem);
-//   font-weight: 800;
-//   line-height: 1.2;
-//   color: ${Dark};
-// `;
-
-// const Paragraph = styled.p`
-//   color: ${TextMuted};
-//   font-size: 1.05rem;
-//   line-height: 1.8;
-// `;
-
-// const StoryImagesGrid = styled.div`
-//   display: grid;
-//   grid-template-columns: 1fr 1fr;
-//   gap: 1.5rem;
-//   position: relative;
-
-//   .img-box {
-//     position: relative;
-//     border-radius: 12px;
-//     overflow: hidden;
-//     box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
-
-//     &:nth-child(1) {
-//       height: 350px;
-//     }
-
-//     &:nth-child(2) {
-//       height: 350px;
-//       transform: translateY(3rem);
-//     }
-//   }
-
-//   @media (max-width: 968px) {
-//     .img-box:nth-child(2) {
-//       transform: translateY(0);
-//     }
-//   }
-// `;
-
-// /* --- Values Section --- */
-// const ValuesSection = styled.section`
-//   background: ${LightBg};
-//   padding: 6rem 1.5rem;
-//   border-top: 1px solid ${Border};
-//   border-bottom: 1px solid ${Border};
-// `;
-
-// const ValuesContainer = styled.div`
-//   max-width: 1200px;
-//   margin: auto;
-//   display: flex;
-//   flex-direction: column;
-//   gap: 4rem;
-// `;
-
-// const ValuesHeader = styled.div`
-//   text-align: center;
-//   max-width: 600px;
-//   margin: auto;
-//   display: flex;
-//   flex-direction: column;
-//   gap: 1rem;
-// `;
-
-// const ValuesGrid = styled.div`
-//   display: grid;
-//   grid-template-columns: repeat(3, 1fr);
-//   gap: 2rem;
-
-//   @media (max-width: 968px) {
-//     grid-template-columns: 1fr;
-//   }
-// `;
-
-// const ValueCard = styled.div`
-//   background: ${White};
-//   padding: 2.5rem 2rem;
-//   border-radius: 12px;
-//   border: 1px solid ${Border};
-//   display: flex;
-//   flex-direction: column;
-//   gap: 1rem;
-//   box-shadow: 0 4px 20px rgba(15, 23, 42, 0.02);
-//   transition: transform 0.3s ease, box-shadow 0.3s ease;
-
-//   &:hover {
-//     transform: translateY(-5px);
-//     box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
-//   }
-// `;
-
-// const ValueIcon = styled.div`
-//   width: 50px;
-//   height: 50px;
-//   border-radius: 8px;
-//   background: rgba(37, 99, 235, 0.1);
-//   color: ${Blue};
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   font-size: 1.5rem;
-//   font-weight: 700;
-// `;
-
-// const ValueTitle = styled.h3`
-//   font-size: 1.25rem;
-//   font-weight: 700;
-//   color: ${Dark};
-// `;
-
-// const ValueDesc = styled.p`
-//   color: ${TextMuted};
-//   font-size: 0.95rem;
-//   line-height: 1.6;
-// `;
-
-// /* --- Stats Banner --- */
-// const StatsSection = styled.section`
-//   max-width: 1200px;
-//   margin: auto;
-//   padding: 5rem 1.5rem;
-//   display: grid;
-//   grid-template-columns: repeat(4, 1fr);
-//   gap: 2rem;
-//   text-align: center;
-
-//   @media (max-width: 768px) {
-//     grid-template-columns: repeat(2, 1fr);
-//     gap: 3rem;
-//   }
-// `;
-
-// const StatItem = styled.div`
-//   display: flex;
-//   flex-direction: column;
-//   gap: 0.5rem;
-// `;
-
-// const StatNumber = styled.h3`
-//   font-size: clamp(2.5rem, 4vw, 3.5rem);
-//   font-weight: 800;
-//   color: ${Blue};
-// `;
-
-// const StatLabel = styled.p`
-//   color: ${TextMuted};
-//   font-size: 0.95rem;
-//   font-weight: 600;
-// `;
-
-// /* --- CTA Section --- */
-// const CtaSection = styled.section`
-//   background: ${Dark};
-//   color: ${White};
-//   padding: 6rem 1.5rem;
-//   text-align: center;
-//   position: relative;
-//   overflow: hidden;
-// `;
-
-// const CtaInner = styled.div`
-//   max-width: 700px;
-//   margin: auto;
-//   display: flex;
-//   flex-direction: column;
-//   gap: 1.5rem;
-//   position: relative;
-//   z-index: 2;
-// `;
-
-// const CtaButton = styled(Link)`
-//   display: inline-block;
-//   background: ${Blue};
-//   color: ${White};
-//   padding: 0.9rem 2rem;
-//   border-radius: 8px;
-//   font-weight: 600;
-//   text-decoration: none;
-//   transition: opacity 0.2s ease, transform 0.2s ease;
-//   width: fit-content;
-//   margin: 1rem auto 0 auto;
-
-//   &:hover {
-//     opacity: 0.9;
-//     transform: translateY(-2px);
-//   }
-// `;
-
-// /* ================= COMPONENT ================= */
-
-// export default function AboutPage() {
-//   return (
-//     <PageContainer>
-//       {/* Hero Section */}
-//       <HeroSection>
-//         <HeroImageWrapper>
-//           <Image
-//             src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=2000&auto=format&fit=crop"
-//             alt="Luxury Interior Design"
-//             fill
-//             style={{ objectFit: "cover" }}
-//             priority
-//           />
-//         </HeroImageWrapper>
-//         <HeroContent>
-//           <HeroTitle>
-//             Crafting Spaces That <span>Inspire Life</span>
-//           </HeroTitle>
-//           <HeroSubtitle>
-//             At Bees Interior, we transform architectural spaces into bespoke masterpieces of luxury, comfort, and timeless elegance.
-//           </HeroSubtitle>
-//         </HeroContent>
-//       </HeroSection>
-
-//       {/* Story Section */}
-//       <StorySection>
-//         <StoryTextContent>
-//           <SectionTag>Our Story</SectionTag>
-//           <SectionTitle>Redefining Modern Living Through Exceptional Design</SectionTitle>
-//           <Paragraph>
-//             Founded with a passion for sophisticated aesthetics and flawless functionality, Bees Interior has grown into a premier destination for high-end interior solutions. We believe that every room tells a story, and our mission is to bring your distinct vision to life.
-//           </Paragraph>
-//           <Paragraph>
-//             From minimalist modern apartments to grand luxury estates, our multidisciplinary team of designers, artisans, and project managers coordinate seamlessly to deliver spaces that are as functional as they are breathtaking.
-//           </Paragraph>
-//         </StoryTextContent>
-
-//         <StoryImagesGrid>
-//           <div className="img-box">
-//             <Image
-//               src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=800&auto=format&fit=crop"
-//               alt="Interior Showcase 1"
-//               fill
-//               style={{ objectFit: "cover" }}
-//             />
-//           </div>
-//           <div className="img-box">
-//             <Image
-//               src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=80&w=800&auto=format&fit=crop"
-//               alt="Interior Showcase 2"
-//               fill
-//               style={{ objectFit: "cover" }}
-//             />
-//           </div>
-//         </StoryImagesGrid>
-//       </StorySection>
-
-//       {/* Values Section */}
-//       <ValuesSection>
-//         <ValuesContainer>
-//           <ValuesHeader>
-//             <SectionTag>Core Values</SectionTag>
-//             <SectionTitle>What Drives Our Creative Vision</SectionTitle>
-//           </ValuesHeader>
-
-//           <ValuesGrid>
-//             <ValueCard>
-//               <ValueIcon>01</ValueIcon>
-//               <ValueTitle>Uncompromising Quality</ValueTitle>
-//               <ValueDesc>
-//                 We source only the finest materials, furniture pieces, and decor elements to guarantee long-lasting luxury and enduring style.
-//               </ValueDesc>
-//             </ValueCard>
-
-//             <ValueCard>
-//               <ValueIcon>02</ValueIcon>
-//               <ValueTitle>Bespoke Approach</ValueTitle>
-//               <ValueDesc>
-//                 No two clients are alike. Every design layout is meticulously tailored to match your personal taste, lifestyle, and spatial needs.
-//               </ValueDesc>
-//             </ValueCard>
-
-//             <ValueCard>
-//               <ValueIcon>03</ValueIcon>
-//               <ValueTitle>Seamless Execution</ValueTitle>
-//               <ValueDesc>
-//                 From initial concept sketches to the final reveal, our team handles every logistics and execution detail with absolute precision.
-//               </ValueDesc>
-//             </ValueCard>
-//           </ValuesGrid>
-//         </ValuesContainer>
-//       </ValuesSection>
-
-//       {/* Stats Banner */}
-//       <StatsSection>
-//         <StatItem>
-//           <StatNumber>10+</StatNumber>
-//           <StatLabel>Years of Excellence</StatLabel>
-//         </StatItem>
-//         <StatItem>
-//           <StatNumber>250+</StatNumber>
-//           <StatLabel>Projects Completed</StatLabel>
-//         </StatItem>
-//         <StatItem>
-//           <StatNumber>15+</StatNumber>
-//           <StatLabel>Design Awards</StatLabel>
-//         </StatItem>
-//         <StatItem>
-//           <StatNumber>100%</StatNumber>
-//           <StatLabel>Client Satisfaction</StatLabel>
-//         </StatItem>
-//       </StatsSection>
-
-//       {/* CTA Section */}
-//       <CtaSection>
-//         <CtaInner>
-//           <SectionTag style={{ color: Gold }}>Let's Collaborate</SectionTag>
-//           <SectionTitle style={{ color: White }}>Ready to Transform Your Space?</SectionTitle>
-//           <Paragraph style={{ color: Border }}>
-//             Get in touch with our expert design consultants today and take the first step toward your dream environment.
-//           </Paragraph>
-//           <CtaButton href="/contact">Start Your Project</CtaButton>
-//         </CtaInner>
-//       </CtaSection>
-//     </PageContainer>
-//   );
-// }
-
-
 "use client";
 
-import styled from "styled-components";
-import Image from "next/image";
-import Link from "next/link";
+import React from "react";
+import styled, { keyframes } from "styled-components";
+import { 
+  Sparkles, 
+  Award, 
+  HeartHandshake, 
+  Compass, 
+  CheckCircle 
+} from "lucide-react";
 
-/* ================= COLORS ================= */
-
-const Blue = "#2563eb";
-const Dark = "#0f172a";
-const Border = "#e5eaf2";
-const White = "#ffffff";
-const Gold = "#D4AF37";
-const TextMuted = "#64748b";
-const LightBg = "#f8fafc";
-
-/* ================= STYLED COMPONENTS ================= */
-
-const PageContainer = styled.div`
-  font-family: inherit;
-  color: ${Dark};
-  background: ${White};
-  overflow-x: hidden;
+// Animations
+const floatAnimation = keyframes`
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-4px) rotate(1deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
 `;
 
-/* --- Hero Section --- */
-const HeroSection = styled.section`
+// Styled Components (Light Mode, Unsplash Integration, Generous Spacing)
+const AboutPageWrapper = styled.div`
+  min-height: 100vh;
+  background-color: #f8fafc;
+  color: #0f172a;
+  padding: 40px 20px 80px 20px;
   position: relative;
-  height: 60vh;
-  min-height: 450px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  background: ${Dark};
   overflow: hidden;
 
-  &::after {
-    content: "";
+  @media (min-width: 768px) {
+    padding: 60px 40px 100px 40px;
+  }
+
+  &::before {
+    content: '';
     position: absolute;
-    inset: 0;
-    background: rgba(15, 23, 42, 0.65);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 10% 10%, rgba(236, 72, 153, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 90% 90%, rgba(245, 158, 11, 0.05) 0%, transparent 40%);
+    pointer-events: none;
     z-index: 1;
   }
 `;
 
-const HeroImageWrapper = styled.div`
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-`;
-
-const HeroContent = styled.div`
+const HeaderContainer = styled.div`
+  max-width: 50rem;
+  margin: 0 auto 40px auto;
+  text-align: center;
   position: relative;
   z-index: 2;
-  max-width: 800px;
-  padding: 0 10px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 16px;
 `;
 
-const HeroTitle = styled.h1`
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  font-weight: 800;
-  color: ${White};
-  letter-spacing: -0.5px;
-
-  span {
-    background: linear-gradient(135deg, ${Blue} 0%, ${Gold} 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-`;
-
-const HeroSubtitle = styled.p`
-  font-size: clamp(1rem, 2vw, 1.2rem);
-  color: ${Border};
-  line-height: 1.6;
-`;
-
-/* --- Story Section --- */
-const StorySection = styled.section`
-  max-width: 1200px;
-  margin: auto;
-  padding: 10px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
+const Badge = styled.div`
+  display: inline-flex;
   align-items: center;
-
-  @media (max-width: 968px) {
-    grid-template-columns: 1fr;
-    gap: 10px;
-    padding: 10px;
-  }
-`;
-
-const StoryTextContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-`;
-
-const SectionTag = styled.span`
+  gap: 8px;
+  padding: 8px 18px;
+  border-radius: 9999px;
+  background: #fdf2f8;
+  border: 1px solid rgba(236, 72, 153, 0.3);
+  color: #db2777;
   font-size: 0.85rem;
-  font-weight: 700;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 1.5px;
-  color: ${Blue};
+  letter-spacing: 0.08em;
+  margin: 0 auto;
+  animation: ${floatAnimation} 4s ease-in-out infinite;
 `;
 
-const SectionTitle = styled.h2`
-  font-size: clamp(2rem, 3.5vw, 2.75rem);
+const MainTitle = styled.h1`
+  font-size: 2.5rem;
   font-weight: 800;
-  line-height: 1.2;
-  color: ${Dark};
-`;
+  letter-spacing: -0.03em;
+  color: #0f172a;
+  line-height: 1.15;
+  margin: 0;
 
-const Paragraph = styled.p`
-  color: ${TextMuted};
-  font-size: 1.05rem;
-  line-height: 1.8;
-`;
-
-const StoryImagesGrid = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  position: relative;
-
-  .img-box {
-    position: relative;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
-
-    &:nth-child(1) {
-      height: 350px;
-    }
-
-    &:nth-child(2) {
-      height: 350px;
-      transform: translateY(10px);
-    }
-  }
-
-  @media (max-width: 968px) {
-    .img-box:nth-child(2) {
-      transform: translateY(0);
-    }
+  @media (min-width: 640px) {
+    font-size: 3.5rem;
   }
 `;
 
-/* --- Values Section --- */
-const ValuesSection = styled.section`
-  background: ${LightBg};
-  padding: 10px;
-  border-top: 1px solid ${Border};
-  border-bottom: 1px solid ${Border};
+const HighlightSpan = styled.span`
+  background: linear-gradient(135deg, #ec4899 0%, #f59e0b 50%, #06b6d4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 `;
 
-const ValuesContainer = styled.div`
+const Subtitle = styled.p`
+  font-size: 1.1rem;
+  color: #475569;
+  line-height: 1.6;
+  margin: 0 auto;
+  max-width: 45rem;
+`;
+
+const ContentGrid = styled.div`
   max-width: 1200px;
-  margin: auto;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 40px;
+  position: relative;
+  z-index: 2;
 `;
 
-const ValuesHeader = styled.div`
-  text-align: center;
-  max-width: 600px;
-  margin: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-`;
+const HeroImageCard = styled.div`
+  position: relative;
+  height: 320px;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.08);
 
-const ValuesGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+  }
 
-  @media (max-width: 968px) {
-    grid-template-columns: 1fr;
+  &:hover img {
+    transform: scale(1.03);
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(15, 23, 42, 0.1) 0%, rgba(15, 23, 42, 0.8) 100%);
+  }
+
+  @media (min-width: 768px) {
+    height: 420px;
   }
 `;
 
-const ValueCard = styled.div`
-  background: ${White};
-  padding: 10px;
-  border-radius: 10px;
-  border: 1px solid ${Border};
+const HeroOverlayContent = styled.div`
+  position: absolute;
+  bottom: 30px;
+  left: 30px;
+  right: 30px;
+  z-index: 2;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.02);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  gap: 12px;
+
+  span:first-child {
+    font-size: 0.85rem;
+    color: #f472b6;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0;
+
+    @media (min-width: 768px) {
+      font-size: 2.25rem;
+    }
+  }
+
+  p {
+    font-size: 1rem;
+    color: #cbd5e1;
+    margin: 0;
+    max-width: 45rem;
+    line-height: 1.5;
+  }
+`;
+
+const PillarsGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+`;
+
+const PillarCard = styled.div`
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.03);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: all 0.3s ease;
 
   &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
+    border-color: #ec4899;
+    transform: translateY(-4px);
+    box-shadow: 0 15px 30px rgba(236, 72, 153, 0.08);
   }
 `;
 
-const ValueIcon = styled.div`
-  width: 50px;
-  height: 50px;
-  border-radius: 8px;
-  background: rgba(37, 99, 235, 0.1);
-  color: ${Blue};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
-  font-weight: 700;
+const PillarImageWrapper = styled.div`
+  height: 180px;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 `;
 
-const ValueTitle = styled.h3`
+const PillarTitle = styled.h3`
   font-size: 1.25rem;
   font-weight: 700;
-  color: ${Dark};
-`;
-
-const ValueDesc = styled.p`
-  color: ${TextMuted};
-  font-size: 0.95rem;
-  line-height: 1.6;
-`;
-
-/* --- Stats Banner --- */
-const StatsSection = styled.section`
-  max-width: 1200px;
-  margin: auto;
-  padding: 10px;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  color: #0f172a;
+  display: flex;
+  align-items: center;
   gap: 10px;
-  text-align: center;
+  margin: 0;
 
-  @media (max-width: 768px) {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+  svg {
+    color: #ec4899;
+    width: 1.25rem;
+    height: 1.25rem;
   }
 `;
 
-const StatItem = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-`;
-
-const StatNumber = styled.h3`
-  font-size: clamp(2.5rem, 4vw, 3.5rem);
-  font-weight: 800;
-  color: ${Blue};
-`;
-
-const StatLabel = styled.p`
-  color: ${TextMuted};
+const PillarText = styled.p`
   font-size: 0.95rem;
-  font-weight: 600;
+  color: #475569;
+  line-height: 1.6;
+  margin: 0;
 `;
 
-/* --- CTA Section --- */
-const CtaSection = styled.section`
-  background: ${Dark};
-  color: ${White};
-  padding: 10px;
-  text-align: center;
+const FounderSection = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 24px;
+  padding: 32px;
+  box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.05);
+
+  @media (min-width: 1024px) {
+    grid-template-columns: 1fr 1.25fr;
+    align-items: center;
+    padding: 48px;
+    gap: 48px;
+  }
+`;
+
+const FounderImageContainer = styled.div`
   position: relative;
+  height: 350px;
+  border-radius: 16px;
   overflow: hidden;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  @media (min-width: 1024px) {
+    height: 450px;
+  }
 `;
 
-const CtaInner = styled.div`
-  max-width: 700px;
-  margin: auto;
+const FounderDetails = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  position: relative;
-  z-index: 2;
+  gap: 20px;
 `;
 
-const CtaButton = styled(Link)`
+const FounderRoleBadge = styled.span`
   display: inline-block;
-  background: ${Blue};
-  color: ${White};
-  padding: 10px;
+  padding: 6px 14px;
+  background: #fdf2f8;
+  color: #db2777;
+  font-size: 0.8rem;
+  font-weight: 700;
   border-radius: 8px;
-  font-weight: 600;
-  text-decoration: none;
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
   width: fit-content;
-  margin: 10px auto 0 auto;
+`;
+
+const FounderName = styled.h2`
+  font-size: 2rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+
+  @media (min-width: 768px) {
+    font-size: 2.5rem;
+  }
+`;
+
+const FounderBio = styled.p`
+  font-size: 1rem;
+  color: #475569;
+  line-height: 1.7;
+  margin: 0;
+`;
+
+const SocialLinksGrid = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 8px;
+`;
+
+const SocialLinkButton = styled.a`
+  padding: 8px 18px;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #334155;
+  text-decoration: none;
+  transition: all 0.2s ease;
 
   &:hover {
-    opacity: 0.9;
+    background: #ec4899;
+    color: #ffffff;
+    border-color: #ec4899;
     transform: translateY(-2px);
   }
 `;
 
-/* ================= COMPONENT ================= */
+const TestimonialCard = styled.div`
+  position: relative;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  border-radius: 24px;
+  padding: 40px 30px;
+  color: #ffffff;
+  overflow: hidden;
+  box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.15);
 
-export default function AboutPage() {
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url('https://images.unsplash.com/photo-1553062407-98eeb64c6a62?q=80&w=1000&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.15;
+    z-index: 1;
+  }
+`;
+
+const TestimonialContent = styled.div`
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  text-align: center;
+  max-width: 50rem;
+  margin: 0 auto;
+
+  p {
+    font-size: 1.2rem;
+    font-style: italic;
+    font-weight: 500;
+    color: #f1f5f9;
+    line-height: 1.6;
+    margin: 0;
+
+    @media (min-width: 768px) {
+      font-size: 1.4rem;
+    }
+  }
+
+  span {
+    font-size: 0.9rem;
+    color: #f472b6;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+`;
+
+export default function AboutUsPage() {
   return (
-    <PageContainer>
-      {/* Hero Section */}
-      <HeroSection>
-        <HeroImageWrapper>
-          <Image
-            src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=2000&auto=format&fit=crop"
-            alt="Luxury Interior Design"
-            fill
-            style={{ objectFit: "cover" }}
-            priority
+    <AboutPageWrapper>
+      <HeaderContainer>
+        <Badge>
+          <Sparkles className="w-4 h-4 text-pink-600" />
+          <span>Our Heritage & Vision</span>
+        </Badge>
+        <MainTitle>
+          Explore the Essence of <HighlightSpan>Kingsword Couture</HighlightSpan>
+        </MainTitle>
+        <Subtitle>
+          Explore the journey and aspirations that drive our passion for exquisite craftsmanship and timeless style.
+        </Subtitle>
+      </HeaderContainer>
+
+      <ContentGrid>
+        <HeroImageCard>
+          <img 
+            src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?q=80&w=1200&auto=format&fit=crop" 
+            alt="Kingsword Couture luxury bag workshop craftsmanship" 
           />
-        </HeroImageWrapper>
-        <HeroContent>
-          <HeroTitle>
-            Crafting Spaces That <span>Inspire Life</span>
-          </HeroTitle>
-          <HeroSubtitle>
-            At Bees Interior, we transform architectural spaces into bespoke masterpieces of luxury, comfort, and timeless elegance.
-          </HeroSubtitle>
-        </HeroContent>
-      </HeroSection>
+          <HeroOverlayContent>
+            <span>Heritage Meets Modernity</span>
+            <h2>Crafting Excellence Without Compromise</h2>
+            <p>At Kingsword Couture, we blend African heritage with modern elegance, crafting exquisite bags that empower and inspire worldwide.</p>
+          </HeroOverlayContent>
+        </HeroImageCard>
 
-      {/* Story Section */}
-      <StorySection>
-        <StoryTextContent>
-          <SectionTag>Our Story</SectionTag>
-          <SectionTitle>Redefining Modern Living Through Exceptional Design</SectionTitle>
-          <Paragraph>
-            Founded with a passion for sophisticated aesthetics and flawless functionality, Bees Interior has grown into a premier destination for high-end interior solutions. We believe that every room tells a story, and our mission is to bring your distinct vision to life.
-          </Paragraph>
-          <Paragraph>
-            From minimalist modern apartments to grand luxury estates, our multidisciplinary team of designers, artisans, and project managers coordinate seamlessly to deliver spaces that are as functional as they are breathtaking.
-          </Paragraph>
-        </StoryTextContent>
+        <PillarsGrid>
+          <PillarCard>
+            <PillarImageWrapper>
+              <img src="https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=800&auto=format&fit=crop" alt="Timeless African Heritage" />
+            </PillarImageWrapper>
+            <PillarTitle>
+              <Compass className="w-5 h-5" />
+              African Heritage
+            </PillarTitle>
+            <PillarText>
+              Honoring traditional roots and deep cultural craftsmanship while embracing innovative global standards.
+            </PillarText>
+          </PillarCard>
 
-        <StoryImagesGrid>
-          <div className="img-box">
-            <Image
-              src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=800&auto=format&fit=crop"
-              alt="Interior Showcase 1"
-              fill
-              style={{ objectFit: "cover" }}
+          <PillarCard>
+            <PillarImageWrapper>
+              <img src="https://images.unsplash.com/photo-1590874103328-eac38a683ce7?q=80&w=800&auto=format&fit=crop" alt="Exquisite Quality Control" />
+            </PillarImageWrapper>
+            <PillarTitle>
+              <Award className="w-5 h-5" />
+              Uncompromising Quality
+            </PillarTitle>
+            <PillarText>
+              Delivering timeless style and exceptional durability to discerning customers across the globe.
+            </PillarText>
+          </PillarCard>
+
+          <PillarCard>
+            <PillarImageWrapper>
+              <img src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?q=80&w=800&auto=format&fit=crop" alt="Empowering Artisans" />
+            </PillarImageWrapper>
+            <PillarTitle>
+              <HeartHandshake className="w-5 h-5" />
+              Empowering & Inspiring
+            </PillarTitle>
+            <PillarText>
+              Supporting local talents and skilled professionals to bring every unique, handmade bag to life.
+            </PillarText>
+          </PillarCard>
+        </PillarsGrid>
+
+        <FounderSection>
+          <FounderImageContainer>
+            <img 
+              src="./founder.png" 
+              alt="Obawa Oluwabukola - Founder and Creative Director" 
             />
-          </div>
-          <div className="img-box">
-            <Image
-              src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=80&w=800&auto=format&fit=crop"
-              alt="Interior Showcase 2"
-              fill
-              style={{ objectFit: "cover" }}
-            />
-          </div>
-        </StoryImagesGrid>
-      </StorySection>
+          </FounderImageContainer>
 
-      {/* Values Section */}
-      <ValuesSection>
-        <ValuesContainer>
-          <ValuesHeader>
-            <SectionTag>Core Values</SectionTag>
-            <SectionTitle>What Drives Our Creative Vision</SectionTitle>
-          </ValuesHeader>
+          <FounderDetails>
+            <FounderRoleBadge>Meet Our Expert Artisans</FounderRoleBadge>
+            <FounderName>Obawa Oluwabukola</FounderName>
+            <p style={{ fontSize: "1rem", color: "#db2777", fontWeight: "700", margin: "0" }}>Founder & Creative Director</p>
+            <FounderBio>
+              Obawa is the founder and creative director behind the handmade bags brand. She started it with one idea: make beautiful, well-crafted bags by hand, without cutting corners.
+            </FounderBio>
+            <FounderBio>
+              Day to day, you’ll find her in the workshop, selecting leathers, fine-tuning designs, and working with her team of artisans to bring every bag to life. Her vibe is all about quality, sustainability, and keeping things real — supporting local talents while creating crafts with global standards. Every stitch has her touch on it.
+            </FounderBio>
 
-          <ValuesGrid>
-            <ValueCard>
-              <ValueIcon>01</ValueIcon>
-              <ValueTitle>Uncompromising Quality</ValueTitle>
-              <ValueDesc>
-                We source only the finest materials, furniture pieces, and decor elements to guarantee long-lasting luxury and enduring style.
-              </ValueDesc>
-            </ValueCard>
+            <SocialLinksGrid>
+              <SocialLinkButton href="https://dribbble.com" target="_blank" rel="noopener noreferrer">Dribbble</SocialLinkButton>
+              <SocialLinkButton href="https://tiktok.com" target="_blank" rel="noopener noreferrer">TikTok</SocialLinkButton>
+              <SocialLinkButton href="https://instagram.com" target="_blank" rel="noopener noreferrer">Instagram</SocialLinkButton>
+              <SocialLinkButton href="https://facebook.com" target="_blank" rel="noopener noreferrer">Facebook</SocialLinkButton>
+            </SocialLinksGrid>
+          </FounderDetails>
+        </FounderSection>
 
-            <ValueCard>
-              <ValueIcon>02</ValueIcon>
-              <ValueTitle>Bespoke Approach</ValueTitle>
-              <ValueDesc>
-                No two clients are alike. Every design layout is meticulously tailored to match your personal taste, lifestyle, and spatial needs.
-              </ValueDesc>
-            </ValueCard>
-
-            <ValueCard>
-              <ValueIcon>03</ValueIcon>
-              <ValueTitle>Seamless Execution</ValueTitle>
-              <ValueDesc>
-                From initial concept sketches to the final reveal, our team handles every logistics and execution detail with absolute precision.
-              </ValueDesc>
-            </ValueCard>
-          </ValuesGrid>
-        </ValuesContainer>
-      </ValuesSection>
-
-      {/* Stats Banner */}
-      <StatsSection>
-        <StatItem>
-          <StatNumber>10+</StatNumber>
-          <StatLabel>Years of Excellence</StatLabel>
-        </StatItem>
-        <StatItem>
-          <StatNumber>250+</StatNumber>
-          <StatLabel>Projects Completed</StatLabel>
-        </StatItem>
-        <StatItem>
-          <StatNumber>15+</StatNumber>
-          <StatLabel>Design Awards</StatLabel>
-        </StatItem>
-        <StatItem>
-          <StatNumber>100%</StatNumber>
-          <StatLabel>Client Satisfaction</StatLabel>
-        </StatItem>
-      </StatsSection>
-
-      {/* CTA Section */}
-      <CtaSection>
-        <CtaInner>
-          <SectionTag style={{ color: Gold }}>Let's Collaborate</SectionTag>
-          <SectionTitle style={{ color: White }}>Ready to Transform Your Space?</SectionTitle>
-          <Paragraph style={{ color: Border }}>
-            Get in touch with our expert design consultants today and take the first step toward your dream environment.
-          </Paragraph>
-          <CtaButton href="/contact">Start Your Project</CtaButton>
-        </CtaInner>
-      </CtaSection>
-    </PageContainer>
+        <TestimonialCard>
+          <TestimonialContent>
+            <span>Global Standard of Elegance</span>
+            <p>
+              "Kingsword Couture consistently delivers exquisite craftsmanship and unparalleled elegance in every bag, exceeding all expectations."
+            </p>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", fontSize: "0.85rem", color: "#cbd5e1" }}>
+              <CheckCircle className="w-4 h-4 text-pink-400" />
+              <span>Verified Customer Review & Appreciation</span>
+            </div>
+          </TestimonialContent>
+        </TestimonialCard>
+      </ContentGrid>
+    </AboutPageWrapper>
   );
 }

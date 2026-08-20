@@ -5,6 +5,9 @@ import LandingProductsSection from '@/components/LandingProductsSection';
 import Link from 'next/link';
 import WhyChooseUsSection from '@/components/WhyChooseUsSection';
 import HeroSection2 from '@/components/Hero';
+import LandingPageComponent from '@/components/LandingPageComponent';
+import ArtisanStoryComponent from '@/components/ArtisaStoryComponent';
+
 
 
 // --- THEME & ANIMATIONS ---
@@ -510,131 +513,9 @@ export default function CompleteLandingPage() {
   return (
     <>
     <HeroSection2/>
-        <LandingContainer>
-      {/* 1. HERO SECTION */}
-
-      
-      {/* <HeroSection>
-        <HeroGrid>
-          <Fade direction="left" triggerOnce style={{ display: 'contents' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-              <Badge >{landingData.hero.badge}</Badge>
-              <Title>{landingData.hero.title}</Title>
-              <Description>{landingData.hero.description}</Description>
-              <ButtonGroup>
-                <PrimaryButton href='/store'>{landingData.hero.primaryCta}</PrimaryButton>
-                <SecondaryButton href='/contact'>{landingData.hero.secondaryCta}</SecondaryButton>
-              </ButtonGroup>
-            </div>
-          </Fade>
-          <Fade direction="right" triggerOnce style={{ display: 'contents' }}>
-            <HeroImage src={landingData.hero.image} alt="Interior Design Showcase" />
-          </Fade>
-        </HeroGrid>
-      </HeroSection> */}
-
-      {/* 2. STATS SECTION */}
-      <Fade direction="up" triggerOnce style={{ display: 'contents' }}>
-        <StatsSection>
-          {landingData.stats.map((stat, idx) => (
-            <StatCard key={idx}>
-              <StatValue>{stat.value}</StatValue>
-              <StatLabel>{stat.label}</StatLabel>
-            </StatCard>
-          ))}
-        </StatsSection>
-      </Fade>
-
-      {/* 3. SERVICES SECTION */}
-      <ServicesSection>
-        <SectionHeader>
-          <SectionTitle>Our Professional Services</SectionTitle>
-          <SectionSubtitle>Crafting spaces tailored completely to your distinct vision.</SectionSubtitle>
-        </SectionHeader>
-        <ServicesGrid>
-          {landingData.services.map((service, idx) => (
-            <Slide direction="up" delay={idx * 100} triggerOnce key={idx} style={{ display: 'contents' }}>
-              <ServiceCard>
-                <CardImage src={service.image} alt={service.title} />
-                <CardTitle>{service.title}</CardTitle>
-                <CardDesc>{service.desc}</CardDesc>
-              </ServiceCard>
-            </Slide>
-          ))}
-        </ServicesGrid>
-
-    <ViewMoreContainer>
-        <Link href="/contact">
-          Book Our Services →
-        </Link>
-      </ViewMoreContainer>
-      </ServicesSection>
-
-
-      {/* 5. PROCESS SECTION */}
-      <ProcessSection>
-        <SectionHeader>
-          <SectionTitle>How We Work</SectionTitle>
-          <SectionSubtitle>From concept to completion with seamless precision.</SectionSubtitle>
-        </SectionHeader>
-        <ProcessGrid>
-          {landingData.process.map((item, idx) => (
-            <Fade direction="up" delay={idx * 100} triggerOnce key={idx} style={{ display: 'contents' }}>
-              <ProcessCard>
-                <StepNumber>{item.step}</StepNumber>
-                <CardTitle>{item.title}</CardTitle>
-                <CardDesc>{item.desc}</CardDesc>
-              </ProcessCard>
-            </Fade>
-          ))}
-        </ProcessGrid>
-         <ViewMoreContainer>
-        <Link href="/contact">
-          Book Our Services →
-        </Link>
-      </ViewMoreContainer>
-      </ProcessSection>
-
-     {/* 4. E-COMMERCE PRODUCTS SECTION */}
-
-
-<LandingProductsSection />
-
-      <WhyChooseUsSection/>
-
-      {/* 6. TESTIMONIALS SECTION */}
-      <TestimonialSection>
-        <SectionHeader>
-          <SectionTitle>Client Success Stories</SectionTitle>
-          <SectionSubtitle>Hear what our valued clients have to say about our work.</SectionSubtitle>
-        </SectionHeader>
-        <TestimonialGrid>
-          {landingData.testimonials.map((test, idx) => (
-            <Fade direction={idx % 2 === 0 ? "left" : "right"} triggerOnce key={idx} style={{ display: 'contents' }}>
-              <TestimonialCard>
-                <Quote>"{test.quote}"</Quote>
-                <AuthorInfo>
-                  <AuthorName>{test.author}</AuthorName>
-                  <AuthorRole>{test.role}</AuthorRole>
-                </AuthorInfo>
-              </TestimonialCard>
-            </Fade>
-          ))}
-        </TestimonialGrid>
-      </TestimonialSection>
-
-      {/* 7. CTA BANNER SECTION */}
-      <Fade direction="up" triggerOnce style={{ display: 'contents' }}>
-        <CtaBannerSection>
-          <CtaTitle>{landingData.ctaBanner.title}</CtaTitle>
-          <CtaSubtitle>{landingData.ctaBanner.subtitle}</CtaSubtitle>
-    
-          <Link href="/contact" style={{ textDecoration: 'none' }}>
-            <CtaButton>{landingData.ctaBanner.buttonText}</CtaButton>
-          </Link>
-        </CtaBannerSection>
-      </Fade>
-    </LandingContainer>
+    <LandingPageComponent/>
+    <LandingProductsSection/>
+    <ArtisanStoryComponent/>
     </>
 
   );

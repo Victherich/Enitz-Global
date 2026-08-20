@@ -6,12 +6,15 @@ import { collection, getDocs } from "firebase/firestore";
 import styled from "styled-components";
 import Swal from "sweetalert2";
 
-// 🎨 BEES INTERIOR THEME COLORS
-const Blue = "#2563eb";
+
+
+// 🎨 NEW THEME COLORS & GRADIENTS (Vibrant Pink, Turquoise & Dynamic Accent)
+const PrimaryColor = "#ec4899";
+const AccentGradient = "linear-gradient(135deg, #ec4899 0%, #f59e0b 50%, #06b6d4 100%)";
+const Turquoise = "#06b6d4";
 const Dark = "#0f172a";
 const Border = "#e5eaf2";
 const White = "#ffffff";
-const Gold = "#D4AF37";
 const TextMuted = "#475569";
 const Danger = "#ef4444";
 const Success = "#10b981";
@@ -29,30 +32,31 @@ const Container = styled.div`
 `;
 
 const HeaderBanner = styled.div`
-  background: linear-gradient(135deg, ${Blue} 0%, ${Gold} 100%);
+  background: ${AccentGradient};
   color: ${White};
   padding: 10px;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  box-shadow: 0 4px 15px rgba(15, 23, 42, 0.05);
+  box-shadow: 0 6px 20px rgba(236, 72, 153, 0.15);
 `;
 
 const ColorfulTitle = styled.h1`
   font-size: 1.6rem;
   font-weight: 800;
   margin: 0;
-  background: linear-gradient(90deg, #ffffff 0%, #fef08a 100%);
+  background: linear-gradient(90deg, #ffffff 0%, #fbcfe8 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   letter-spacing: -0.5px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 `;
 
 const ColorfulSub = styled.p`
   font-size: 0.95rem;
   margin: 0;
-  color: #f8fafc;
+  color: #fdf2f8;
   opacity: 0.95;
 `;
 
@@ -65,7 +69,7 @@ const FilterContainer = styled.div`
   flex-wrap: wrap;
   gap: 10px;
   align-items: flex-end;
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+  box-shadow: 0 4px 15px rgba(15, 23, 42, 0.04);
 `;
 
 const FilterGroup = styled.div`
@@ -92,9 +96,11 @@ const StyledInput = styled.input`
   width: 100%;
   box-sizing: border-box;
   background: ${White};
+  transition: all 0.2s ease;
 
   &:focus {
-    border-color: ${Blue};
+    border-color: ${PrimaryColor};
+    box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.15);
   }
 `;
 
@@ -108,6 +114,7 @@ const ResetButton = styled.button`
   font-weight: 700;
   cursor: pointer;
   height: 38px;
+  transition: background 0.2s ease;
 
   &:hover {
     background: rgba(239, 68, 68, 0.2);
@@ -125,11 +132,17 @@ const MetricCard = styled.div`
   border-radius: 10px;
   padding: 10px;
   border: 1px solid ${Border};
-  border-left: 4px solid ${(props) => props.$borderColor || Gold};
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+  border-left: 4px solid ${(props) => props.$borderColor || Turquoise};
+  box-shadow: 0 4px 15px rgba(15, 23, 42, 0.04);
   display: flex;
   flex-direction: column;
   gap: 6px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(236, 72, 153, 0.08);
+  }
 `;
 
 const MetricTitle = styled.h3`
@@ -138,6 +151,7 @@ const MetricTitle = styled.h3`
   font-weight: 700;
   color: ${TextMuted};
   text-transform: uppercase;
+  letter-spacing: 0.5px;
 `;
 
 const MetricValue = styled.p`
@@ -163,7 +177,7 @@ const ColorfulSectionTitle = styled.h2`
   font-size: 1.25rem;
   font-weight: 800;
   margin: 0;
-  background: linear-gradient(135deg, ${Blue} 0%, ${Gold} 100%);
+  background: ${AccentGradient};
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 `;
@@ -179,7 +193,7 @@ const BreakdownCard = styled.div`
   border-radius: 10px;
   padding: 10px;
   border: 1px solid ${Border};
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+  box-shadow: 0 4px 15px rgba(15, 23, 42, 0.04);
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -202,12 +216,9 @@ const BreakdownItem = styled.div`
 const LoadingContainer = styled.div`
   padding: 10px;
   text-align: center;
-  color: ${Dark};
+  color: ${PrimaryColor};
   font-weight: 600;
 `;
-// 
-
-
 
 
 export default function AnalyticsFinancePage() {
@@ -341,13 +352,13 @@ export default function AnalyticsFinancePage() {
           <MetricSubText>Awaiting payment verification</MetricSubText>
         </MetricCard>
 
-        <MetricCard $borderColor={Blue}>
+        <MetricCard $borderColor={Turquoise}>
           <MetricTitle>Total Orders</MetricTitle>
           <MetricValue>{totalOrders}</MetricValue>
           <MetricSubText>{startDate || endDate ? "Within selected dates" : "Lifetime recorded orders"}</MetricSubText>
         </MetricCard>
 
-        <MetricCard $borderColor={Gold}>
+        <MetricCard $borderColor={Turquoise}>
           <MetricTitle>Total Members</MetricTitle>
           <MetricValue>{totalUsers}</MetricValue>
           <MetricSubText>{adminCount} administrators</MetricSubText>

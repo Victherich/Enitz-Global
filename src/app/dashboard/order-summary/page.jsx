@@ -238,9 +238,9 @@ const handleRemovePromo = () => {
 
     try {
       const buyerEmail = currentUser?.email || userData?.email || '';
-      // const sellerEmail = 'victorndu393@gmail.com'; // Replace with your seller destination email
-        const sellerEmail = 'beesinterior@gmail.com'; // Replace with your seller destination email
-const uniqueOrderNumber = `BEES-${Date.now().toString().slice(-6)}${Math.floor(Math.random() * 900 + 100)}`;
+      const sellerEmail = 'victorndu393@gmail.com'; // Replace with your seller destination email
+        // const sellerEmail = 'admin@kingswordcraft.com'; // Replace with your seller destination email
+const uniqueOrderNumber = `KINGS-${Date.now().toString().slice(-6)}${Math.floor(Math.random() * 900 + 100)}`;
 
 
       const orderPayload = {
@@ -552,7 +552,473 @@ const uniqueOrderNumber = `BEES-${Date.now().toString().slice(-6)}${Math.floor(M
   );
 }
 
-// --- Styled Components (Bees Interior Theme: #2563eb Blue & Gold #D4AF37) ---
+// // --- Styled Components (Bees Interior Theme: #2563eb Blue & Gold #D4AF37) ---
+
+// const Container = styled.div`
+//   max-width: 1200px;
+//   margin: 20px auto;
+//   padding: 0 10px;
+//   box-sizing: border-box;
+//   color: #1a1a1a;
+//   width: 100%;
+//   overflow-x: hidden;
+
+//   @media (min-width: 768px) {
+//     margin: 40px auto;
+//     padding: 0 20px;
+//   }
+// `;
+
+// const PageTitle = styled.h2`
+//   font-size: 1.5rem;
+//   color: #2563eb;
+//   font-weight: 800;
+//   margin-bottom: 16px;
+//   border-bottom: 2px solid #D4AF37;
+//   padding-bottom: 8px;
+
+//   @media (min-width: 768px) {
+//     font-size: 2rem;
+//     margin-bottom: 24px;
+//     padding-bottom: 12px;
+//   }
+// `;
+
+// const LayoutGrid = styled.div`
+//   display: grid;
+//   grid-template-columns: 1fr;
+//   gap: 16px;
+//   width: 100%;
+//   box-sizing: border-box;
+
+//   @media (min-width: 900px) {
+//     grid-template-columns: 1fr 380px;
+//     gap: 24px;
+//   }
+// `;
+
+// const MainContent = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   gap: 16px;
+//   min-width: 0; /* Prevents grid items from overflowing */
+
+//   @media (min-width: 768px) {
+//     gap: 20px;
+//   }
+// `;
+
+// const Sidebar = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   min-width: 0;
+// `;
+
+// const Card = styled.div`
+//   background: #ffffff;
+//   border: 1px solid #e2e2e2;
+//   border-top: 4px solid #2563eb;
+//   border-radius: 8px;
+//   box-shadow: 0 2px 6px rgba(37, 99, 235, 0.03);
+//   overflow: hidden;
+//   width: 100%;
+//   box-sizing: border-box;
+// `;
+
+// const CardHeader = styled.div`
+//   display: flex;
+//   flex-wrap: wrap;
+//   justify-content: space-between;
+//   align-items: center;
+//   gap: 8px;
+//   padding: 12px 14px;
+//   background: #fbfbfb;
+//   border-bottom: 1px solid #eee;
+
+//   h3 {
+//     margin: 0;
+//     font-size: 1rem;
+//     color: #2563eb;
+//     font-weight: 700;
+
+  
+//   }
+
+//     span {
+//       display:none;
+//       font-size: 0.75rem;
+//       @media (max-width: 480px) {
+//       display:inline;
+//       }
+
+//   @media (min-width: 768px) {
+//     padding: 16px 20px;
+//     h3 {
+//       font-size: 1.1rem;
+//     }
+//   }
+// `;
+
+// const CardBody = styled.div`
+//   padding: 14px;
+//   box-sizing: border-box;
+//   width: 100%;
+
+//   @media (min-width: 768px) {
+//     padding: 20px;
+//   }
+// `;
+
+// const InfoGrid = styled.div`
+//   display: grid;
+//   grid-template-columns: 1fr;
+//   gap: 12px;
+
+//   @media (min-width: 480px) {
+//     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+//     gap: 16px;
+//   }
+// `;
+
+// const Label = styled.span`
+//   display: block;
+//   font-size: 0.75rem;
+//   color: #777;
+//   text-transform: uppercase;
+//   letter-spacing: 0.5px;
+//   margin-bottom: 2px;
+// `;
+
+// const Value = styled.span`
+//   font-size: 0.9rem;
+//   color: #222;
+//   font-weight: 600;
+//   word-break: break-word;
+// `;
+
+// const AddressName = styled.h4`
+//   margin: 0 0 4px 0;
+//   font-size: 1rem;
+//   color: #2563eb;
+//   font-weight: 700;
+// `;
+
+// const AddressText = styled.p`
+//   margin: 2px 0;
+//   font-size: 0.85rem;
+//   color: #555;
+//   word-break: break-word;
+// `;
+
+// const TextButton = styled.button`
+//   background: transparent;
+//   color: #2563eb;
+//   border: none;
+//   font-size: 0.8rem;
+//   font-weight: 600;
+//   cursor: pointer;
+//   padding: 0;
+//   &:hover {
+//     text-decoration: underline;
+//     color: #D4AF37;
+//   }
+// `;
+
+// const ActionButton = styled.button`
+//   background: #2563eb;
+//   color: #ffffff;
+//   border: 1px solid #D4AF37;
+//   padding: 8px 16px;
+//   border-radius: 6px;
+//   font-weight: 600;
+//   font-size: 0.9rem;
+//   cursor: pointer;
+//   &:hover {
+//     background: #D4AF37;
+//     color: #2563eb;
+//   }
+// `;
+
+// const EmptyStateBox = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   align-items: flex-start;
+//   gap: 12px;
+// `;
+
+// const WarningText = styled.p`
+//   color: #666;
+//   font-size: 0.9rem;
+//   margin: 0;
+//   word-break: break-word;
+// `;
+
+// const EmptyCartText = styled.p`
+//   padding: 20px;
+//   text-align: center;
+//   color: #666;
+//   margin: 0;
+// `;
+
+// const TableResponsiveWrapper = styled.div`
+//   width: 100%;
+//   overflow-x: auto;
+//   -webkit-overflow-scrolling: touch;
+// `;
+
+// const CartTable = styled.table`
+//   width: 100%;
+//   border-collapse: collapse;
+//   text-align: left;
+//   font-size: 0.85rem;
+//   min-width: 280px;
+
+//   th {
+//     background: #f4f6f9;
+//     color: #333;
+//     padding: 10px 12px;
+//     font-weight: 600;
+//     border-bottom: 1px solid #e2e2e2;
+//     white-space: nowrap;
+//   }
+
+//   td {
+//     padding: 10px 12px;
+//     border-bottom: 1px solid #eee;
+//     color: #444;
+//     vertical-align: middle;
+//     white-space: nowrap;
+//   }
+
+//   @media (min-width: 768px) {
+//     font-size: 0.9rem;
+//     th, td {
+//       padding: 12px 16px;
+//     }
+//   }
+// `;
+
+// const ItemInfo = styled.div`
+//   display: flex;
+//   align-items: center;
+//   gap: 10px;
+// `;
+
+// const ItemImg = styled.img`
+//   width: 40px;
+//   height: 40px;
+//   object-fit: cover;
+//   border-radius: 6px;
+//   border: 1px solid #ddd;
+//   flex-shrink: 0;
+
+//   @media (min-width: 768px) {
+//     width: 50px;
+//     height: 50px;
+//   }
+// `;
+
+// const ItemName = styled.span`
+//   font-weight: 600;
+//   color: #1a1a1a;
+//   display: block;
+//   max-width: 140px;
+//   overflow: hidden;
+//   text-overflow: ellipsis;
+//   white-space: nowrap;
+
+//   @media (min-width: 768px) {
+//     max-width: none;
+//     white-space: normal;
+//   }
+// `;
+
+// const SummaryCard = styled.div`
+//   background: #ffffff;
+//   border: 1px solid #D4AF37;
+//   border-radius: 8px;
+//   padding: 16px;
+//   box-shadow: 0 4px 12px rgba(37, 99, 235, 0.05);
+//   width: 100%;
+//   box-sizing: border-box;
+
+//   @media (min-width: 900px) {
+//     position: sticky;
+//     top: 20px;
+//     padding: 24px;
+//   }
+
+//   h3 {
+//     margin-top: 0;
+//     margin-bottom: 16px;
+//     font-size: 1.1rem;
+//     color: #2563eb;
+//     font-weight: 700;
+//     border-bottom: 2px solid #f0f0f0;
+//     padding-bottom: 8px;
+
+//     @media (min-width: 768px) {
+//       font-size: 1.2rem;
+//       margin-bottom: 20px;
+//       padding-bottom: 10px;
+//     }
+//   }
+// `;
+
+// const SummaryRow = styled.div`
+//   display: flex;
+//   justify-content: space-between;
+//   margin-bottom: 10px;
+//   font-size: 0.9rem;
+//   color: ${props => props.discount ? '#2e7d32' : '#555'};
+//   font-weight: ${props => props.discount ? '600' : '400'};
+
+//   @media (min-width: 768px) {
+//     font-size: 0.95rem;
+//     margin-bottom: 12px;
+//   }
+// `;
+
+// const Divider = styled.hr`
+//   border: none;
+//   border-top: 1px solid #e2e2e2;
+//   margin: 12px 0;
+
+//   @media (min-width: 768px) {
+//     margin: 16px 0;
+//   }
+// `;
+
+// const TotalRow = styled.div`
+//   display: flex;
+//   justify-content: space-between;
+//   font-size: 1.1rem;
+//   font-weight: 800;
+//   color: #2563eb;
+//   margin-bottom: 16px;
+
+//   @media (min-width: 768px) {
+//     font-size: 1.2rem;
+//     margin-bottom: 20px;
+//   }
+// `;
+
+// const PromoForm = styled.form`
+//   display: flex;
+//   gap: 8px;
+//   margin-bottom: 16px;
+
+//   @media (min-width: 768px) {
+//     margin-bottom: 20px;
+//   }
+// `;
+
+// const PromoInput = styled.input`
+//   flex: 1;
+//   min-width: 0;
+//   padding: 10px 12px;
+//   border: 1px solid #ccc;
+//   border-radius: 6px;
+//   font-size: 0.9rem;
+//   &:focus {
+//     outline: none;
+//     border-color: #2563eb;
+//   }
+// `;
+
+// const ApplyButton = styled.button`
+//   background: #333;
+//   color: #fff;
+//   border: none;
+//   padding: 0 14px;
+//   border-radius: 6px;
+//   font-weight: 600;
+//   font-size: 0.85rem;
+//   cursor: pointer;
+//   white-space: nowrap;
+//   &:hover {
+//     background: #2563eb;
+//   }
+// `;
+
+// const PayNowButton = styled.button`
+//   width: 100%;
+//   background: #2563eb;
+//   color: #ffffff;
+//   border: 2px solid #D4AF37;
+//   padding: 12px;
+//   border-radius: 6px;
+//   font-size: 0.95rem;
+//   font-weight: 800;
+//   letter-spacing: 0.5px;
+//   cursor: pointer;
+//   transition: all 0.3s ease;
+//   box-sizing: border-box;
+
+//   &:hover {
+//     background: #D4AF37;
+//     color: #2563eb;
+//   }
+//   &:disabled {
+//     opacity: 0.6;
+//     cursor: not-allowed;
+//   }
+
+//   @media (min-width: 768px) {
+//     padding: 14px;
+//     font-size: 1rem;
+//   }
+// `;
+
+// const LoadingText = styled.p`
+//   text-align: center;
+//   padding: 60px;
+//   font-size: 1.1rem;
+//   color: #2563eb;
+//   font-weight: 600;
+// `;
+
+// const PayOnDeliveryButton = styled.button`
+//   width: 100%;
+//   background: #ffffff;
+//   color: #2563eb;
+//   border: 2px solid #2563eb;
+//   padding: 12px;
+//   border-radius: 6px;
+//   font-size: 0.95rem;
+//   font-weight: 800;
+//   letter-spacing: 0.5px;
+//   cursor: pointer;
+//   margin-top: 10px;
+//   transition: all 0.3s ease;
+//   box-sizing: border-box;
+
+//   &:hover {
+//     background: #2563eb;
+//     color: #ffffff;
+//   }
+//   &:disabled {
+//     opacity: 0.6;
+//     cursor: not-allowed;
+//   }
+
+//   @media (min-width: 768px) {
+//     padding: 14px;
+//     font-size: 1rem;
+//     margin-top: 12px;
+//   }
+// `;
+
+
+
+
+
+
+// --- Styled Components (Theme Colors: Pink #ec4899, Turquoise #06b6d4, Gradient) ---
+
+const PrimaryColor = "#ec4899";
+const AccentGradient = "linear-gradient(135deg, #ec4899 0%, #f59e0b 50%, #06b6d4 100%)";
+const Turquoise = "#06b6d4";
 
 const Container = styled.div`
   max-width: 1200px;
@@ -571,10 +1037,10 @@ const Container = styled.div`
 
 const PageTitle = styled.h2`
   font-size: 1.5rem;
-  color: #2563eb;
+  // color: orange;
   font-weight: 800;
   margin-bottom: 16px;
-  border-bottom: 2px solid #D4AF37;
+  border-bottom: 2px solid ${Turquoise};
   padding-bottom: 8px;
 
   @media (min-width: 768px) {
@@ -617,9 +1083,9 @@ const Sidebar = styled.div`
 const Card = styled.div`
   background: #ffffff;
   border: 1px solid #e2e2e2;
-  border-top: 4px solid #2563eb;
+  border-top: 4px solid ${Turquoise};
   border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.03);
+  box-shadow: 0 2px 6px rgba(236, 72, 153, 0.03);
   overflow: hidden;
   width: 100%;
   box-sizing: border-box;
@@ -638,18 +1104,17 @@ const CardHeader = styled.div`
   h3 {
     margin: 0;
     font-size: 1rem;
-    color: #2563eb;
+    // color: ${PrimaryColor};
     font-weight: 700;
-
-  
   }
 
-    span {
-      display:none;
-      font-size: 0.75rem;
-      @media (max-width: 480px) {
-      display:inline;
-      }
+  span {
+    display: none;
+    font-size: 0.75rem;
+    @media (max-width: 480px) {
+      display: inline;
+    }
+  }
 
   @media (min-width: 768px) {
     padding: 16px 20px;
@@ -699,7 +1164,7 @@ const Value = styled.span`
 const AddressName = styled.h4`
   margin: 0 0 4px 0;
   font-size: 1rem;
-  color: #2563eb;
+  color: ${PrimaryColor};
   font-weight: 700;
 `;
 
@@ -712,7 +1177,7 @@ const AddressText = styled.p`
 
 const TextButton = styled.button`
   background: transparent;
-  color: #2563eb;
+  color: ${PrimaryColor};
   border: none;
   font-size: 0.8rem;
   font-weight: 600;
@@ -720,22 +1185,22 @@ const TextButton = styled.button`
   padding: 0;
   &:hover {
     text-decoration: underline;
-    color: #D4AF37;
+    color: ${Turquoise};
   }
 `;
 
 const ActionButton = styled.button`
-  background: #2563eb;
+  background: ${PrimaryColor};
   color: #ffffff;
-  border: 1px solid #D4AF37;
+  border: 1px solid ${Turquoise};
   padding: 8px 16px;
   border-radius: 6px;
   font-weight: 600;
   font-size: 0.9rem;
   cursor: pointer;
   &:hover {
-    background: #D4AF37;
-    color: #2563eb;
+    background: ${Turquoise};
+    color: #ffffff;
   }
 `;
 
@@ -835,10 +1300,10 @@ const ItemName = styled.span`
 
 const SummaryCard = styled.div`
   background: #ffffff;
-  border: 1px solid #D4AF37;
+  border: 1px solid ${Turquoise};
   border-radius: 8px;
   padding: 16px;
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.05);
+  box-shadow: 0 4px 12px rgba(236, 72, 153, 0.05);
   width: 100%;
   box-sizing: border-box;
 
@@ -852,7 +1317,7 @@ const SummaryCard = styled.div`
     margin-top: 0;
     margin-bottom: 16px;
     font-size: 1.1rem;
-    color: #2563eb;
+    color: ${PrimaryColor};
     font-weight: 700;
     border-bottom: 2px solid #f0f0f0;
     padding-bottom: 8px;
@@ -894,7 +1359,7 @@ const TotalRow = styled.div`
   justify-content: space-between;
   font-size: 1.1rem;
   font-weight: 800;
-  color: #2563eb;
+  color: ${PrimaryColor};
   margin-bottom: 16px;
 
   @media (min-width: 768px) {
@@ -922,7 +1387,7 @@ const PromoInput = styled.input`
   font-size: 0.9rem;
   &:focus {
     outline: none;
-    border-color: #2563eb;
+    border-color: ${PrimaryColor};
   }
 `;
 
@@ -937,15 +1402,15 @@ const ApplyButton = styled.button`
   cursor: pointer;
   white-space: nowrap;
   &:hover {
-    background: #2563eb;
+    background: ${PrimaryColor};
   }
 `;
 
 const PayNowButton = styled.button`
   width: 100%;
-  background: #2563eb;
+  background: ${AccentGradient};
   color: #ffffff;
-  border: 2px solid #D4AF37;
+  border: none;
   padding: 12px;
   border-radius: 6px;
   font-size: 0.95rem;
@@ -956,8 +1421,8 @@ const PayNowButton = styled.button`
   box-sizing: border-box;
 
   &:hover {
-    background: #D4AF37;
-    color: #2563eb;
+    opacity: 0.92;
+    transform: translateY(-1px);
   }
   &:disabled {
     opacity: 0.6;
@@ -974,15 +1439,15 @@ const LoadingText = styled.p`
   text-align: center;
   padding: 60px;
   font-size: 1.1rem;
-  color: #2563eb;
+  color: ${PrimaryColor};
   font-weight: 600;
 `;
 
 const PayOnDeliveryButton = styled.button`
   width: 100%;
   background: #ffffff;
-  color: #2563eb;
-  border: 2px solid #2563eb;
+  color: ${PrimaryColor};
+  border: 2px solid ${PrimaryColor};
   padding: 12px;
   border-radius: 6px;
   font-size: 0.95rem;
@@ -994,7 +1459,7 @@ const PayOnDeliveryButton = styled.button`
   box-sizing: border-box;
 
   &:hover {
-    background: #2563eb;
+    background: ${PrimaryColor};
     color: #ffffff;
   }
   &:disabled {
