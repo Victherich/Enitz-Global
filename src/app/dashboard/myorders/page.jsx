@@ -340,7 +340,8 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useRouter } from 'next/navigation';
-import { db } from "@/firebaseConfig";
+import { db, auth } from "@/firebaseConfig";
+import { onAuthStateChanged } from "firebase/auth";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import Swal from "sweetalert2";
 
@@ -555,26 +556,68 @@ const MoreDetailsButton = styled.button`
   }
 `;
 
-export default function CustomerOrdersPage({ customerEmail }) {
+
+
+  export default function CustomerOrdersPage({ customerEmail }) {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
+  const [currentUser, setCurrentUser] = useState(null);
   const router = useRouter();
 
-  const fetchCustomerOrders = async () => {
+  // Listen to the authenticated user session
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setCurrentUser(user);
+      } else {
+        setCurrentUser(null);
+      }
+    });
+    return () => unsubscribe();
+  }, []);
+
+
+
+
+
+const fetchCustomerOrders = async (user) => {
     try {
       setLoading(true);
       
-      let q = collection(db, "orders");
-      if (customerEmail) {
-        q = query(collection(db, "orders"), where("accountInfo.email", "==", customerEmail));
+      const targetEmail = customerEmail || user?.email;
+      const targetUserId = user?.uid;
+
+      if (!targetEmail && !targetUserId) {
+        setOrders([]);
+        setLoading(false);
+        return;
+      }
+
+      // Query by userId first, or fallback to customerEmail prop / user email
+      let q;
+      if (targetUserId) {
+        q = query(collection(db, "orders"), where("userId", "==", targetUserId));
+      } else {
+        q = query(collection(db, "orders"), where("accountInfo.email", "==", targetEmail));
       }
 
       const querySnapshot = await getDocs(q);
-      const list = querySnapshot.docs.map((doc) => ({
+      let list = querySnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
+
+      // Fallback safeguard if userId wasn't stored on older documents
+      if (list.length === 0 && targetEmail) {
+        const emailQuery = query(collection(db, "orders"), where("accountInfo.email", "==", targetEmail));
+        const emailSnap = await getDocs(emailQuery);
+        list = emailSnap.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+      }
+
       setOrders(list);
     } catch (error) {
       console.error("Error fetching customer orders:", error);
@@ -583,6 +626,14 @@ export default function CustomerOrdersPage({ customerEmail }) {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (currentUser !== undefined) {
+      fetchCustomerOrders(currentUser);
+    }
+  }, [currentUser, customerEmail]);
+
+  
 
   useEffect(() => {
     fetchCustomerOrders();

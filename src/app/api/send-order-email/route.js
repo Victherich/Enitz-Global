@@ -229,29 +229,43 @@ export async function POST(request) {
       orderStatus,
     } = payload;
 
-    // Build items HTML table rows including product image thumbnails
+ 
+
+// Build items HTML table rows with exactly 2 columns: Image on left, stacked details & pricing on right
     const itemsHtml = items
       .map(
         (item) => `
       <tr>
-        <td style="padding: 10px; border-bottom: 1px solid #e5eaf2; text-align: center; width: 50px;">
+        <td style="padding: 12px 10px; border-bottom: 1px solid #e5eaf2; vertical-align: top; width: 64px;">
           ${item.image || item.imageUrl || item.img ? `
-            <img src="${item.image || item.imageUrl || item.img}" alt="${item.name || 'Product'}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px; border: 1px solid #e5eaf2;" />
+            <img src="${item.image || item.imageUrl || item.img}" alt="${item.name || 'Product'}" style="width: 56px; height: 56px; object-fit: cover; border-radius: 6px; border: 1px solid #e5eaf2; display: block;" />
           ` : `
-            <div style="width: 40px; height: 40px; background-color: #f1f5f9; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; color: #64748b;">N/A</div>
+            <div style="width: 56px; height: 56px; background-color: #f1f5f9; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #64748b;">N/A</div>
           `}
         </td>
-        <td style="padding: 10px; border-bottom: 1px solid #e5eaf2; font-size: 13px; color: #0f172a;">
-          ${item.name || 'Product'} ${item.selectedColor ? `<br><small style="color: #475569;">Color: ${item.selectedColor}</small>` : ''}
-        </td>
-        <td style="padding: 10px; border-bottom: 1px solid #e5eaf2; font-size: 12px; color: #475569; font-family: monospace;">
-          ${item.id || 'N/A'}
-        </td>
-        <td style="padding: 10px; border-bottom: 1px solid #e5eaf2; text-align: center; font-size: 13px; color: #0f172a;">
-          ${item.quantity || 1}
-        </td>
-        <td style="padding: 10px; border-bottom: 1px solid #e5eaf2; text-align: right; font-size: 13px; color: #0f172a; font-weight: 600;">
-          ₦${Number((item.amount || item.price || 0) * (item.quantity || 1)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+        <td style="padding: 12px 10px; border-bottom: 1px solid #e5eaf2; vertical-align: top;">
+          <table style="width: 100%; border-collapse: collapse;">
+            <tr>
+              <td style="font-size: 14px; font-weight: 700; color: #0f172a; padding-bottom: 3px; line-height: 1.3;">
+                ${item.name || 'Product'}
+              </td>
+            </tr>
+            <tr>
+              <td style="font-size: 11px; color: #64748b; font-family: monospace; padding-bottom: 3px;">
+                ID: ${item.id || 'N/A'}
+              </td>
+            </tr>
+            <tr>
+              <td style="font-size: 12px; color: #475569; padding-bottom: 6px;">
+                Qty: <strong>${item.quantity || 1}</strong>
+              </td>
+            </tr>
+            <tr>
+              <td style="font-size: 14px; font-weight: 700; color: #ec4899; padding-top: 2px;">
+                ₦${Number((item.amount || item.price || 0) * (item.quantity || 1)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              </td>
+            </tr>
+          </table>
         </td>
       </tr>
     `
@@ -313,18 +327,15 @@ export async function POST(request) {
               <table class="table">
                 <thead>
                   <tr>
-                    <th style="text-align: center;">Image</th>
-                    <th>Item</th>
-                    <th>Product ID</th>
-                    <th style="text-align: center;">Qty</th>
-                    <th style="text-align: right;">Total</th>
+                    <th style="width: 64px;">Image</th>
+                    <th>Product Details</th>
                   </tr>
                 </thead>
                 <tbody>
                   ${itemsHtml}
                 </tbody>
               </table>
-
+              
               <table class="totals">
                 <tr>
                   <td style="color: #475569;">Subtotal:</td>
