@@ -509,7 +509,7 @@
 
 import React, { useEffect, useState } from "react";
 import { db } from "@/firebaseConfig";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { useRouter, useParams } from "next/navigation";
 import styled from "styled-components";
 import Swal from "sweetalert2";
@@ -813,6 +813,19 @@ export default function OrderDetailsPage() {
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
 
+
+
+
+  
+// ⭐ Review Modal State
+  const [reviewModalOpen, setReviewModalOpen] = useState(false);
+  const [selectedProductForReview, setSelectedProductForReview] = useState(null);
+  const [rating, setRating] = useState(5);
+  const [comment, setComment] = useState("");
+  const [submittingReview, setSubmittingReview] = useState(false);
+
+
+
   useEffect(() => {
     const fetchOrderDetails = async () => {
       if (!orderId) {
@@ -839,6 +852,80 @@ export default function OrderDetailsPage() {
 
     fetchOrderDetails();
   }, [orderId]);
+
+
+
+
+
+
+
+  // 📝 Function to open the review modal for a specific product
+  const handleOpenReviewModal = (item) => {
+    setSelectedProductForReview(item);
+    setRating(5);
+    setComment("");
+    setReviewModalOpen(true);
+  };
+
+  // 🚀 Function to submit the review and update the product document in Firestore
+  const handleSubmitReview = async () => {
+    if (!selectedProductForReview || !selectedProductForReview.id) {
+      Swal.fire("Error", "Product ID is missing.", "error");
+      return;
+    }
+
+    try {
+      setSubmittingReview(true);
+      const productRef = doc(db, "products", selectedProductForReview.id);
+      const productSnap = await getDoc(productRef);
+
+      const newReview = {
+        userName: account.name || "Anonymous Customer",
+        userEmail: account.email || "",
+        rating: Number(rating),
+        comment: comment.trim(),
+        createdAt: new Date().toISOString(),
+      };
+
+      if (productSnap.exists()) {
+        const productData = productSnap.data();
+        const existingReviews = productData.reviews || [];
+        const updatedReviews = [newReview, ...existingReviews];
+
+        // Calculate new average rating
+        const totalRatingSum = updatedReviews.reduce((sum, r) => sum + r.rating, 0);
+        const averageRating = (totalRatingSum / updatedReviews.length).toFixed(1);
+
+        await updateDoc(productRef, {
+          reviews: updatedReviews,
+          rating: Number(averageRating),
+          reviewCount: updatedReviews.length,
+        });
+      } else {
+        // If product doc doesn't exist yet, initialize it
+        await setDoc(productRef, {
+          reviews: [newReview],
+          rating: Number(rating),
+          reviewCount: 1,
+        }, { merge: true });
+      }
+
+      Swal.fire("Success!", "Your review has been posted.", "success");
+      setReviewModalOpen(false);
+    } catch (error) {
+      console.error("Error submitting review:", error);
+      Swal.fire("Error", "Failed to submit review. Please try again.", "error");
+    } finally {
+      setSubmittingReview(false);
+    }
+  };
+
+
+
+
+
+
+
 
   if (loading) {
     return <LoadingContainer>Loading complete order information...</LoadingContainer>;
@@ -883,7 +970,7 @@ export default function OrderDetailsPage() {
           <Card>
             <CardTitle>Ordered Products ({items.length})</CardTitle>
             <ProductsList>
-              {items.map((item, index) => {
+              {/* {items.map((item, index) => {
                 const price = Number(item.price || item.amount || 0);
                 const qty = Number(item.quantity || 1);
                 const itemTotal = price * qty;
@@ -900,6 +987,55 @@ export default function OrderDetailsPage() {
                     <ProductPriceTag>
                       ₦{itemTotal.toLocaleString()}
                     </ProductPriceTag>
+                  </ProductItem>
+                );
+              })} */}
+
+              {items.map((item, index) => {
+                const price = Number(item.price || item.amount || 0);
+                const qty = Number(item.quantity || 1);
+                const itemTotal = price * qty;
+                const imgSrc = item.image || item.img || item.imageUrl || "https://placehold.co/100x100?text=Product";
+
+                return (
+                  <ProductItem key={`${item.id || index}`}>
+                    <ProductImage 
+                      src={imgSrc} 
+                      alt={item.name || item.title || "Product Image"} 
+                      onClick={() => router.push(`/productdetail/${item.id}`)}
+                      style={{ cursor: "pointer" }}
+                    />
+                    <ProductDetails onClick={() => router.push(`/productdetail/${item.id}`)} style={{ cursor: "pointer" }}>
+                      <ProductName>{item.name || item.title || "Unnamed Product"}</ProductName>
+                      <p style={{fontSize:'0.6rem', margin: 0}}>ID: {item.id}</p>
+                      <ProductMeta>Qty: {qty} × ₦{price.toLocaleString()}</ProductMeta>
+                    </ProductDetails>
+                    
+                    <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "6px" }}>
+                      <ProductPriceTag>
+                        ₦{itemTotal.toLocaleString()}
+                      </ProductPriceTag>
+                      {item.id && (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleOpenReviewModal(item);
+                          }}
+                          style={{
+                            background: PrimaryColor,
+                            color: White,
+                            border: "none",
+                            padding: "4px 10px",
+                            borderRadius: "6px",
+                            fontSize: "0.75rem",
+                            fontWeight: "700",
+                            cursor: "pointer",
+                          }}
+                        >
+                          ⭐ Review
+                        </button>
+                      )}
+                    </div>
                   </ProductItem>
                 );
               })}
@@ -1009,6 +1145,83 @@ export default function OrderDetailsPage() {
           </Card>
         </Column>
       </GridContent>
+
+
+
+      {/* ⭐ Product Review Modal */}
+      {reviewModalOpen && (
+        <div style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          background: "rgba(0,0,0,0.5)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          zIndex: 1000,
+          padding: "15px"
+        }}>
+          <div style={{
+            background: White,
+            borderRadius: "12px",
+            padding: "24px",
+            width: "100%",
+            maxWidth: "450px",
+            display: "flex",
+            flexDirection: "column",
+            gap: "16px",
+            boxShadow: "0 10px 25px rgba(0,0,0,0.1)"
+          }}>
+            <h3 style={{ margin: 0, color: PrimaryColor, fontSize: "1.2rem" }}>
+              Review: {selectedProductForReview?.name || selectedProductForReview?.title}
+            </h3>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+              <Label>Rating (1 to 5 Stars)</Label>
+              <select 
+                value={rating} 
+                onChange={(e) => setRating(Number(e.target.value))}
+                style={{ padding: "10px", borderRadius: "6px", border: `1px solid ${Border}`, fontSize: "0.95rem" }}
+              >
+                <option value={5}>⭐⭐⭐⭐⭐ (5 - Excellent)</option>
+                <option value={4}>⭐⭐⭐⭐ (4 - Very Good)</option>
+                <option value={3}>⭐⭐⭐ (3 - Good)</option>
+                <option value={2}>⭐⭐ (2 - Fair)</option>
+                <option value={1}>⭐ (1 - Poor)</option>
+              </select>
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+              <Label>Your Review Comment</Label>
+              <textarea 
+                rows={4}
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+                placeholder="Write your thoughts about this handcrafted bag..."
+                style={{ padding: "10px", borderRadius: "6px", border: `1px solid ${Border}`, fontSize: "0.9rem", resize: "vertical" }}
+              />
+            </div>
+
+            <div style={{ display: "flex", justifyContent: "flex-end", gap: "10px", marginTop: "10px" }}>
+              <button 
+                onClick={() => setReviewModalOpen(false)}
+                style={{ background: "#e2e8f0", color: Dark, border: "none", padding: "8px 16px", borderRadius: "6px", fontWeight: "750", cursor: "pointer" }}
+              >
+                Cancel
+              </button>
+              <button 
+                onClick={handleSubmitReview}
+                disabled={submittingReview}
+                style={{ background: PrimaryColor, color: White, border: "none", padding: "8px 16px", borderRadius: "6px", fontWeight: "750", cursor: "pointer" }}
+              >
+                {submittingReview ? "Submitting..." : "Post Review"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </Container>
   );
 }

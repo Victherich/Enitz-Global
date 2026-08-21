@@ -1240,7 +1240,7 @@ export default function ProductDetailPage({ params }) {
 
         if (docSnap.exists()) {
           const data = docSnap.data();
-          const fetchedProduct = {
+        const fetchedProduct = {
             id: docSnap.id,
             name: data.name || data.title || "Untitled Piece",
             categoryId: data.categoryId || "",
@@ -1250,6 +1250,9 @@ export default function ProductDetailPage({ params }) {
             neverFinishes: data.neverFinishes ?? true,
             quantity: Number(data.quantity || 0),
             createdAt: data.createdAt ? new Date(data.createdAt.seconds * 1000).toLocaleDateString() : "Recent",
+            reviews: data.reviews || [],
+            averageRating: data.rating || 0,
+            reviewCount: data.reviewCount || (data.reviews ? data.reviews.length : 0),
           };
           setProduct(fetchedProduct);
 
@@ -1414,6 +1417,49 @@ export default function ProductDetailPage({ params }) {
                 {isWishlisted ? "❤️ Saved" : "🤍 Wishlist"}
               </WishlistButton>
             </ActionsRow>
+
+
+
+            {/* ⭐ Product Reviews Section */}
+            <div style={{ marginTop: "16px", borderTop: `1px solid ${borderColor}`, paddingTop: "16px", display: "flex", flexDirection: "column", gap: "12px" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <h3 style={{ fontSize: "1rem", fontWeight: "700", color: textMain, margin: 0 }}>
+                  Customer Reviews ({product.reviewCount})
+                </h3>
+                <span style={{ fontSize: "0.9rem", fontWeight: "700", color: primaryAmber }}>
+                  ⭐ {product.averageRating > 0 ? product.averageRating : "No ratings yet"} / 5.0
+                </span>
+              </div>
+
+              {product.reviews?.length === 0 ? (
+                <p style={{ fontSize: "0.85rem", color: textMuted, margin: 0 }}>
+                  Be the first to review this piece after your purchase!
+                </p>
+              ) : (
+                <div style={{ display: "flex", flexDirection: "column", gap: "10px", maxHeight: "250px", overflowY: "auto", paddingRight: "4px" }}>
+                  {product.reviews.map((rev, idx) => (
+                    <div key={idx} style={{ background: cardBg, border: `1px solid ${borderColor}`, padding: "12px", borderRadius: "10px", display: "flex", flexDirection: "column", gap: "4px" }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                        <span style={{ fontSize: "0.85rem", fontWeight: "700", color: textMain }}>
+                          {rev.userName || "Customer"}
+                        </span>
+                        <span style={{ fontSize: "0.8rem", color: primaryAmber }}>
+                          {"⭐".repeat(Number(rev.rating) || 5)}
+                        </span>
+                      </div>
+                      <p style={{ fontSize: "0.85rem", color: textMuted, margin: 0, wordBreak: "break-word" }}>
+                        {rev.comment}
+                      </p>
+                      {rev.createdAt && (
+                        <span style={{ fontSize: "0.7rem", color: "#94a3b8", marginTop: "2px" }}>
+                          {new Date(rev.createdAt).toLocaleDateString()}
+                        </span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </InfoContainer>
         </ProductGrid>
       </ContentWrapper>

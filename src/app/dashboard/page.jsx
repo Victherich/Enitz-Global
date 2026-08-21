@@ -521,6 +521,7 @@ const TextMuted = "#475569";
 const LightBg = "#f8fafc";
 const ThemeGradient = "linear-gradient(135deg, #ec4899 0%, #f59e0b 50%, #06b6d4 100%)";
 const SoftGradientBg = "linear-gradient(135deg, rgba(236, 72, 153, 0.05) 0%, rgba(6, 182, 212, 0.05) 100%)";
+const SoftGradientBg2 = 'linear-gradient(135deg, #3b82f6 0%, #6366f1 50%, #9333ea 100%)'
 
 // 🌟 Styled Components (Retaining all functionalities with an ultra-modern aesthetic)
 const Container = styled.div`
@@ -533,9 +534,9 @@ const Container = styled.div`
 `;
 
 const GreetingBanner = styled.div`
-  background: ${ThemeGradient};
+  background: ${SoftGradientBg2};
   color: ${White};
-  padding: 2.25rem;
+  padding: 1rem;
   border-radius: 1.75rem;
   display: flex;
   flex-direction: column;
@@ -558,8 +559,8 @@ const GreetingBanner = styled.div`
 `;
 
 const Greeting = styled.h1`
-  font-size: clamp(1.75rem, 3vw, 2.25rem);
-  font-weight: 900;
+  font-size: 2rem;
+  font-weight: 800;
   letter-spacing: -0.02em;
   margin: 0;
 `;
@@ -760,6 +761,67 @@ const DashboardHome = () => {
     }
   };
 
+
+
+  // 📝 Function to handle editing the full name
+  const handleEditName = async () => {
+    const user = auth.currentUser;
+    if (!user) return;
+
+    const { value: newName } = await Swal.fire({
+      title: "Edit Full Name",
+      input: "text",
+      inputLabel: "Enter your full name",
+      inputValue: userData?.name || "",
+      showCancelButton: true,
+      confirmButtonColor: ThemePrimary,
+      cancelButtonColor: TextMuted,
+      inputValidator: (value) => {
+        if (!value) {
+          return "You need to write something!";
+        }
+      },
+    });
+
+    if (newName) {
+      try {
+        const docRef = doc(db, "users", user.uid);
+        await updateDoc(docRef, { name: newName });
+        setUserData((prev) => ({ ...prev, name: newName }));
+        Swal.fire("Updated!", "Your name has been updated.", "success");
+      } catch (error) {
+        Swal.fire("Error", "Failed to update name.", "error");
+      }
+    }
+  };
+
+
+
+
+  // 🚪 Function to handle signing out with Swal confirmation
+  const handleSignOut = async () => {
+    const confirmResult = await Swal.fire({
+      title: "Sign Out",
+      text: "Are you sure you want to sign out?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: ThemePrimary,
+      cancelButtonColor: TextMuted,
+      confirmButtonText: "Yes, Sign Out"
+    });
+
+    if (confirmResult.isConfirmed) {
+      try {
+        await auth.signOut();
+        router.push("/login"); // Adjust to your login route if needed
+      } catch (error) {
+        Swal.fire("Error", "Failed to sign out. Please try again.", "error");
+      }
+    }
+  };
+
+
+
   if (loading) {
     return (
       <LoadingContainer>
@@ -875,8 +937,11 @@ const DashboardHome = () => {
       {/* Primary User Details */}
       <SectionTitle>Your Account Details</SectionTitle>
       <DetailsGrid>
-        <DetailCard>
-          <DetailTitle>Full Name</DetailTitle>
+       <DetailCard>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <DetailTitle>Full Name</DetailTitle>
+            <ActionTextLink onClick={handleEditName}>Edit</ActionTextLink>
+          </div>
           <DetailValue>{userData.name}</DetailValue>
         </DetailCard>
 
@@ -892,6 +957,35 @@ const DashboardHome = () => {
           </div>
           <DetailValue>{userData.phone || "Not provided"}</DetailValue>
         </DetailCard>
+
+      <DetailCard 
+          onClick={handleSignOut}
+          style={{ 
+            cursor: "pointer", 
+            background: "linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%)", 
+            border: "1px solid #fca5a5",
+            transition: "all 0.2s ease"
+          }}
+        >
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <DetailTitle style={{ color: "#dc2626", fontWeight: "700" }}>Session</DetailTitle>
+            <span style={{ 
+              background: "#dc2626", 
+              color: "#ffffff", 
+              padding: "6px 14px", 
+              borderRadius: "6px", 
+              fontSize: "12px", 
+              fontWeight: "600",
+              boxShadow: "0 2px 4px rgba(220, 38, 38, 0.2)"
+            }}>
+              Sign Out
+            </span>
+          </div>
+          <DetailValue style={{ color: "#991b1b", fontSize: "13px", marginTop: "4px" }}>
+            Safely log out of your dashboard session
+          </DetailValue>
+        </DetailCard>
+        
       </DetailsGrid>
     </Container>
   );
