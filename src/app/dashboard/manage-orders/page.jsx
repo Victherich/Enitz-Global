@@ -16,18 +16,20 @@
 // } from "firebase/firestore";
 // import styled from "styled-components";
 // import Swal from "sweetalert2";
-// import {useRouter} from "next/navigation";
+// import { useRouter } from "next/navigation";
 
-// // 🎨 BEES INTERIOR THEME COLORS
-// const Blue = "#2563eb";
+// // 🎨 NEW THEME COLORS & GRADIENTS (Vibrant Pink, Turquoise & Dynamic Accent)
+// const PrimaryColor = "#ec4899";
+// const Turquoise = "#06b6d4";
+// const AccentGradient = "linear-gradient(135deg, #ec4899 0%, #f59e0b 50%, #06b6d4 100%)";
 // const Dark = "#0f172a";
 // const Border = "#e5eaf2";
 // const White = "#ffffff";
-// const Gold = "#D4AF37";
 // const TextMuted = "#475569";
 // const Danger = "#ef4444";
 // const Success = "#10b981";
 // const Warning = "#f59e0b";
+
 
 // // 🌟 Styled Components (Strict max 10px spacing/gaps/margins/padding rule)
 // const Container = styled.div`
@@ -41,30 +43,31 @@
 // `;
 
 // const HeaderBanner = styled.div`
-//   background: linear-gradient(135deg, ${Blue} 0%, ${Gold} 100%);
+//   background: ${AccentGradient};
 //   color: ${White};
 //   padding: 10px;
 //   border-radius: 10px;
 //   display: flex;
 //   flex-direction: column;
 //   gap: 10px;
-//   box-shadow: 0 4px 15px rgba(15, 23, 42, 0.05);
+//   box-shadow: 0 6px 20px rgba(236, 72, 153, 0.15);
 // `;
 
 // const ColorfulTitle = styled.h1`
 //   font-size: 1.6rem;
 //   font-weight: 800;
 //   margin: 0;
-//   background: linear-gradient(90deg, #ffffff 0%, #fef08a 100%);
+//   background: linear-gradient(90deg, #ffffff 0%, #fbcfe8 100%);
 //   -webkit-background-clip: text;
 //   -webkit-text-fill-color: transparent;
 //   letter-spacing: -0.5px;
+//   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 // `;
 
 // const ColorfulSub = styled.p`
 //   font-size: 0.95rem;
 //   margin: 0;
-//   color: #f8fafc;
+//   color: #fdf2f8;
 //   opacity: 0.95;
 // `;
 
@@ -86,9 +89,11 @@
 //   box-sizing: border-box;
 //   margin: 0;
 //   background: ${White};
+//   transition: all 0.2s ease;
 
 //   &:focus {
-//     border-color: ${Blue};
+//     border-color: ${PrimaryColor};
+//     box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.15);
 //   }
 // `;
 
@@ -103,7 +108,7 @@
 //   font-size: 1.25rem;
 //   font-weight: 800;
 //   margin: 0;
-//   background: linear-gradient(135deg, ${Blue} 0%, ${Gold} 100%);
+//   background: ${AccentGradient};
 //   -webkit-background-clip: text;
 //   -webkit-text-fill-color: transparent;
 // `;
@@ -119,11 +124,17 @@
 //   border-radius: 10px;
 //   padding: 10px;
 //   border: 1px solid ${Border};
-//   border-left: 4px solid ${Gold};
-//   box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+//   border-left: 4px solid ${Turquoise};
+//   box-shadow: 0 4px 15px rgba(15, 23, 42, 0.04);
 //   display: flex;
 //   flex-direction: column;
 //   gap: 10px;
+//   transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+//   &:hover {
+//     transform: translateY(-2px);
+//     box-shadow: 0 6px 20px rgba(236, 72, 153, 0.08);
+//   }
 // `;
 
 // const CardHeader = styled.div`
@@ -169,13 +180,13 @@
 //     props.$variant === "danger" ? "rgba(239, 68, 68, 0.1)" : 
 //     props.$variant === "success" ? "rgba(16, 185, 129, 0.1)" : 
 //     props.$variant === "warning" ? "rgba(245, 158, 11, 0.1)" : 
-//     "rgba(37, 99, 235, 0.1)"
+//     "rgba(6, 182, 212, 0.1)"
 //   };
 //   color: ${(props) => 
 //     props.$variant === "danger" ? Danger : 
 //     props.$variant === "success" ? Success : 
 //     props.$variant === "warning" ? Warning : 
-//     Blue
+//     Turquoise
 //   };
 //   padding: 3px 8px;
 //   border-radius: 6px;
@@ -217,16 +228,18 @@
 //   width: 100%;
 //   background: ${White};
 //   box-sizing: border-box;
+//   transition: all 0.2s ease;
 
 //   &:focus {
-//     border-color: ${Blue};
+//     border-color: ${PrimaryColor};
+//     box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.15);
 //   }
 // `;
 
 // const LoadingContainer = styled.div`
 //   padding: 10px;
 //   text-align: center;
-//   color: ${Dark};
+//   color: ${PrimaryColor};
 //   font-weight: 600;
 // `;
 
@@ -236,10 +249,16 @@
 //   font-size: 0.85rem;
 //   font-weight: 600;
 //   color: ${White};
-//   background: ${Blue};
+//   background: ${AccentGradient};
 //   border: none;
 //   border-radius: 6px;
 //   cursor: pointer;
+//   box-shadow: 0 2px 8px rgba(236, 72, 153, 0.25);
+//   transition: opacity 0.2s ease;
+
+//   &:hover {
+//     opacity: 0.9;
+//   }
 // `;
 
 // export default function OrdersManagementPage() {
@@ -397,7 +416,10 @@
 //                     <option value="Failed">Failed</option>
 //                   </StyledSelect>
 //                 </ControlGroup>
-//                 <MoreDetailsButton onClick={() => router.push(`/dashboard/orders/${order.id}`)}>View Order Details</MoreDetailsButton>
+
+//                 <MoreDetailsButton onClick={() => router.push(`/dashboard/orders/${order.id}`)}>
+//                   View Order Details
+//                 </MoreDetailsButton>
 //               </OrderCard>
 //             );
 //           })}
@@ -406,8 +428,6 @@
 //     </Container>
 //   );
 // }
-
-
 
 
 
@@ -428,14 +448,15 @@ import styled from "styled-components";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
 
-// 🎨 NEW THEME COLORS & GRADIENTS (Vibrant Pink, Turquoise & Dynamic Accent)
-const PrimaryColor = "#ec4899";
-const Turquoise = "#06b6d4";
-const AccentGradient = "linear-gradient(135deg, #ec4899 0%, #f59e0b 50%, #06b6d4 100%)";
+// 🎨 NEW THEME COLORS & GRADIENTS (Navy & Cyan Theme)
+const PrimaryNavy = "#0B1B48";
+const PrimaryCyan = "#00AEEF";
 const Dark = "#0f172a";
-const Border = "#e5eaf2";
+const Border = "#cbd5e1";
 const White = "#ffffff";
 const TextMuted = "#475569";
+const LightBg = "#f8fafc";
+const ThemeGradient = "linear-gradient(135deg, #0B1B48 0%, #00AEEF 100%)";
 const Danger = "#ef4444";
 const Success = "#10b981";
 const Warning = "#f59e0b";
@@ -452,21 +473,21 @@ const Container = styled.div`
 `;
 
 const HeaderBanner = styled.div`
-  background: ${AccentGradient};
+  background: ${ThemeGradient};
   color: ${White};
   padding: 10px;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  box-shadow: 0 6px 20px rgba(236, 72, 153, 0.15);
+  box-shadow: 0 6px 20px rgba(11, 27, 72, 0.15);
 `;
 
 const ColorfulTitle = styled.h1`
   font-size: 1.6rem;
   font-weight: 800;
   margin: 0;
-  background: linear-gradient(90deg, #ffffff 0%, #fbcfe8 100%);
+  background: linear-gradient(90deg, #ffffff 0%, #e0f2fe 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   letter-spacing: -0.5px;
@@ -476,7 +497,7 @@ const ColorfulTitle = styled.h1`
 const ColorfulSub = styled.p`
   font-size: 0.95rem;
   margin: 0;
-  color: #fdf2f8;
+  color: #f1f5f9;
   opacity: 0.95;
 `;
 
@@ -501,8 +522,8 @@ const StyledInput = styled.input`
   transition: all 0.2s ease;
 
   &:focus {
-    border-color: ${PrimaryColor};
-    box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.15);
+    border-color: ${PrimaryCyan};
+    box-shadow: 0 0 0 3px rgba(0, 174, 239, 0.15);
   }
 `;
 
@@ -517,7 +538,7 @@ const ColorfulSectionTitle = styled.h2`
   font-size: 1.25rem;
   font-weight: 800;
   margin: 0;
-  background: ${AccentGradient};
+  background: ${ThemeGradient};
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 `;
@@ -533,7 +554,7 @@ const OrderCard = styled.div`
   border-radius: 10px;
   padding: 10px;
   border: 1px solid ${Border};
-  border-left: 4px solid ${Turquoise};
+  border-left: 4px solid ${PrimaryCyan};
   box-shadow: 0 4px 15px rgba(15, 23, 42, 0.04);
   display: flex;
   flex-direction: column;
@@ -542,7 +563,7 @@ const OrderCard = styled.div`
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(236, 72, 153, 0.08);
+    box-shadow: 0 6px 20px rgba(11, 27, 72, 0.08);
   }
 `;
 
@@ -589,13 +610,13 @@ const Badge = styled.span`
     props.$variant === "danger" ? "rgba(239, 68, 68, 0.1)" : 
     props.$variant === "success" ? "rgba(16, 185, 129, 0.1)" : 
     props.$variant === "warning" ? "rgba(245, 158, 11, 0.1)" : 
-    "rgba(6, 182, 212, 0.1)"
+    "rgba(0, 174, 239, 0.1)"
   };
   color: ${(props) => 
     props.$variant === "danger" ? Danger : 
     props.$variant === "success" ? Success : 
     props.$variant === "warning" ? Warning : 
-    Turquoise
+    PrimaryCyan
   };
   padding: 3px 8px;
   border-radius: 6px;
@@ -604,7 +625,7 @@ const Badge = styled.span`
 `;
 
 const OrderDetailsBox = styled.div`
-  background: #f8fafc;
+  background: ${LightBg};
   border-radius: 6px;
   padding: 8px;
   display: flex;
@@ -640,15 +661,15 @@ const StyledSelect = styled.select`
   transition: all 0.2s ease;
 
   &:focus {
-    border-color: ${PrimaryColor};
-    box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.15);
+    border-color: ${PrimaryCyan};
+    box-shadow: 0 0 0 3px rgba(0, 174, 239, 0.15);
   }
 `;
 
 const LoadingContainer = styled.div`
   padding: 10px;
   text-align: center;
-  color: ${PrimaryColor};
+  color: ${PrimaryNavy};
   font-weight: 600;
 `;
 
@@ -658,11 +679,11 @@ const MoreDetailsButton = styled.button`
   font-size: 0.85rem;
   font-weight: 600;
   color: ${White};
-  background: ${AccentGradient};
+  background: ${ThemeGradient};
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(236, 72, 153, 0.25);
+  box-shadow: 0 2px 8px rgba(11, 27, 72, 0.25);
   transition: opacity 0.2s ease;
 
   &:hover {

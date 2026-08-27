@@ -1,3 +1,10 @@
+
+
+
+
+
+
+
 // "use client";
 
 // import { useState } from "react";
@@ -8,16 +15,18 @@
 // import { doc, setDoc } from "firebase/firestore";
 // import { auth, db } from "@/firebaseConfig";
 
-// // 🎨 BEES INTERIOR THEME COLORS
-// const Blue = "#2563eb";
+// // 🎨 KINGSWORD CRAFT THEME COLORS (Vibrant Luxury & Modern Palette)
+// const PrimaryPink = "#ec4899";
+// const AccentGold = "#f59e0b";
+// const AccentCyan = "#06b6d4";
 // const Dark = "#0f172a";
-// const Border = "#e5eaf2";
+// const Border = "rgba(226, 232, 240, 0.9)";
 // const White = "#ffffff";
-// const Gold = "#D4AF37";
-// const TextMuted = "#475569"; // Softer, lighter shade for form text instead of pitch black
 // const LightBg = "#f8fafc";
+// const TextMuted = "#475569";
+// const ThemeGradient = "linear-gradient(135deg, #ec4899 0%, #f59e0b 50%, #06b6d4 100%)";
 
-// // 🌟 Styled Components
+// // 🌟 Styled Components (Strict max 10px spacing/gaps/margins/padding rule)
 // const PageContainer = styled.div`
 //   min-height: 100vh;
 //   display: flex;
@@ -25,6 +34,7 @@
 //   justify-content: center;
 //   background: ${LightBg};
 //   padding: 10px;
+//   box-sizing: border-box;
 // `;
 
 // const AuthWrapper = styled.div`
@@ -44,7 +54,7 @@
 // `;
 
 // const BrandingSide = styled.div`
-//   background: ${Blue}; // Changed from dark to normal button blue
+//   background: ${ThemeGradient};
 //   color: ${White};
 //   padding: 10px;
 //   display: flex;
@@ -57,7 +67,7 @@
 //     content: "";
 //     position: absolute;
 //     inset: 0;
-//     background: linear-gradient(135deg, rgba(15, 23, 42, 0.2) 0%, rgba(212, 175, 55, 0.2) 100%);
+//     background: linear-gradient(135deg, rgba(15, 23, 42, 0.15) 0%, rgba(0, 0, 0, 0.1) 100%);
 //     z-index: 1;
 //   }
 // `;
@@ -76,9 +86,10 @@
 //   font-weight: 800;
 //   letter-spacing: -0.5px;
 //   color: ${White};
+//   margin: 0;
 
 //   span {
-//     color: ${Gold};
+//     color: ${AccentGold};
 //   }
 // `;
 
@@ -87,12 +98,15 @@
 //   font-weight: 800;
 //   line-height: 1.2;
 //   letter-spacing: -0.5px;
+//   margin: 0;
 // `;
 
 // const Subtext = styled.p`
 //   font-size: 0.95rem;
 //   line-height: 1.6;
-//   color: ${Border};
+//   color: #f8fafc;
+//   opacity: 0.95;
+//   margin: 0;
 // `;
 
 // const FormSide = styled.div`
@@ -100,7 +114,8 @@
 //   display: flex;
 //   flex-direction: column;
 //   justify-content: center;
-//   color: ${TextMuted}; // Applied softer text color across the form
+//   color: ${TextMuted};
+//   box-sizing: border-box;
 // `;
 
 // const FormHeader = styled.div`
@@ -112,8 +127,11 @@
 
 // const Title = styled.h2`
 //   font-size: 1.5rem;
-//   font-weight: 700;
-//   color: ${Blue};
+//   font-weight: 800;
+//   margin: 0;
+//   background: ${ThemeGradient};
+//   -webkit-background-clip: text;
+//   -webkit-text-fill-color: transparent;
 //   text-align: left;
 // `;
 
@@ -140,30 +158,35 @@
 
 // const Label = styled.label`
 //   font-size: 0.85rem;
-//   font-weight: 600;
-//   color: ${TextMuted}; // Adjusted form label color from pure black to softer tone
+//   font-weight: 700;
+//   color: ${TextMuted};
 //   text-align: left;
+//   margin: 0;
 // `;
 
 // const Input = styled.input`
 //   width: 100%;
-//   padding: 10px;
+//   padding: 8px 10px;
 //   border: 1px solid ${Border};
 //   border-radius: 6px;
 //   font-size: 0.9rem;
 //   background: ${White};
 //   color: ${Dark};
 //   outline: none;
-//   transition: border-color 0.2s ease;
+//   box-sizing: border-box;
+//   margin: 0;
+//   box-shadow: 0 2px 6px rgba(15, 23, 42, 0.02);
 
 //   &:focus {
-//     border-color: ${Blue};
+//     border-color: ${PrimaryPink};
+//     box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.15);
 //   }
 // `;
 
 // const PasswordWrapper = styled.div`
 //   position: relative;
 //   width: 100%;
+//   margin: 0;
 // `;
 
 // const EyeButton = styled.button`
@@ -175,8 +198,8 @@
 //   border: none;
 //   cursor: pointer;
 //   font-size: 0.8rem;
-//   color: ${Blue};
-//   font-weight: 600;
+//   color: #db2777;
+//   font-weight: 700;
 
 //   &:hover {
 //     text-decoration: underline;
@@ -191,6 +214,7 @@
 //   line-height: 1.4;
 //   color: ${TextMuted};
 //   grid-column: span 2;
+//   margin: 0;
 
 //   @media (max-width: 500px) {
 //     grid-column: span 1;
@@ -202,14 +226,15 @@
 //   width: 16px;
 //   height: 16px;
 //   cursor: pointer;
-//   accent-color: ${Blue};
+//   accent-color: ${PrimaryPink};
 // `;
 
 // const PolicyText = styled.span`
 //   text-align: left;
+//   margin: 0;
 //   a {
-//     color: ${Blue};
-//     font-weight: 600;
+//     color: #db2777;
+//     font-weight: 700;
 //     text-decoration: underline;
 
 //     &:hover {
@@ -221,19 +246,21 @@
 // const Button = styled.button`
 //   grid-column: span 2;
 //   width: 100%;
-//   background: linear-gradient(135deg, ${Blue} 0%, ${Gold} 100%); // Gold and blue gradient button
+//   background: ${ThemeGradient};
 //   color: ${White};
 //   padding: 10px;
 //   font-size: 0.95rem;
 //   border: none;
-//   border-radius: 6px;
+//   border-radius: 8px;
 //   cursor: pointer;
 //   font-weight: 700;
-//   transition: opacity 0.2s ease, transform 0.2s ease;
+//   box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3);
+//   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+//   margin: 0;
 
 //   &:hover {
-//     opacity: 0.9;
-//     transform: translateY(-1px);
+//     transform: translateY(-2px);
+//     box-shadow: 0 6px 20px rgba(236, 72, 153, 0.45);
 //   }
 
 //   @media (max-width: 500px) {
@@ -243,15 +270,15 @@
 
 // const LinkText = styled.p`
 //   grid-column: span 2;
-//   margin-top: 10px;
+//   margin: 10px 0 0 0;
 //   cursor: pointer;
 //   color: ${TextMuted};
 //   font-size: 0.9rem;
 //   text-align: center;
 
 //   span {
-//     color: ${Blue};
-//     font-weight: 600;
+//     color: #db2777;
+//     font-weight: 700;
 
 //     &:hover {
 //       text-decoration: underline;
@@ -273,7 +300,7 @@
 //     phone: "",
 //     password: "",
 //     confirmPassword: "",
-//     role: "customer", // Hidden role field set by default, never displayed to user
+//     role: "customer",
 //   });
 //   const [agreed, setAgreed] = useState(false);
 //   const [showPassword, setShowPassword] = useState(false);
@@ -281,58 +308,7 @@
 
 //   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
-//   // const handleSubmit = async (e) => {
-//   //   e.preventDefault();
-
-//   //   if (form.email !== form.confirmEmail) {
-//   //     return Swal.fire("Error", "Emails do not match", "error");
-//   //   }
-
-//   //   if (form.password !== form.confirmPassword) {
-//   //     return Swal.fire("Error", "Passwords do not match", "error");
-//   //   }
-
-//   //   if (!agreed) {
-//   //     return Swal.fire(
-//   //       "Required",
-//   //       "You must agree to the Terms & Privacy Policy to continue",
-//   //       "warning"
-//   //     );
-//   //   }
-
-//   //   Swal.fire({
-//   //     title: "Please wait...",
-//   //     text: "Setting up your Bees Interior account...",
-//   //     allowOutsideClick: false,
-//   //     didOpen: () => Swal.showLoading(),
-//   //   });
-
-//   //   try {
-//   //     const { name, email, phone, password, role } = form;
-//   //     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-//   //     const user = userCredential.user;
-
-//   //     await updateProfile(user, { displayName: name });
-
-//   //     await setDoc(doc(db, "users", user.uid), {
-//   //       uid: user.uid,
-//   //       name,
-//   //       email,
-//   //       phone,
-//   //       role, // Stored safely in Firestore backend
-//   //       createdAt: new Date(),
-//   //     });
-
-//   //     Swal.fire("Success 🎉", "Welcome to Bees Interior! Your account is ready.", "success");
-//   //     router.push("/login");
-//   //   } catch (err) {
-//   //     Swal.fire("Error ❌", err.message, "error");
-//   //   }
-//   // };
-
-
-
-// const handleSubmit = async (e) => {
+//   const handleSubmit = async (e) => {
 //     e.preventDefault();
 
 //     if (form.email !== form.confirmEmail) {
@@ -353,7 +329,7 @@
 
 //     Swal.fire({
 //       title: "Please wait...",
-//       text: "Setting up your Bees Interior account...",
+//       text: "Setting up your account...",
 //       allowOutsideClick: false,
 //       didOpen: () => Swal.showLoading(),
 //     });
@@ -361,13 +337,11 @@
 //     try {
 //       const { name, email, phone, password, role } = form;
       
-//       // 1. This creates the user AND automatically logs them into Firebase
 //       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
 //       const user = userCredential.user;
 
 //       await updateProfile(user, { displayName: name });
 
-//       // 2. Creates their database record
 //       await setDoc(doc(db, "users", user.uid), {
 //         uid: user.uid,
 //         name,
@@ -377,9 +351,7 @@
 //         createdAt: new Date(),
 //       });
 
-//       Swal.fire("Success 🎉", "Welcome to Bees Interior! Your account is ready.", "success");
-      
-//       // 3. FIX: Redirect to Dashboard, NOT login, because they are already logged in
+//       Swal.fire("Success 🎉", "Welcome! Your account is ready.", "success");
 //       router.push("/dashboard"); 
       
 //     } catch (err) {
@@ -387,20 +359,18 @@
 //     }
 //   };
 
-
-
 //   return (
 //     <PageContainer>
 //       <AuthWrapper>
 //         {/* Left Visual Branding Panel */}
 //         <BrandingSide>
 //           <BrandLogo>
-//             BEES <span>INTERIOR</span>
+//             KINGSWORD CRAFT
 //           </BrandLogo>
 //           <BrandingContent>
-//             <Headline>Design Your Dream Space</Headline>
+//             <Headline>Create Your Account</Headline>
 //             <Subtext>
-//               Join our exclusive interior ecosystem to track consultations, curate luxury home products, and experience sophisticated living.
+//               Join our exclusive ecosystem to track purchases, manage items, and experience modern luxury shopping.
 //             </Subtext>
 //           </BrandingContent>
 //           <div /> {/* Spacer */}
@@ -504,7 +474,6 @@
 
 
 
-
 "use client";
 
 import { useState } from "react";
@@ -515,25 +484,24 @@ import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { auth, db } from "@/firebaseConfig";
 
-// 🎨 KINGSWORD CRAFT THEME COLORS (Vibrant Luxury & Modern Palette)
-const PrimaryPink = "#ec4899";
-const AccentGold = "#f59e0b";
-const AccentCyan = "#06b6d4";
+// 🎨 ENITZ GLOBAL BRAND THEME COLORS
+const PrimaryNavy = "#0B1B48";
+const PrimaryCyan = "#00AEEF";
 const Dark = "#0f172a";
-const Border = "rgba(226, 232, 240, 0.9)";
+const Border = "#cbd5e1";
 const White = "#ffffff";
 const LightBg = "#f8fafc";
 const TextMuted = "#475569";
-const ThemeGradient = "linear-gradient(135deg, #ec4899 0%, #f59e0b 50%, #06b6d4 100%)";
+const ThemeGradient = "linear-gradient(135deg, #0B1B48 0%, #00AEEF 100%)";
 
-// 🌟 Styled Components (Strict max 10px spacing/gaps/margins/padding rule)
+// 🌟 Styled Components (Clean, Professional Spacing)
 const PageContainer = styled.div`
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   background: ${LightBg};
-  padding: 10px;
+  padding: 24px 16px;
   box-sizing: border-box;
 `;
 
@@ -543,9 +511,9 @@ const AuthWrapper = styled.div`
   width: 100%;
   max-width: 1000px;
   background: ${White};
-  border-radius: 10px;
+  border-radius: 20px;
   border: 1px solid ${Border};
-  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.05);
+  box-shadow: 0 12px 30px rgba(11, 27, 72, 0.08);
   overflow: hidden;
 
   @media (max-width: 768px) {
@@ -556,7 +524,7 @@ const AuthWrapper = styled.div`
 const BrandingSide = styled.div`
   background: ${ThemeGradient};
   color: ${White};
-  padding: 10px;
+  padding: 40px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -567,7 +535,7 @@ const BrandingSide = styled.div`
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, rgba(15, 23, 42, 0.15) 0%, rgba(0, 0, 0, 0.1) 100%);
+    background: linear-gradient(135deg, rgba(11, 27, 72, 0.15) 0%, rgba(0, 0, 0, 0.1) 100%);
     z-index: 1;
   }
 `;
@@ -577,7 +545,7 @@ const BrandingContent = styled.div`
   z-index: 2;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 16px;
   margin: auto 0;
 `;
 
@@ -587,9 +555,11 @@ const BrandLogo = styled.h3`
   letter-spacing: -0.5px;
   color: ${White};
   margin: 0;
+  position: relative;
+  z-index: 2;
 
   span {
-    color: ${AccentGold};
+    color: ${PrimaryCyan};
   }
 `;
 
@@ -610,35 +580,37 @@ const Subtext = styled.p`
 `;
 
 const FormSide = styled.div`
-  padding: 10px;
+  padding: 40px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   color: ${TextMuted};
   box-sizing: border-box;
+
+  @media (max-width: 480px) {
+    padding: 24px;
+  }
 `;
 
 const FormHeader = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-bottom: 10px;
+  gap: 8px;
+  margin-bottom: 24px;
 `;
 
 const Title = styled.h2`
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   font-weight: 800;
   margin: 0;
-  background: ${ThemeGradient};
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: ${PrimaryNavy};
   text-align: left;
 `;
 
 const FormGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  gap: 16px;
 
   @media (max-width: 500px) {
     grid-template-columns: 1fr;
@@ -648,7 +620,7 @@ const FormGrid = styled.div`
 const InputGroup = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   grid-column: ${(props) => (props.$full ? "span 2" : "span 1")};
 
   @media (max-width: 500px) {
@@ -666,20 +638,21 @@ const Label = styled.label`
 
 const Input = styled.input`
   width: 100%;
-  padding: 8px 10px;
+  padding: 12px 16px;
   border: 1px solid ${Border};
-  border-radius: 6px;
-  font-size: 0.9rem;
+  border-radius: 10px;
+  font-size: 0.95rem;
   background: ${White};
   color: ${Dark};
   outline: none;
   box-sizing: border-box;
   margin: 0;
-  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.02);
+  box-shadow: 0 2px 6px rgba(11, 27, 72, 0.02);
+  transition: all 0.2s ease;
 
   &:focus {
-    border-color: ${PrimaryPink};
-    box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.15);
+    border-color: ${PrimaryCyan};
+    box-shadow: 0 0 0 3px rgba(0, 174, 239, 0.15);
   }
 `;
 
@@ -691,14 +664,14 @@ const PasswordWrapper = styled.div`
 
 const EyeButton = styled.button`
   position: absolute;
-  right: 10px;
+  right: 14px;
   top: 50%;
   transform: translateY(-50%);
   background: transparent;
   border: none;
   cursor: pointer;
-  font-size: 0.8rem;
-  color: #db2777;
+  font-size: 0.85rem;
+  color: ${PrimaryCyan};
   font-weight: 700;
 
   &:hover {
@@ -714,7 +687,7 @@ const CheckboxWrapper = styled.div`
   line-height: 1.4;
   color: ${TextMuted};
   grid-column: span 2;
-  margin: 0;
+  margin: 4px 0;
 
   @media (max-width: 500px) {
     grid-column: span 1;
@@ -726,19 +699,19 @@ const Checkbox = styled.input`
   width: 16px;
   height: 16px;
   cursor: pointer;
-  accent-color: ${PrimaryPink};
+  accent-color: ${PrimaryCyan};
 `;
 
 const PolicyText = styled.span`
   text-align: left;
   margin: 0;
   a {
-    color: #db2777;
+    color: ${PrimaryCyan};
     font-weight: 700;
     text-decoration: underline;
 
     &:hover {
-      color: ${Dark};
+      color: ${PrimaryNavy};
     }
   }
 `;
@@ -748,19 +721,20 @@ const Button = styled.button`
   width: 100%;
   background: ${ThemeGradient};
   color: ${White};
-  padding: 10px;
-  font-size: 0.95rem;
+  padding: 14px;
+  font-size: 1rem;
   border: none;
-  border-radius: 8px;
+  border-radius: 12px;
   cursor: pointer;
   font-weight: 700;
-  box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3);
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  margin: 0;
+  box-shadow: 0 6px 20px rgba(0, 174, 239, 0.3);
+  transition: all 0.3s ease;
+  margin-top: 4px;
 
   &:hover {
+    opacity: 0.92;
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(236, 72, 153, 0.45);
+    box-shadow: 0 8px 25px rgba(0, 174, 239, 0.45);
   }
 
   @media (max-width: 500px) {
@@ -770,14 +744,14 @@ const Button = styled.button`
 
 const LinkText = styled.p`
   grid-column: span 2;
-  margin: 10px 0 0 0;
+  margin: 12px 0 0 0;
   cursor: pointer;
   color: ${TextMuted};
   font-size: 0.9rem;
   text-align: center;
 
   span {
-    color: #db2777;
+    color: ${PrimaryCyan};
     font-weight: 700;
 
     &:hover {
@@ -865,12 +839,12 @@ export default function UserSignup() {
         {/* Left Visual Branding Panel */}
         <BrandingSide>
           <BrandLogo>
-            KINGSWORD CRAFT
+            ENITZ <span>GLOBAL</span>
           </BrandLogo>
           <BrandingContent>
             <Headline>Create Your Account</Headline>
             <Subtext>
-              Join our exclusive ecosystem to track purchases, manage items, and experience modern luxury shopping.
+              Join our ecosystem to track purchases, manage items, and experience modern transactions.
             </Subtext>
           </BrandingContent>
           <div /> {/* Spacer */}

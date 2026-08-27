@@ -1,18 +1,24 @@
+
+
+
+
+
 // "use client";
 
 // import React, { useEffect, useState } from "react";
 // import { db } from "@/firebaseConfig";
-// import { doc, getDoc } from "firebase/firestore";
+// import { doc, getDoc, updateDoc } from "firebase/firestore";
 // import { useRouter, useParams } from "next/navigation";
 // import styled from "styled-components";
 // import Swal from "sweetalert2";
 
-// // 🎨 BEES INTERIOR THEME COLORS
-// const Blue = "#2563eb";
+// // 🎨 NEW THEME COLORS & GRADIENTS (Vibrant Pink, Turquoise & Dynamic Accent)
+// const PrimaryColor = "#ec4899";
+// const Turquoise = "#06b6d4";
+// const AccentGradient = "linear-gradient(135deg, #ec4899 0%, #f59e0b 50%, #06b6d4 100%)";
 // const Dark = "#0f172a";
 // const Border = "#e5eaf2";
 // const White = "#ffffff";
-// const Gold = "#D4AF37";
 // const TextMuted = "#475569";
 // const Danger = "#ef4444";
 // const Success = "#10b981";
@@ -37,14 +43,14 @@
 // `;
 
 // const HeaderBanner = styled.div`
-//   background: linear-gradient(135deg, ${Blue} 0%, ${Gold} 100%);
+//   background: ${AccentGradient};
 //   color: ${White};
 //   padding: 16px;
 //   border-radius: 12px;
 //   display: flex;
 //   flex-direction: column;
 //   gap: 8px;
-//   box-shadow: 0 4px 20px rgba(15, 23, 42, 0.08);
+//   box-shadow: 0 6px 20px rgba(236, 72, 153, 0.15);
 
 //   @media (min-width: 768px) {
 //     padding: 24px;
@@ -63,10 +69,11 @@
 //   font-size: 1.4rem;
 //   font-weight: 800;
 //   margin: 0;
-//   background: linear-gradient(90deg, #ffffff 0%, #fef08a 100%);
+//   background: linear-gradient(90deg, #ffffff 0%, #fbcfe8 100%);
 //   -webkit-background-clip: text;
 //   -webkit-text-fill-color: transparent;
 //   letter-spacing: -0.5px;
+//   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 
 //   @media (min-width: 768px) {
 //     font-size: 2rem;
@@ -86,14 +93,14 @@
 
 //   &:hover {
 //     background: ${White};
-//     color: ${Blue};
+//     color: ${PrimaryColor};
 //   }
 // `;
 
 // const ColorfulSub = styled.p`
 //   font-size: 0.9rem;
 //   margin: 0;
-//   color: #f8fafc;
+//   color: #fdf2f8;
 //   opacity: 0.95;
 
 //   @media (min-width: 768px) {
@@ -123,7 +130,7 @@
 //   border-radius: 12px;
 //   padding: 16px;
 //   border: 1px solid ${Border};
-//   border-top: 4px solid ${Blue};
+//   border-top: 4px solid ${Turquoise};
 //   box-shadow: 0 4px 15px rgba(15, 23, 42, 0.03);
 //   display: flex;
 //   flex-direction: column;
@@ -138,7 +145,7 @@
 //   font-size: 1.1rem;
 //   font-weight: 800;
 //   margin: 0;
-//   color: ${Blue};
+//   color: ${PrimaryColor};
 //   border-bottom: 2px solid ${Border};
 //   padding-bottom: 8px;
 // `;
@@ -185,13 +192,13 @@
 //     props.$variant === "danger" ? "rgba(239, 68, 68, 0.1)" : 
 //     props.$variant === "success" ? "rgba(16, 185, 129, 0.1)" : 
 //     props.$variant === "warning" ? "rgba(245, 158, 11, 0.1)" : 
-//     "rgba(37, 99, 235, 0.1)"
+//     "rgba(6, 182, 212, 0.1)"
 //   };
 //   color: ${(props) => 
 //     props.$variant === "danger" ? Danger : 
 //     props.$variant === "success" ? Success : 
 //     props.$variant === "warning" ? Warning : 
-//     Blue
+//     Turquoise
 //   };
 //   padding: 4px 10px;
 //   border-radius: 6px;
@@ -214,6 +221,12 @@
 //   border-radius: 8px;
 //   background: #f8fafc;
 //   cursor: pointer;
+//   transition: all 0.2s ease;
+
+//   &:hover {
+//     border-color: ${PrimaryColor};
+//     box-shadow: 0 2px 10px rgba(236, 72, 153, 0.08);
+//   }
 // `;
 
 // const ProductImage = styled.img`
@@ -257,7 +270,7 @@
 //   text-align: right;
 //   font-weight: 800;
 //   font-size: 0.95rem;
-//   color: ${Blue};
+//   color: ${PrimaryColor};
 //   white-space: nowrap;
 // `;
 
@@ -270,7 +283,7 @@
 
 //   &.total {
 //     font-size: 1.15rem;
-//     color: ${Blue};
+//     color: ${PrimaryColor};
 //     font-weight: 800;
 //     border-top: 2px solid ${Border};
 //     padding-top: 10px;
@@ -286,17 +299,30 @@
 //   padding: 60px;
 //   text-align: center;
 //   font-size: 1.1rem;
-//   color: ${Blue};
+//   color: ${PrimaryColor};
 //   font-weight: 700;
 // `;
 
 // export default function OrderDetailsPage() {
 //   const router = useRouter();
 //   const params = useParams();
-//   const orderId = params?.id; // Dynamic route segment: [id]
+//   const orderId = params?.id;
 
 //   const [order, setOrder] = useState(null);
 //   const [loading, setLoading] = useState(true);
+
+
+
+
+  
+// // ⭐ Review Modal State
+//   const [reviewModalOpen, setReviewModalOpen] = useState(false);
+//   const [selectedProductForReview, setSelectedProductForReview] = useState(null);
+//   const [rating, setRating] = useState(5);
+//   const [comment, setComment] = useState("");
+//   const [submittingReview, setSubmittingReview] = useState(false);
+
+
 
 //   useEffect(() => {
 //     const fetchOrderDetails = async () => {
@@ -324,6 +350,80 @@
 
 //     fetchOrderDetails();
 //   }, [orderId]);
+
+
+
+
+
+
+
+//   // 📝 Function to open the review modal for a specific product
+//   const handleOpenReviewModal = (item) => {
+//     setSelectedProductForReview(item);
+//     setRating(5);
+//     setComment("");
+//     setReviewModalOpen(true);
+//   };
+
+//   // 🚀 Function to submit the review and update the product document in Firestore
+//   const handleSubmitReview = async () => {
+//     if (!selectedProductForReview || !selectedProductForReview.id) {
+//       Swal.fire("Error", "Product ID is missing.", "error");
+//       return;
+//     }
+
+//     try {
+//       setSubmittingReview(true);
+//       const productRef = doc(db, "products", selectedProductForReview.id);
+//       const productSnap = await getDoc(productRef);
+
+//       const newReview = {
+//         userName: account.name || "Anonymous Customer",
+//         userEmail: account.email || "",
+//         rating: Number(rating),
+//         comment: comment.trim(),
+//         createdAt: new Date().toISOString(),
+//       };
+
+//       if (productSnap.exists()) {
+//         const productData = productSnap.data();
+//         const existingReviews = productData.reviews || [];
+//         const updatedReviews = [newReview, ...existingReviews];
+
+//         // Calculate new average rating
+//         const totalRatingSum = updatedReviews.reduce((sum, r) => sum + r.rating, 0);
+//         const averageRating = (totalRatingSum / updatedReviews.length).toFixed(1);
+
+//         await updateDoc(productRef, {
+//           reviews: updatedReviews,
+//           rating: Number(averageRating),
+//           reviewCount: updatedReviews.length,
+//         });
+//       } else {
+//         // If product doc doesn't exist yet, initialize it
+//         await setDoc(productRef, {
+//           reviews: [newReview],
+//           rating: Number(rating),
+//           reviewCount: 1,
+//         }, { merge: true });
+//       }
+
+//       Swal.fire("Success!", "Your review has been posted.", "success");
+//       setReviewModalOpen(false);
+//     } catch (error) {
+//       console.error("Error submitting review:", error);
+//       Swal.fire("Error", "Failed to submit review. Please try again.", "error");
+//     } finally {
+//       setSubmittingReview(false);
+//     }
+//   };
+
+
+
+
+
+
+
 
 //   if (loading) {
 //     return <LoadingContainer>Loading complete order information...</LoadingContainer>;
@@ -368,6 +468,27 @@
 //           <Card>
 //             <CardTitle>Ordered Products ({items.length})</CardTitle>
 //             <ProductsList>
+//               {/* {items.map((item, index) => {
+//                 const price = Number(item.price || item.amount || 0);
+//                 const qty = Number(item.quantity || 1);
+//                 const itemTotal = price * qty;
+//                 const imgSrc = item.image || item.img || item.imageUrl || "https://placehold.co/100x100?text=Product";
+
+//                 return (
+//                   <ProductItem key={`${item.id || index}`} onClick={() => router.push(`/productdetail/${item.id}`)}>
+//                     <ProductImage src={imgSrc} alt={item.name || item.title || "Product Image"} />
+//                     <ProductDetails>
+//                       <ProductName>{item.name || item.title || "Unnamed Product"}</ProductName>
+//                       <p style={{fontSize:'0.6rem'}}>ID: {item.id}</p>
+//                       <ProductMeta>Qty: {qty} × ₦{price.toLocaleString()}</ProductMeta>
+//                     </ProductDetails>
+//                     <ProductPriceTag>
+//                       ₦{itemTotal.toLocaleString()}
+//                     </ProductPriceTag>
+//                   </ProductItem>
+//                 );
+//               })} */}
+
 //               {items.map((item, index) => {
 //                 const price = Number(item.price || item.amount || 0);
 //                 const qty = Number(item.quantity || 1);
@@ -375,18 +496,44 @@
 //                 const imgSrc = item.image || item.img || item.imageUrl || "https://placehold.co/100x100?text=Product";
 
 //                 return (
-//                   <ProductItem key={`${item.id || index}`} onClick={()=>router.push(`/productdetail/${item.id}`)}>
-//                     <ProductImage src={imgSrc} alt={item.name || item.title || "Product Image"} />
-//                     <ProductDetails>
+//                   <ProductItem key={`${item.id || index}`}>
+//                     <ProductImage 
+//                       src={imgSrc} 
+//                       alt={item.name || item.title || "Product Image"} 
+//                       onClick={() => router.push(`/productdetail/${item.id}`)}
+//                       style={{ cursor: "pointer" }}
+//                     />
+//                     <ProductDetails onClick={() => router.push(`/productdetail/${item.id}`)} style={{ cursor: "pointer" }}>
 //                       <ProductName>{item.name || item.title || "Unnamed Product"}</ProductName>
-//                       <p style={{fontSize:'0.6rem'}}>ID: {item.id}</p>
+//                       <p style={{fontSize:'0.6rem', margin: 0}}>ID: {item.id}</p>
 //                       <ProductMeta>Qty: {qty} × ₦{price.toLocaleString()}</ProductMeta>
-//                       {/* {item.selectedColor && <ProductMeta>Color: {item.selectedColor}</ProductMeta>} */}
-//                       {/* {item.selectedSize && <ProductMeta>Size: {item.selectedSize}</ProductMeta>} */}
 //                     </ProductDetails>
-//                     <ProductPriceTag>
-//                       ₦{itemTotal.toLocaleString()}
-//                     </ProductPriceTag>
+                    
+//                     <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "6px" }}>
+//                       <ProductPriceTag>
+//                         ₦{itemTotal.toLocaleString()}
+//                       </ProductPriceTag>
+//                       {item.id && (
+//                         <button
+//                           onClick={(e) => {
+//                             e.stopPropagation();
+//                             handleOpenReviewModal(item);
+//                           }}
+//                           style={{
+//                             background: PrimaryColor,
+//                             color: White,
+//                             border: "none",
+//                             padding: "4px 10px",
+//                             borderRadius: "6px",
+//                             fontSize: "0.75rem",
+//                             fontWeight: "700",
+//                             cursor: "pointer",
+//                           }}
+//                         >
+//                           ⭐ Review
+//                         </button>
+//                       )}
+//                     </div>
 //                   </ProductItem>
 //                 );
 //               })}
@@ -496,9 +643,87 @@
 //           </Card>
 //         </Column>
 //       </GridContent>
+
+
+
+//       {/* ⭐ Product Review Modal */}
+//       {reviewModalOpen && (
+//         <div style={{
+//           position: "fixed",
+//           top: 0,
+//           left: 0,
+//           width: "100%",
+//           height: "100%",
+//           background: "rgba(0,0,0,0.5)",
+//           display: "flex",
+//           alignItems: "center",
+//           justifyContent: "center",
+//           zIndex: 1000,
+//           padding: "15px"
+//         }}>
+//           <div style={{
+//             background: White,
+//             borderRadius: "12px",
+//             padding: "24px",
+//             width: "100%",
+//             maxWidth: "450px",
+//             display: "flex",
+//             flexDirection: "column",
+//             gap: "16px",
+//             boxShadow: "0 10px 25px rgba(0,0,0,0.1)"
+//           }}>
+//             <h3 style={{ margin: 0, color: PrimaryColor, fontSize: "1.2rem" }}>
+//               Review: {selectedProductForReview?.name || selectedProductForReview?.title}
+//             </h3>
+
+//             <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+//               <Label>Rating (1 to 5 Stars)</Label>
+//               <select 
+//                 value={rating} 
+//                 onChange={(e) => setRating(Number(e.target.value))}
+//                 style={{ padding: "10px", borderRadius: "6px", border: `1px solid ${Border}`, fontSize: "0.95rem" }}
+//               >
+//                 <option value={5}>⭐⭐⭐⭐⭐ (5 - Excellent)</option>
+//                 <option value={4}>⭐⭐⭐⭐ (4 - Very Good)</option>
+//                 <option value={3}>⭐⭐⭐ (3 - Good)</option>
+//                 <option value={2}>⭐⭐ (2 - Fair)</option>
+//                 <option value={1}>⭐ (1 - Poor)</option>
+//               </select>
+//             </div>
+
+//             <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+//               <Label>Your Review Comment</Label>
+//               <textarea 
+//                 rows={4}
+//                 value={comment}
+//                 onChange={(e) => setComment(e.target.value)}
+//                 placeholder="Write your thoughts about this handcrafted bag..."
+//                 style={{ padding: "10px", borderRadius: "6px", border: `1px solid ${Border}`, fontSize: "0.9rem", resize: "vertical" }}
+//               />
+//             </div>
+
+//             <div style={{ display: "flex", justifyContent: "flex-end", gap: "10px", marginTop: "10px" }}>
+//               <button 
+//                 onClick={() => setReviewModalOpen(false)}
+//                 style={{ background: "#e2e8f0", color: Dark, border: "none", padding: "8px 16px", borderRadius: "6px", fontWeight: "750", cursor: "pointer" }}
+//               >
+//                 Cancel
+//               </button>
+//               <button 
+//                 onClick={handleSubmitReview}
+//                 disabled={submittingReview}
+//                 style={{ background: PrimaryColor, color: White, border: "none", padding: "8px 16px", borderRadius: "6px", fontWeight: "750", cursor: "pointer" }}
+//               >
+//                 {submittingReview ? "Submitting..." : "Post Review"}
+//               </button>
+//             </div>
+//           </div>
+//         </div>
+//       )}
 //     </Container>
 //   );
 // }
+
 
 
 
@@ -509,19 +734,20 @@
 
 import React, { useEffect, useState } from "react";
 import { db } from "@/firebaseConfig";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc, setDoc } from "firebase/firestore";
 import { useRouter, useParams } from "next/navigation";
 import styled from "styled-components";
 import Swal from "sweetalert2";
 
-// 🎨 NEW THEME COLORS & GRADIENTS (Vibrant Pink, Turquoise & Dynamic Accent)
-const PrimaryColor = "#ec4899";
-const Turquoise = "#06b6d4";
-const AccentGradient = "linear-gradient(135deg, #ec4899 0%, #f59e0b 50%, #06b6d4 100%)";
+// 🎨 NEW THEME COLORS & GRADIENTS (Navy & Cyan Theme)
+const PrimaryNavy = "#0B1B48";
+const PrimaryCyan = "#00AEEF";
 const Dark = "#0f172a";
-const Border = "#e5eaf2";
+const Border = "#cbd5e1";
 const White = "#ffffff";
 const TextMuted = "#475569";
+const LightBg = "#f8fafc";
+const ThemeGradient = "linear-gradient(135deg, #0B1B48 0%, #00AEEF 100%)";
 const Danger = "#ef4444";
 const Success = "#10b981";
 const Warning = "#f59e0b";
@@ -545,14 +771,14 @@ const Container = styled.div`
 `;
 
 const HeaderBanner = styled.div`
-  background: ${AccentGradient};
+  background: ${ThemeGradient};
   color: ${White};
   padding: 16px;
   border-radius: 12px;
   display: flex;
   flex-direction: column;
   gap: 8px;
-  box-shadow: 0 6px 20px rgba(236, 72, 153, 0.15);
+  box-shadow: 0 6px 20px rgba(11, 27, 72, 0.15);
 
   @media (min-width: 768px) {
     padding: 24px;
@@ -571,7 +797,7 @@ const ColorfulTitle = styled.h1`
   font-size: 1.4rem;
   font-weight: 800;
   margin: 0;
-  background: linear-gradient(90deg, #ffffff 0%, #fbcfe8 100%);
+  background: linear-gradient(90deg, #ffffff 0%, #e0f2fe 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   letter-spacing: -0.5px;
@@ -595,14 +821,14 @@ const BackButton = styled.button`
 
   &:hover {
     background: ${White};
-    color: ${PrimaryColor};
+    color: ${PrimaryNavy};
   }
 `;
 
 const ColorfulSub = styled.p`
   font-size: 0.9rem;
   margin: 0;
-  color: #fdf2f8;
+  color: #f1f5f9;
   opacity: 0.95;
 
   @media (min-width: 768px) {
@@ -632,7 +858,7 @@ const Card = styled.div`
   border-radius: 12px;
   padding: 16px;
   border: 1px solid ${Border};
-  border-top: 4px solid ${Turquoise};
+  border-top: 4px solid ${PrimaryCyan};
   box-shadow: 0 4px 15px rgba(15, 23, 42, 0.03);
   display: flex;
   flex-direction: column;
@@ -647,7 +873,7 @@ const CardTitle = styled.h3`
   font-size: 1.1rem;
   font-weight: 800;
   margin: 0;
-  color: ${PrimaryColor};
+  color: ${PrimaryNavy};
   border-bottom: 2px solid ${Border};
   padding-bottom: 8px;
 `;
@@ -694,13 +920,13 @@ const Badge = styled.span`
     props.$variant === "danger" ? "rgba(239, 68, 68, 0.1)" : 
     props.$variant === "success" ? "rgba(16, 185, 129, 0.1)" : 
     props.$variant === "warning" ? "rgba(245, 158, 11, 0.1)" : 
-    "rgba(6, 182, 212, 0.1)"
+    "rgba(0, 174, 239, 0.1)"
   };
   color: ${(props) => 
     props.$variant === "danger" ? Danger : 
     props.$variant === "success" ? Success : 
     props.$variant === "warning" ? Warning : 
-    Turquoise
+    PrimaryCyan
   };
   padding: 4px 10px;
   border-radius: 6px;
@@ -721,13 +947,13 @@ const ProductItem = styled.div`
   padding: 10px;
   border: 1px solid ${Border};
   border-radius: 8px;
-  background: #f8fafc;
+  background: ${LightBg};
   cursor: pointer;
   transition: all 0.2s ease;
 
   &:hover {
-    border-color: ${PrimaryColor};
-    box-shadow: 0 2px 10px rgba(236, 72, 153, 0.08);
+    border-color: ${PrimaryCyan};
+    box-shadow: 0 2px 10px rgba(0, 174, 239, 0.08);
   }
 `;
 
@@ -772,7 +998,7 @@ const ProductPriceTag = styled.div`
   text-align: right;
   font-weight: 800;
   font-size: 0.95rem;
-  color: ${PrimaryColor};
+  color: ${PrimaryNavy};
   white-space: nowrap;
 `;
 
@@ -785,7 +1011,7 @@ const SummaryRow = styled.div`
 
   &.total {
     font-size: 1.15rem;
-    color: ${PrimaryColor};
+    color: ${PrimaryNavy};
     font-weight: 800;
     border-top: 2px solid ${Border};
     padding-top: 10px;
@@ -801,7 +1027,7 @@ const LoadingContainer = styled.div`
   padding: 60px;
   text-align: center;
   font-size: 1.1rem;
-  color: ${PrimaryColor};
+  color: ${PrimaryNavy};
   font-weight: 700;
 `;
 
@@ -813,18 +1039,12 @@ export default function OrderDetailsPage() {
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
 
-
-
-
-  
-// ⭐ Review Modal State
+  // ⭐ Review Modal State
   const [reviewModalOpen, setReviewModalOpen] = useState(false);
   const [selectedProductForReview, setSelectedProductForReview] = useState(null);
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState("");
   const [submittingReview, setSubmittingReview] = useState(false);
-
-
 
   useEffect(() => {
     const fetchOrderDetails = async () => {
@@ -852,12 +1072,6 @@ export default function OrderDetailsPage() {
 
     fetchOrderDetails();
   }, [orderId]);
-
-
-
-
-
-
 
   // 📝 Function to open the review modal for a specific product
   const handleOpenReviewModal = (item) => {
@@ -920,13 +1134,6 @@ export default function OrderDetailsPage() {
     }
   };
 
-
-
-
-
-
-
-
   if (loading) {
     return <LoadingContainer>Loading complete order information...</LoadingContainer>;
   }
@@ -970,27 +1177,6 @@ export default function OrderDetailsPage() {
           <Card>
             <CardTitle>Ordered Products ({items.length})</CardTitle>
             <ProductsList>
-              {/* {items.map((item, index) => {
-                const price = Number(item.price || item.amount || 0);
-                const qty = Number(item.quantity || 1);
-                const itemTotal = price * qty;
-                const imgSrc = item.image || item.img || item.imageUrl || "https://placehold.co/100x100?text=Product";
-
-                return (
-                  <ProductItem key={`${item.id || index}`} onClick={() => router.push(`/productdetail/${item.id}`)}>
-                    <ProductImage src={imgSrc} alt={item.name || item.title || "Product Image"} />
-                    <ProductDetails>
-                      <ProductName>{item.name || item.title || "Unnamed Product"}</ProductName>
-                      <p style={{fontSize:'0.6rem'}}>ID: {item.id}</p>
-                      <ProductMeta>Qty: {qty} × ₦{price.toLocaleString()}</ProductMeta>
-                    </ProductDetails>
-                    <ProductPriceTag>
-                      ₦{itemTotal.toLocaleString()}
-                    </ProductPriceTag>
-                  </ProductItem>
-                );
-              })} */}
-
               {items.map((item, index) => {
                 const price = Number(item.price || item.amount || 0);
                 const qty = Number(item.quantity || 1);
@@ -1022,7 +1208,7 @@ export default function OrderDetailsPage() {
                             handleOpenReviewModal(item);
                           }}
                           style={{
-                            background: PrimaryColor,
+                            background: PrimaryCyan,
                             color: White,
                             border: "none",
                             padding: "4px 10px",
@@ -1146,8 +1332,6 @@ export default function OrderDetailsPage() {
         </Column>
       </GridContent>
 
-
-
       {/* ⭐ Product Review Modal */}
       {reviewModalOpen && (
         <div style={{
@@ -1174,7 +1358,7 @@ export default function OrderDetailsPage() {
             gap: "16px",
             boxShadow: "0 10px 25px rgba(0,0,0,0.1)"
           }}>
-            <h3 style={{ margin: 0, color: PrimaryColor, fontSize: "1.2rem" }}>
+            <h3 style={{ margin: 0, color: PrimaryNavy, fontSize: "1.2rem" }}>
               Review: {selectedProductForReview?.name || selectedProductForReview?.title}
             </h3>
 
@@ -1199,7 +1383,7 @@ export default function OrderDetailsPage() {
                 rows={4}
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
-                placeholder="Write your thoughts about this handcrafted bag..."
+                placeholder="Write your thoughts about this product..."
                 style={{ padding: "10px", borderRadius: "6px", border: `1px solid ${Border}`, fontSize: "0.9rem", resize: "vertical" }}
               />
             </div>
@@ -1214,7 +1398,7 @@ export default function OrderDetailsPage() {
               <button 
                 onClick={handleSubmitReview}
                 disabled={submittingReview}
-                style={{ background: PrimaryColor, color: White, border: "none", padding: "8px 16px", borderRadius: "6px", fontWeight: "750", cursor: "pointer" }}
+                style={{ background: PrimaryCyan, color: White, border: "none", padding: "8px 16px", borderRadius: "6px", fontWeight: "750", cursor: "pointer" }}
               >
                 {submittingReview ? "Submitting..." : "Post Review"}
               </button>

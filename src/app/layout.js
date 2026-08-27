@@ -19,8 +19,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "KINGS WORD BAG CRAFT",
-  description: "Where African Heritage Inspires Contemporary Elegance",
+  title: "ENITZ GLOBAL",
+  description: "Quality Products. Great Prices",
    icons: {
     icon: "/favicon.ico",
   },

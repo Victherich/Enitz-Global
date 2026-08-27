@@ -6,7 +6,7 @@ import Link from 'next/link';
 import WhyChooseUsSection from '@/components/WhyChooseUsSection';
 import HeroSection2 from '@/components/Hero';
 import LandingPageComponent from '@/components/LandingPageComponent';
-import ArtisanStoryComponent from '@/components/ArtisaStoryComponent';
+import TestimonialsSection from '@/components/TestimonialSection';
 
 
 
@@ -515,7 +515,7 @@ export default function CompleteLandingPage() {
     <HeroSection2/>
     <LandingPageComponent/>
     <LandingProductsSection/>
-    <ArtisanStoryComponent/>
+ <TestimonialsSection/>
     </>
 
   );

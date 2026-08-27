@@ -41,81 +41,85 @@ const router = useRouter();
 
 
 
-  
 //after payment logic
-//   async function finalizeOnlinePaymentOrder(paymentData, verificationNumber) {
-//   try {
-//     const storedOrder = localStorage.getItem('pendingOrder');
-//     if (!storedOrder) {
-//       console.warn("No pending order found in localStorage.");
-//       return;
-//     }
+  // async function finalizeOnlinePaymentOrder(paymentData, verificationNumber) {
+  //   try {
+  //     const storedOrder = localStorage.getItem('pendingOrder');
+  //     if (!storedOrder) {
+  //       console.warn("No pending order found in localStorage.");
+  //       return;
+  //     }
 
-//     const orderPayload = JSON.parse(storedOrder);
+  //     const orderPayload = JSON.parse(storedOrder);
 
-//     orderPayload.paymentStatus = 'Paid';
-//     orderPayload.createdAt = serverTimestamp();
+  //     orderPayload.paymentData = paymentData;
+  //     orderPayload.paymentVerificationNumber = verificationNumber;
 
-//     const docRef = await addDoc(collection(db, "orders"), orderPayload);
+  //     const docRef = await addDoc(collection(db, "orders"), orderPayload);
 
-//     const buyerEmail = orderPayload.accountInfo?.email || '';
-//     const sellerEmail = 'victorndu393@gmail.com';
+  //     const buyerEmail = orderPayload.accountInfo?.email || '';
+  //     // const sellerEmail = 'victorndu393@gmail.com';
+  //     const sellerEmail = 'admin@kingswordcraft.com';
 
-//     await fetch('/api/send-order-email', {
-//       method: 'POST',
-//       headers: { 'Content-Type': 'application/json' },
-//       body: JSON.stringify({
-//         orderId: docRef.id,
-//         payload: orderPayload,
-//         recipients: [buyerEmail, sellerEmail].filter(Boolean)
-//       })
-//     }).catch((err) => {
-//       console.error("Error triggering email notification:", err);
-//     });
+  //     await fetch('/api/send-order-email', {
+  //       method: 'POST',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: JSON.stringify({
+  //         orderId: docRef.id,
+  //         payload: orderPayload,
+  //         recipients: [buyerEmail, sellerEmail].filter(Boolean)
+  //       })
+  //     }).catch((err) => {
+  //       console.error("Error triggering email notification:", err);
+  //     });
 
-//     if (typeof clearCart === 'function') {
-//       clearCart();
-//     }
-//     localStorage.removeItem('selectedAddress');
-//     localStorage.removeItem('pendingOrder');
+  //     if (typeof clearCart === 'function') {
+  //       clearCart();
+  //     }
+  //     localStorage.removeItem('selectedAddress');
+  //     localStorage.removeItem('pendingOrder');
 
-//     await Swal.fire({
-//       title: 'Payment Successful!',
-//       text: 'Your order has been placed successfully and confirmation details sent to your email.',
-//       icon: 'success',
-//       confirmButtonText: 'View My Orders'
-//     });
-
-//     router.push('/dashboard/myorders');
-
-//   } catch (error) {
-//     console.error("Error finalizing online payment order:", error);
-//     Swal.fire('Error', 'Failed to save your order. Please contact support.', 'error');
-//   }
-// }
+  //   } catch (error) {
+  //     console.error("Error finalizing online payment order:", error);
+  //     Swal.fire('Error', 'Failed to save your order. Please contact support.', 'error');
+  //   throw error; // Re-throw so poller knows it failed if needed
+  //   }
+  // }
 
 
 
-//after payment logic
   async function finalizeOnlinePaymentOrder(paymentData, verificationNumber) {
+  try {
+    // 1. IDEMPOTENCY CHECK: Prevent duplicate orders if triggered multiple times
+    const ordersRef = collection(db, "orders");
+    const qCheck = query(ordersRef, where("paymentVerificationNumber", "==", verificationNumber));
+    const existingOrders = await getDocs(qCheck);
+
+    if (!existingOrders.empty) {
+      console.warn("Order already finalized for verification number:", verificationNumber);
+      return; // Stop here to prevent duplicate entries and duplicate emails
+    }
+
+    const storedOrder = localStorage.getItem('pendingOrder');
+    if (!storedOrder) {
+      console.warn("No pending order found in localStorage.");
+      return;
+    }
+
+    const orderPayload = JSON.parse(storedOrder);
+
+    orderPayload.paymentData = paymentData;
+    orderPayload.paymentVerificationNumber = verificationNumber;
+
+    // 2. Save order to Firestore first
+    const docRef = await addDoc(collection(db, "orders"), orderPayload);
+
+    const buyerEmail = orderPayload.accountInfo?.email || '';
+    // const sellerEmail = 'enitzglobal@gmail.com';
+    const sellerEmail = 'victorndu393@gmail.com';
+
+    // 3. ISOLATED EMAIL BLOCK: Ensure a failing email never blocks order cleanup
     try {
-      const storedOrder = localStorage.getItem('pendingOrder');
-      if (!storedOrder) {
-        console.warn("No pending order found in localStorage.");
-        return;
-      }
-
-      const orderPayload = JSON.parse(storedOrder);
-
-      orderPayload.paymentData = paymentData;
-      orderPayload.paymentVerificationNumber = verificationNumber;
-
-      const docRef = await addDoc(collection(db, "orders"), orderPayload);
-
-      const buyerEmail = orderPayload.accountInfo?.email || '';
-      // const sellerEmail = 'victorndu393@gmail.com';
-      const sellerEmail = 'admin@kingswordcraft.com';
-
       await fetch('/api/send-order-email', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -124,22 +128,24 @@ const router = useRouter();
           payload: orderPayload,
           recipients: [buyerEmail, sellerEmail].filter(Boolean)
         })
-      }).catch((err) => {
-        console.error("Error triggering email notification:", err);
       });
-
-      if (typeof clearCart === 'function') {
-        clearCart();
-      }
-      localStorage.removeItem('selectedAddress');
-      localStorage.removeItem('pendingOrder');
-
-    } catch (error) {
-      console.error("Error finalizing online payment order:", error);
-      Swal.fire('Error', 'Failed to save your order. Please contact support.', 'error');
-    throw error; // Re-throw so poller knows it failed if needed
+    } catch (emailErr) {
+      console.error("Error triggering email notification (non-fatal):", emailErr);
     }
+
+    // 4. Guaranteed Cleanup (Runs regardless of email success/failure)
+    if (typeof clearCart === 'function') {
+      clearCart();
+    }
+    localStorage.removeItem('selectedAddress');
+    localStorage.removeItem('pendingOrder');
+
+  } catch (error) {
+    console.error("Error finalizing online payment order:", error);
+    Swal.fire('Error', 'Failed to save your order. Please contact support.', 'error');
+    throw error; // Re-throw so poller knows it failed if needed
   }
+}
 
 
 
@@ -306,8 +312,8 @@ const router = useRouter();
         email,
         firstname: firstName,
         lastname: lastName,
-        subaccount: "ACCT_7k2sd8z7pxgyce9",
-      bearer: "subaccount",
+        // subaccount: "ACCT_7k2sd8z7pxgyce9",
+      // bearer: "subaccount",
         metadata: {
           custom_payment_verification_number: verificationNumber,
           source,

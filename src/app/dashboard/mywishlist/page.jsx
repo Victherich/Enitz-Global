@@ -1,3 +1,8 @@
+
+
+
+
+
 // 'use client';
 
 // import React, { useState, useEffect, useMemo } from 'react';
@@ -10,41 +15,41 @@
 // import Swal from "sweetalert2";
 
 // // --- THEME & STYLES ---
-// const primaryGold = '#D4AF37';
-// const primaryBlue = '#1E3A8A';
-// const goldGradient = 'linear-gradient(135deg, #FFDF73 0%, #D4AF37 50%, #AA7C11 100%)';
-// const blueGradient = 'linear-gradient(135deg, #3B82F6 0%, #1E3A8A 50%, #0F172A 100%)';
-
-// // 🎨 BEES INTERIOR THEME COLORS
-// const Blue = "#2563eb";
+// const PrimaryColor = '#ec4899';
+// const Turquoise = '#06b6d4';
+// const AccentGradient = 'linear-gradient(135deg, #ec4899 0%, #f59e0b 50%, #06b6d4 100%)';
 // const Dark = "#0f172a";
 // const Border = "#e5eaf2";
 // const White = "#ffffff";
-// const Gold = "#D4AF37";
 // const TextMuted = "#475569";
 // const Danger = "#ef4444";
 
 // const ProductsSection = styled.section`
 //   background: #FFFFFF;
-//   padding: 15px 10px;
-//   border-radius: 6px;
+//   padding: 10px;
+//   border-radius: 10px;
 //   display: flex;
 //   flex-direction: column;
-//   gap: 15px;
-//   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
-//   border: 1px solid rgba(226, 232, 240, 0.8);
+//   gap: 10px;
+//   box-shadow: 0 4px 15px rgba(15, 23, 42, 0.04);
+//   border: 1px solid ${Border};
+//   box-sizing: border-box;
+//   width: 100%;
 // `;
 
 // const SectionHeader = styled.div`
 //   text-align: center;
-//   margin-bottom: 5px;
+//   margin-bottom: 0px;
 //   padding: 0 10px;
+//   display: flex;
+//   flex-direction: column;
+//   gap: 4px;
 // `;
 
 // const SectionTitle = styled.h2`
 //   font-size: 24px;
 //   font-weight: 800;
-//   background: ${blueGradient};
+//   background: ${AccentGradient};
 //   -webkit-background-clip: text;
 //   -webkit-text-fill-color: transparent;
 //   margin: 0;
@@ -52,16 +57,16 @@
 
 // const SectionSubtitle = styled.p`
 //   font-size: 13px;
-//   color: #64748B;
-//   margin: 4px 0 0 0;
+//   color: ${TextMuted};
+//   margin: 0;
 // `;
 
 // // --- CONTROLS CONTAINER (Search & Filter) ---
 // const ControlsContainer = styled.div`
 //   display: flex;
-//   gap: 12px;
+//   gap: 10px;
 //   max-width: 600px;
-//   margin: 0 auto 10px auto;
+//   margin: 0 auto;
 //   width: 100%;
 //   box-sizing: border-box;
 //   padding: 0 10px;
@@ -74,18 +79,20 @@
 
 // const SearchInput = styled.input`
 //   flex: 1;
-//   padding: 10px 14px;
+//   padding: 8px 10px;
 //   border-radius: 6px;
 //   border: 1px solid ${Border};
 //   font-size: 13px;
 //   outline: none;
 //   background: #F8FAFC;
 //   color: ${Dark};
+//   box-sizing: border-box;
 //   transition: border-color 0.2s ease, background 0.2s ease;
 
 //   &:focus {
-//     border-color: ${Blue};
+//     border-color: ${PrimaryColor};
 //     background: ${White};
+//     box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.15);
 //   }
 
 //   &::placeholder {
@@ -94,7 +101,7 @@
 // `;
 
 // const SortSelect = styled.select`
-//   padding: 10px 14px;
+//   padding: 8px 10px;
 //   border-radius: 6px;
 //   border: 1px solid ${Border};
 //   font-size: 13px;
@@ -102,11 +109,13 @@
 //   background: #F8FAFC;
 //   color: ${Dark};
 //   cursor: pointer;
+//   box-sizing: border-box;
 //   transition: border-color 0.2s ease, background 0.2s ease;
 
 //   &:focus {
-//     border-color: ${Blue};
+//     border-color: ${PrimaryColor};
 //     background: ${White};
+//     box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.15);
 //   }
 // `;
 
@@ -119,7 +128,7 @@
 //   box-sizing: border-box;
 
 //   @media (max-width: 768px) {
-//     gap: 4px;
+//     gap: 8px;
 //   }
 // `;
 
@@ -127,11 +136,11 @@
 //   border-radius: 10px;
 //   padding: 10px;
 //   border: 1px solid ${Border};
-//   border-left: 4px solid ${Gold};
-//   box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+//   border-left: 4px solid ${Turquoise};
+//   box-shadow: 0 4px 15px rgba(15, 23, 42, 0.04);
 //   display: flex;
 //   flex-direction: column;
-//   gap: 10px;
+//   gap: 8px;
 //   cursor: pointer;
 //   transition: transform 0.2s ease, box-shadow 0.2s ease;
   
@@ -141,13 +150,11 @@
 
 //   &:hover {
 //     transform: translateY(-2px);
-//     box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
+//     box-shadow: 0 6px 20px rgba(236, 72, 153, 0.08);
 //   }
 
 //   @media (max-width: 768px) {
-//     padding: 8px;
-//     gap: 6px;
-//     max-width: calc(50% - 2px); 
+//     max-width: calc(50% - 4px); 
 //   }
 // `;
 
@@ -165,7 +172,7 @@
 //   position: absolute;
 //   top: 8px;
 //   right: 8px;
-//   background: rgba(255, 255, 255, 0.85);
+//   background: rgba(255, 255, 255, 0.9);
 //   border: 1px solid ${Border};
 //   border-radius: 50%;
 //   width: 32px;
@@ -188,7 +195,7 @@
 //   width: 100%;
 //   height: 140px;
 //   object-fit: cover;
-//   border-radius: 4px;
+//   border-radius: 6px;
 
 //   @media (max-width: 768px) {
 //     height: 120px;
@@ -198,7 +205,7 @@
 // const ProductTitle = styled.h4`
 //   font-size: 13px;
 //   font-weight: 700;
-//   color: ${primaryBlue};
+//   color: ${Dark};
 //   margin: 0;
 // `;
 
@@ -211,25 +218,27 @@
 //   @media(max-width: 768px) {
 //     flex-direction: column;
 //     gap: 5px;
+//     align-items: flex-start;
 //   }
 // `;
 
 // const PriceText = styled.span`
 //   font-size: 14px;
 //   font-weight: 800;
-//   color: #0F172A;
+//   color: ${Dark};
 // `;
 
 // const AddButton = styled.button`
-//   background: ${blueGradient};
+//   background: ${AccentGradient};
 //   color: #FFFFFF;
 //   border: none;
-//   padding: 4px 10px;
-//   border-radius: 4px;
+//   padding: 6px 12px;
+//   border-radius: 6px;
 //   font-size: 11px;
 //   font-weight: 600;
 //   cursor: pointer;
-//   box-shadow: 0 2px 8px rgba(30, 58, 138, 0.3);
+//   box-shadow: 0 2px 8px rgba(236, 72, 153, 0.25);
+//   transition: opacity 0.2s ease;
 
 //   &:hover {
 //     opacity: 0.9;
@@ -239,32 +248,32 @@
 // const ViewMoreContainer = styled.div`
 //   display: flex;
 //   justify-content: center;
-//   margin-top: 10px;
+//   margin-top: 4px;
 // `;
 
 // const ViewMoreButton = styled.button`
-//   background: ${goldGradient};
-//   color: #0F172A;
+//   background: ${AccentGradient};
+//   color: #FFFFFF;
 //   border: none;
 //   padding: 10px 24px;
 //   border-radius: 6px;
 //   font-weight: 800;
 //   font-size: 13px;
 //   cursor: pointer;
-//   box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+//   box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3);
 //   transition: transform 0.2s ease, box-shadow 0.2s ease;
 
 //   &:hover {
 //     transform: translateY(-2px);
-//     box-shadow: 0 6px 20px rgba(212, 175, 55, 0.6);
+//     box-shadow: 0 6px 20px rgba(236, 72, 153, 0.5);
 //   }
 // `;
 
 // const LoadingText = styled.div`
 //   text-align: center;
 //   font-size: 13px;
-//   color: #64748B;
-//   padding: 20px;
+//   color: ${TextMuted};
+//   padding: 10px;
 // `;
 
 // // --- COMPONENT EXPORT ---
@@ -375,7 +384,7 @@
 //       <ProductsSection>
 //         <SectionHeader>
 //           <SectionTitle>My Wishlist</SectionTitle>
-//           <SectionSubtitle>Your saved luxury items and decor choices.</SectionSubtitle>
+//           <SectionSubtitle>Your saved collections.</SectionSubtitle>
 //         </SectionHeader>
 //         <LoadingText>Loading your wishlist...</LoadingText>
 //       </ProductsSection>
@@ -403,7 +412,7 @@
 //       <ProductsSection>
 //         <SectionHeader>
 //           <SectionTitle>My Wishlist</SectionTitle>
-//           <SectionSubtitle>Your saved luxury items and decor choices.</SectionSubtitle>
+//           <SectionSubtitle>Your saved collections.</SectionSubtitle>
 //         </SectionHeader>
 //         <LoadingText>Your wishlist is currently empty.</LoadingText>
 //         <ViewMoreContainer>
@@ -418,9 +427,8 @@
 //   return (
 //     <ProductsSection>
 //       <SectionHeader>
-//         <SectionTitle style={{ textDecoration: 'underline' }}>MY WISHLIST</SectionTitle>
-//         <SectionTitle style={{ fontSize: '1rem', marginTop: '20px' }}>Saved Luxury Accessories</SectionTitle>
-//         <SectionSubtitle>Review and manage your favorite home decor and furniture pieces.</SectionSubtitle>
+//         <SectionTitle>MY WISHLIST</SectionTitle>
+//         <SectionSubtitle>Review and manage your favorite collections.</SectionSubtitle>
 //       </SectionHeader>
 
 //       {/* Search and Sort Controls */}
@@ -493,8 +501,6 @@
 
 
 
-
-
 'use client';
 
 import React, { useState, useEffect, useMemo } from 'react';
@@ -506,10 +512,10 @@ import { collection, getDocs, doc, getDoc, deleteDoc, query, where } from "fireb
 import { onAuthStateChanged } from "firebase/auth";
 import Swal from "sweetalert2";
 
-// --- THEME & STYLES ---
-const PrimaryColor = '#ec4899';
-const Turquoise = '#06b6d4';
-const AccentGradient = 'linear-gradient(135deg, #ec4899 0%, #f59e0b 50%, #06b6d4 100%)';
+// 🎨 NAVY & CYAN THEME COLORS & GRADIENTS
+const PrimaryNavy = "#0B1B48";
+const PrimaryCyan = "#00AEEF";
+const ThemeGradient = "linear-gradient(135deg, #0B1B48 0%, #00AEEF 100%)";
 const Dark = "#0f172a";
 const Border = "#e5eaf2";
 const White = "#ffffff";
@@ -541,9 +547,7 @@ const SectionHeader = styled.div`
 const SectionTitle = styled.h2`
   font-size: 24px;
   font-weight: 800;
-  background: ${AccentGradient};
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: ${PrimaryNavy};
   margin: 0;
 `;
 
@@ -579,12 +583,12 @@ const SearchInput = styled.input`
   background: #F8FAFC;
   color: ${Dark};
   box-sizing: border-box;
-  transition: border-color 0.2s ease, background 0.2s ease;
+  transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
 
   &:focus {
-    border-color: ${PrimaryColor};
+    border-color: ${PrimaryCyan};
     background: ${White};
-    box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.15);
+    box-shadow: 0 0 0 3px rgba(0, 174, 239, 0.15);
   }
 
   &::placeholder {
@@ -602,12 +606,12 @@ const SortSelect = styled.select`
   color: ${Dark};
   cursor: pointer;
   box-sizing: border-box;
-  transition: border-color 0.2s ease, background 0.2s ease;
+  transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
 
   &:focus {
-    border-color: ${PrimaryColor};
+    border-color: ${PrimaryCyan};
     background: ${White};
-    box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.15);
+    box-shadow: 0 0 0 3px rgba(0, 174, 239, 0.15);
   }
 `;
 
@@ -628,7 +632,7 @@ const ProductCard = styled.div`
   border-radius: 10px;
   padding: 10px;
   border: 1px solid ${Border};
-  border-left: 4px solid ${Turquoise};
+  border-left: 4px solid ${PrimaryCyan};
   box-shadow: 0 4px 15px rgba(15, 23, 42, 0.04);
   display: flex;
   flex-direction: column;
@@ -642,7 +646,7 @@ const ProductCard = styled.div`
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(236, 72, 153, 0.08);
+    box-shadow: 0 6px 20px rgba(0, 174, 239, 0.08);
   }
 
   @media (max-width: 768px) {
@@ -721,7 +725,7 @@ const PriceText = styled.span`
 `;
 
 const AddButton = styled.button`
-  background: ${AccentGradient};
+  background: ${ThemeGradient};
   color: #FFFFFF;
   border: none;
   padding: 6px 12px;
@@ -729,7 +733,7 @@ const AddButton = styled.button`
   font-size: 11px;
   font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(236, 72, 153, 0.25);
+  box-shadow: 0 2px 8px rgba(11, 27, 72, 0.25);
   transition: opacity 0.2s ease;
 
   &:hover {
@@ -744,7 +748,7 @@ const ViewMoreContainer = styled.div`
 `;
 
 const ViewMoreButton = styled.button`
-  background: ${AccentGradient};
+  background: ${ThemeGradient};
   color: #FFFFFF;
   border: none;
   padding: 10px 24px;
@@ -752,12 +756,12 @@ const ViewMoreButton = styled.button`
   font-weight: 800;
   font-size: 13px;
   cursor: pointer;
-  box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3);
+  box-shadow: 0 4px 15px rgba(11, 27, 72, 0.3);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(236, 72, 153, 0.5);
+    box-shadow: 0 6px 20px rgba(0, 174, 239, 0.4);
   }
 `;
 
@@ -944,7 +948,7 @@ export default function UserWishlistPage() {
       {filteredAndSortedProducts.length === 0 ? (
         <LoadingText>No products match your search query.</LoadingText>
       ) : (
-        <ProductsGrid $itemCount={filteredAndSortedProducts.length}>
+        <ProductsGrid>
           {filteredAndSortedProducts.map((product, idx) => {
             const displayImg = product.images?.[0] || product.image || "https://placehold.co/400x300?text=No+Image";
             const productPrice = Number(product.amount || 0);

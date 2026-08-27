@@ -1,5 +1,7 @@
 
 
+
+
 // "use client";
 
 // import { useEffect, useState } from "react";
@@ -10,14 +12,16 @@
 // import Swal from "sweetalert2";
 // import { usePathname } from "next/navigation";
 
-// // 🎨 BEES INTERIOR THEME COLORS
-// const Blue = "#2563eb";
+// // 🎨 KINGSWORD BAG CRAFT THEME COLORS (Vibrant luxury palette)
+// const ThemePrimary = "#ec4899"; // Pink accent
+// const ThemeSecondary = "#06b6d4"; // Cyan accent
 // const Dark = "#0f172a";
-// const Border = "#e5eaf2";
+// const Border = "rgba(226, 232, 240, 0.9)";
 // const White = "#ffffff";
-// const Gold = "#D4AF37";
+// const Gold = "#f59e0b";
 // const TextMuted = "#475569";
 // const LightBg = "#f8fafc";
+// const ThemeGradient = "linear-gradient(135deg, #ec4899 0%, #f59e0b 50%, #06b6d4 100%)";
 
 // /* ---------------- LAYOUT WRAPPER ---------------- */
 // const LayoutWrapper = styled.div`
@@ -30,86 +34,94 @@
 
 // /* ---------------- SIDEBAR ---------------- */
 // const Sidebar = styled.div`
-//   width: 260px;
+//   width: 280px;
 //   background: ${White};
 //   border-right: 1px solid ${Border};
 //   color: ${Dark};
-//   padding: 10px;
+//   padding: 1.5rem 1.25rem;
 //   display: flex;
 //   flex-direction: column;
 //   justify-content: space-between;
-//   transition: 0.35s ease;
+//   transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 //   z-index: 200;
+//   box-shadow: 10px 0 30px rgba(15, 23, 42, 0.02);
 
 //   @media (max-width: 768px) {
 //     position: fixed;
 //     top: 0;
-//     left: ${(props) => (props.$open ? "0" : "-260px")};
+//     left: 0;
+//     transform: translateX(${(props) => (props.$open ? "0" : "-100%")});
 //     height: 100vh;
-//     box-shadow: ${(props) => (props.$open ? "4px 0 15px rgba(15, 23, 42, 0.1)" : "none")};
+//     box-shadow: ${(props) => (props.$open ? "20px 0 50px rgba(15, 23, 42, 0.15)" : "none")};
 //   }
 // `;
 
 // const SidebarTop = styled.div`
 //   display: flex;
 //   flex-direction: column;
-//   gap: 10px;
+//   gap: 1.5rem;
 // `;
 
 // const BrandLogo = styled.h2`
-//   font-size: 1.15rem;
-//   font-weight: 800;
-//   letter-spacing: -0.5px;
+//   font-size: 1.2rem;
+//   font-weight: 900;
+//   letter-spacing: -0.02em;
 //   color: ${Dark};
-//   padding: 10px 0;
+//   padding-bottom: 1rem;
 //   border-bottom: 1px solid ${Border};
-//   margin-bottom: 10px;
+//   margin: 0;
 
 //   span {
-//     color: ${Gold};
+//     background: ${ThemeGradient};
+//     -webkit-background-clip: text;
+//     -webkit-text-fill-color: transparent;
 //   }
 // `;
 
 // const NavLinks = styled.div`
 //   display: flex;
 //   flex-direction: column;
-//   gap: 10px;
+//   gap: 0.5rem;
 // `;
 
 // const MenuItem = styled.div`
-//   padding: 10px;
+//   padding: 0.85rem 1rem;
 //   cursor: pointer;
-//   border-radius: 6px;
+//   border-radius: 0.85rem;
 //   font-size: 0.95rem;
-//   font-weight: 600;
+//   font-weight: 700;
 //   color: ${(props) => (props.$active ? White : TextMuted)};
-//   background: ${(props) => (props.$active ? Blue : "transparent")};
+//   background: ${(props) => (props.$active ? ThemeGradient : "transparent")};
 //   display: flex;
 //   align-items: center;
-//   gap: 10px;
-//   transition: all 0.2s ease;
+//   gap: 0.75rem;
+//   box-shadow: ${(props) => (props.$active ? "0 10px 20px -5px rgba(236, 72, 153, 0.4)" : "none")};
+//   transition: all 0.25s ease;
 
 //   &:hover {
-//     background: ${(props) => (props.$active ? Blue : LightBg)};
-//     color: ${(props) => (props.$active ? White : Dark)};
+//     background: ${(props) => (props.$active ? ThemeGradient : "rgba(236, 72, 153, 0.06)")};
+//     color: ${(props) => (props.$active ? White : ThemePrimary)};
+//     transform: translateX(3px);
 //   }
 // `;
 
 // const LogoutButton = styled.div`
-//   padding: 10px;
+//   padding: 0.85rem 1rem;
 //   cursor: pointer;
-//   border-radius: 6px;
+//   border-radius: 0.85rem;
 //   font-size: 0.95rem;
-//   font-weight: 600;
+//   font-weight: 700;
 //   color: #ef4444;
 //   background: rgba(239, 68, 68, 0.05);
+//   border: 1px solid rgba(239, 68, 68, 0.1);
 //   display: flex;
 //   align-items: center;
-//   gap: 10px;
-//   transition: background 0.2s ease;
+//   gap: 0.75rem;
+//   transition: all 0.25s ease;
 
 //   &:hover {
-//     background: rgba(239, 68, 68, 0.1);
+//     background: rgba(239, 68, 68, 0.12);
+//     transform: translateY(-2px);
 //   }
 // `;
 
@@ -122,10 +134,11 @@
 // `;
 
 // const Topbar = styled.header`
-//   height: 10px;
-//   background: ${White};
+//   height: 0px;
+//   background: rgba(255, 255, 255, 0.9);
+//   backdrop-filter: blur(12px);
 //   border-bottom: 1px solid ${Border};
-//   padding: 10px;
+//   padding: 0 1.5rem;
 //   display: flex;
 //   align-items: center;
 //   justify-content: space-between;
@@ -137,23 +150,27 @@
 // const TopbarLeft = styled.div`
 //   display: flex;
 //   align-items: center;
-//   gap: 10px;
+//   gap: 1rem;
 // `;
 
 // const TopbarRight = styled.div`
 //   display: flex;
 //   align-items: center;
-//   gap: 10px;
+//   gap: 1rem;
 // `;
 
 // const Content = styled.main`
 //   flex: 1;
-//   padding: 10px;
+//   padding: 2rem;
 //   background: ${LightBg};
 //   overflow-y: auto;
 //   display: flex;
 //   flex-direction: column;
-//   gap: 10px;
+//   gap: 1.5rem;
+
+//   @media (max-width: 768px) {
+//     padding: 1.25rem;
+//   }
 // `;
 
 // /* ---------------- OVERLAY (click-away) ---------------- */
@@ -167,28 +184,31 @@
 //     left: 0;
 //     width: 100vw;
 //     height: 100vh;
-//     background: rgba(15, 23, 42, 0.4);
+//     background: rgba(15, 23, 42, 0.5);
+//     backdrop-filter: blur(4px);
 //     z-index: 150;
 //   }
 // `;
 
 // /* ---------------- HAMBURGER ---------------- */
 // const Hamburger = styled.button`
-//   width: 40px;
-//   height: 40px;
+//   width: 44px;
+//   height: 44px;
 //   background: ${White};
 //   border: 1px solid ${Border};
-//   border-radius: 6px;
+//   border-radius: 0.85rem;
 //   color: ${Dark};
-//   font-size: 1.2rem;
+//   font-size: 1.25rem;
 //   display: none;
 //   align-items: center;
 //   justify-content: center;
 //   cursor: pointer;
-//   transition: border-color 0.2s ease;
+//   box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+//   transition: all 0.2s ease;
 
 //   &:hover {
-//     border-color: ${Blue};
+//     border-color: ${ThemePrimary};
+//     color: ${ThemePrimary};
 //   }
 
 //   @media (max-width: 768px) {
@@ -198,22 +218,24 @@
 
 // /* ---------------- HOME BUTTON ---------------- */
 // const HomeButton = styled.button`
-//   width: 40px;
-//   height: 40px;
-//   border-radius: 6px;
+//   width: 44px;
+//   height: 44px;
+//   border-radius: 0.85rem;
 //   background: ${White};
 //   color: ${Dark};
 //   border: 1px solid ${Border};
-//   font-size: 1.1rem;
+//   font-size: 1.15rem;
 //   display: flex;
 //   align-items: center;
 //   justify-content: center;
 //   cursor: pointer;
+//   box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
 //   transition: all 0.2s ease;
 
 //   &:hover {
-//     border-color: ${Blue};
-//     color: ${Blue};
+//     border-color: ${ThemePrimary};
+//     color: ${ThemePrimary};
+//     transform: translateY(-2px);
 //   }
 // `;
 
@@ -225,8 +247,8 @@
 //   justify-content: center;
 //   background: ${LightBg};
 //   color: ${Dark};
-//   font-size: 1.1rem;
-//   font-weight: 600;
+//   font-size: 1.2rem;
+//   font-weight: 700;
 // `;
 
 // export default function DashboardLayout({ children }) {
@@ -263,7 +285,7 @@
 //       text: "You will be signed out of your account.",
 //       icon: "warning",
 //       showCancelButton: true,
-//       confirmButtonColor: Blue,
+//       confirmButtonColor: ThemePrimary,
 //       cancelButtonColor: "#ef4444",
 //       confirmButtonText: "Yes, Sign Out",
 //     }).then((result) => {
@@ -291,7 +313,7 @@
 //       <Sidebar $open={sidebarOpen}>
 //         <SidebarTop>
 //           <BrandLogo>
-//             BEES <span>INTERIOR</span>
+//             KINGSWORD <span>BAG CRAFT</span>
 //           </BrandLogo>
 
 //           <NavLinks>
@@ -304,7 +326,6 @@
 //             >
 //               📊 My Dashboard
 //             </MenuItem>
-          
 //           </NavLinks>
 //         </SidebarTop>
 
@@ -327,7 +348,7 @@
 //               ☰
 //             </Hamburger>
 //           </TopbarLeft>
-// {/* 
+
 //           <TopbarRight>
 //             {showHomeButton && (
 //               <HomeButton
@@ -340,7 +361,7 @@
 //                 🏠
 //               </HomeButton>
 //             )}
-//           </TopbarRight> */}
+//           </TopbarRight>
 //         </Topbar>
 
 //         {/* CONTENT */}
@@ -366,16 +387,15 @@ import styled from "styled-components";
 import Swal from "sweetalert2";
 import { usePathname } from "next/navigation";
 
-// 🎨 KINGSWORD BAG CRAFT THEME COLORS (Vibrant luxury palette)
-const ThemePrimary = "#ec4899"; // Pink accent
-const ThemeSecondary = "#06b6d4"; // Cyan accent
+// 🎨 ENITZ GLOBAL BRAND THEME COLORS
+const PrimaryNavy = "#0B1B48";
+const PrimaryCyan = "#00AEEF";
 const Dark = "#0f172a";
-const Border = "rgba(226, 232, 240, 0.9)";
+const Border = "#cbd5e1";
 const White = "#ffffff";
-const Gold = "#f59e0b";
 const TextMuted = "#475569";
 const LightBg = "#f8fafc";
-const ThemeGradient = "linear-gradient(135deg, #ec4899 0%, #f59e0b 50%, #06b6d4 100%)";
+const ThemeGradient = "linear-gradient(135deg, #0B1B48 0%, #00AEEF 100%)";
 
 /* ---------------- LAYOUT WRAPPER ---------------- */
 const LayoutWrapper = styled.div`
@@ -392,13 +412,13 @@ const Sidebar = styled.div`
   background: ${White};
   border-right: 1px solid ${Border};
   color: ${Dark};
-  padding: 1.5rem 1.25rem;
+  padding: 24px 20px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   z-index: 200;
-  box-shadow: 10px 0 30px rgba(15, 23, 42, 0.02);
+  box-shadow: 10px 0 30px rgba(11, 27, 72, 0.03);
 
   @media (max-width: 768px) {
     position: fixed;
@@ -406,63 +426,61 @@ const Sidebar = styled.div`
     left: 0;
     transform: translateX(${(props) => (props.$open ? "0" : "-100%")});
     height: 100vh;
-    box-shadow: ${(props) => (props.$open ? "20px 0 50px rgba(15, 23, 42, 0.15)" : "none")};
+    box-shadow: ${(props) => (props.$open ? "20px 0 50px rgba(11, 27, 72, 0.15)" : "none")};
   }
 `;
 
 const SidebarTop = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 24px;
 `;
 
 const BrandLogo = styled.h2`
-  font-size: 1.2rem;
-  font-weight: 900;
-  letter-spacing: -0.02em;
-  color: ${Dark};
-  padding-bottom: 1rem;
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: ${PrimaryNavy};
+  padding-bottom: 16px;
   border-bottom: 1px solid ${Border};
   margin: 0;
 
   span {
-    background: ${ThemeGradient};
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: ${PrimaryCyan};
   }
 `;
 
 const NavLinks = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 8px;
 `;
 
 const MenuItem = styled.div`
-  padding: 0.85rem 1rem;
+  padding: 12px 16px;
   cursor: pointer;
-  border-radius: 0.85rem;
+  border-radius: 12px;
   font-size: 0.95rem;
   font-weight: 700;
   color: ${(props) => (props.$active ? White : TextMuted)};
   background: ${(props) => (props.$active ? ThemeGradient : "transparent")};
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  box-shadow: ${(props) => (props.$active ? "0 10px 20px -5px rgba(236, 72, 153, 0.4)" : "none")};
+  gap: 12px;
+  box-shadow: ${(props) => (props.$active ? "0 8px 20px rgba(0, 174, 239, 0.25)" : "none")};
   transition: all 0.25s ease;
 
   &:hover {
-    background: ${(props) => (props.$active ? ThemeGradient : "rgba(236, 72, 153, 0.06)")};
-    color: ${(props) => (props.$active ? White : ThemePrimary)};
+    background: ${(props) => (props.$active ? ThemeGradient : "rgba(0, 174, 239, 0.06)")};
+    color: ${(props) => (props.$active ? White : PrimaryNavy)};
     transform: translateX(3px);
   }
 `;
 
 const LogoutButton = styled.div`
-  padding: 0.85rem 1rem;
+  padding: 12px 16px;
   cursor: pointer;
-  border-radius: 0.85rem;
+  border-radius: 12px;
   font-size: 0.95rem;
   font-weight: 700;
   color: #ef4444;
@@ -470,7 +488,7 @@ const LogoutButton = styled.div`
   border: 1px solid rgba(239, 68, 68, 0.1);
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 12px;
   transition: all 0.25s ease;
 
   &:hover {
@@ -488,11 +506,11 @@ const MainContentArea = styled.div`
 `;
 
 const Topbar = styled.header`
-  height: 0px;
+  // height: 70px;
   background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid ${Border};
-  padding: 0 1.5rem;
+  padding: 0 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -504,26 +522,26 @@ const Topbar = styled.header`
 const TopbarLeft = styled.div`
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 16px;
 `;
 
 const TopbarRight = styled.div`
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 16px;
 `;
 
 const Content = styled.main`
   flex: 1;
-  padding: 2rem;
+  padding: 32px;
   background: ${LightBg};
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 24px;
 
   @media (max-width: 768px) {
-    padding: 1.25rem;
+    padding: 20px;
   }
 `;
 
@@ -538,7 +556,7 @@ const Overlay = styled.div`
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(15, 23, 42, 0.5);
+    background: rgba(11, 27, 72, 0.4);
     backdrop-filter: blur(4px);
     z-index: 150;
   }
@@ -550,19 +568,19 @@ const Hamburger = styled.button`
   height: 44px;
   background: ${White};
   border: 1px solid ${Border};
-  border-radius: 0.85rem;
-  color: ${Dark};
+  border-radius: 10px;
+  color: ${PrimaryNavy};
   font-size: 1.25rem;
   display: none;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+  box-shadow: 0 4px 12px rgba(11, 27, 72, 0.03);
   transition: all 0.2s ease;
 
   &:hover {
-    border-color: ${ThemePrimary};
-    color: ${ThemePrimary};
+    border-color: ${PrimaryCyan};
+    color: ${PrimaryCyan};
   }
 
   @media (max-width: 768px) {
@@ -574,21 +592,21 @@ const Hamburger = styled.button`
 const HomeButton = styled.button`
   width: 44px;
   height: 44px;
-  border-radius: 0.85rem;
+  border-radius: 10px;
   background: ${White};
-  color: ${Dark};
+  color: ${PrimaryNavy};
   border: 1px solid ${Border};
   font-size: 1.15rem;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+  box-shadow: 0 4px 12px rgba(11, 27, 72, 0.03);
   transition: all 0.2s ease;
 
   &:hover {
-    border-color: ${ThemePrimary};
-    color: ${ThemePrimary};
+    border-color: ${PrimaryCyan};
+    color: ${PrimaryCyan};
     transform: translateY(-2px);
   }
 `;
@@ -600,9 +618,11 @@ const LoadingWrapper = styled.div`
   align-items: center;
   justify-content: center;
   background: ${LightBg};
-  color: ${Dark};
-  font-size: 1.2rem;
-  font-weight: 700;
+  color: ${PrimaryNavy};
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 24px;
+  box-sizing: border-box;
 `;
 
 export default function DashboardLayout({ children }) {
@@ -639,7 +659,7 @@ export default function DashboardLayout({ children }) {
       text: "You will be signed out of your account.",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: ThemePrimary,
+      confirmButtonColor: PrimaryNavy,
       cancelButtonColor: "#ef4444",
       confirmButtonText: "Yes, Sign Out",
     }).then((result) => {
@@ -667,7 +687,7 @@ export default function DashboardLayout({ children }) {
       <Sidebar $open={sidebarOpen}>
         <SidebarTop>
           <BrandLogo>
-            KINGSWORD <span>BAG CRAFT</span>
+            ENITZ <span>GLOBAL</span>
           </BrandLogo>
 
           <NavLinks>

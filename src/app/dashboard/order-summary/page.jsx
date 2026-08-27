@@ -156,7 +156,7 @@ const handleRemovePromo = () => {
       return;
     }
 
-    const uniqueOrderNumber = `BEES-${Date.now().toString().slice(-6)}${Math.floor(Math.random() * 900 + 100)}`;
+    const uniqueOrderNumber = `ORDER-${Date.now().toString().slice(-6)}${Math.floor(Math.random() * 900 + 100)}`;
 
     const orderPayload = {
       orderNumber: uniqueOrderNumber,
@@ -203,7 +203,113 @@ const handleRemovePromo = () => {
 
 
 
-// Pay on Delivery Handler with Swal Confirmation
+// // Pay on Delivery Handler with Swal Confirmation
+//   const handlePayOnDelivery = async () => {
+//     if (!deliveryAddress) {
+//       Swal.fire('Missing Address', 'Please select a delivery address before proceeding.', 'warning');
+//       router.push('/dashboard/addressmanager');
+//       return;
+//     }
+
+//     if (cart.length === 0) {
+//       Swal.fire('Empty Cart', 'Your cart is empty.', 'warning');
+//       return;
+//     }
+
+//     // Confirmation Modal
+//     const confirmResult = await Swal.fire({
+//       title: 'Confirm Pay on Delivery',
+//       text: `Are you sure you want to place this order with Pay on Delivery? Total: ₦${finalTotal.toLocaleString()}`,
+//       icon: 'question',
+//       showCancelButton: true,
+//       confirmButtonColor: '#2563eb',
+//       cancelButtonColor: '#d33',
+//       confirmButtonText: 'Yes, Place Order'
+//     });
+
+//     if (!confirmResult.isConfirmed) {
+//       return; // Exit if user cancels
+//     }
+
+//     setIsSubmitting(true);
+//     Swal.fire({
+//       title: 'Processing Order...',
+//       text: 'Please wait while we process your order.',
+//       allowOutsideClick: false,
+//       showConfirmButton: false
+//     });
+//     Swal.showLoading();
+
+//     try {
+//       const buyerEmail = currentUser?.email || userData?.email || '';
+//       // const sellerEmail = 'victorndu393@gmail.com'; // Replace with your seller destination email
+//         const sellerEmail = 'admin@kingswordcraft.com'; // Replace with your seller destination email
+// const uniqueOrderNumber = `KINGS-${Date.now().toString().slice(-6)}${Math.floor(Math.random() * 900 + 100)}`;
+
+
+//       const orderPayload = {
+//         orderNumber: uniqueOrderNumber,
+//         userId: currentUser ? currentUser.uid : 'guest',
+//         items: cart,
+//         deliveryAddress,
+//         subtotal: cartSubtotal,
+//         deliveryFee,
+//         discount,
+//         finalTotal,
+//         promoCode: appliedPromo,
+//         currency: 'NGN',
+//         accountInfo: {
+//           name: userData?.fullName || currentUser?.displayName || 'Valued Customer',
+//           email: buyerEmail,
+//           phone: userData?.phone || currentUser?.phoneNumber || 'Not provided'
+//         },
+//         paymentType: 'PAYMENT ON DELIVERY',
+//         paymentStatus: 'Pending',
+//         orderStatus:'Pending',
+//         createdAt: serverTimestamp()
+//       };
+
+//       // 1. Save complete order payload to Firestore under "orders" collection
+//       const docRef = await addDoc(collection(db, "orders"), orderPayload);
+
+//       // 2. Send email payload to both seller and buyer
+//       await fetch('/api/send-order-email', {
+//         method: 'POST',
+//         headers: { 'Content-Type': 'application/json' },
+//         body: JSON.stringify({
+//           orderId: docRef.id,
+//           payload: orderPayload,
+//           recipients: [buyerEmail, sellerEmail].filter(Boolean)
+//         })
+//       }).catch((err) => {
+//         console.error("Error triggering email notification:", err);
+//       });
+
+//       // Clear local storage and cart state
+//       clearCart();
+//       localStorage.removeItem('selectedAddress');
+//       localStorage.removeItem('pendingOrder');
+
+//       await Swal.fire({
+//         title: 'Order Placed Successfully!',
+//         text: 'Your Pay on Delivery order has been placed. We have sent confirmation details to your email.',
+//         icon: 'success',
+//         confirmButtonText: 'View Orders'
+//       });
+
+//       router.push('/dashboard/myorders');
+
+//     } catch (error) {
+//       console.error("Error processing Pay on Delivery order:", error);
+//       Swal.fire('Error', 'Failed to place your order. Please try again.', 'error');
+//     } finally {
+//       setIsSubmitting(false);
+//       Swal.close(); // Close the loading modal
+//     }
+//   };
+
+
+// Pay on Delivery Handler with Swal Confirmation & Bulletproof Safeguards
   const handlePayOnDelivery = async () => {
     if (!deliveryAddress) {
       Swal.fire('Missing Address', 'Please select a delivery address before proceeding.', 'warning');
@@ -214,6 +320,11 @@ const handleRemovePromo = () => {
     if (cart.length === 0) {
       Swal.fire('Empty Cart', 'Your cart is empty.', 'warning');
       return;
+    }
+
+    // Prevent double execution if already submitting
+    if (setIsSubmitting && typeof setIsSubmitting === 'function') {
+      // (Optional check depending on your state, but good practice)
     }
 
     // Confirmation Modal
@@ -242,10 +353,18 @@ const handleRemovePromo = () => {
 
     try {
       const buyerEmail = currentUser?.email || userData?.email || '';
-      // const sellerEmail = 'victorndu393@gmail.com'; // Replace with your seller destination email
-        const sellerEmail = 'admin@kingswordcraft.com'; // Replace with your seller destination email
-const uniqueOrderNumber = `KINGS-${Date.now().toString().slice(-6)}${Math.floor(Math.random() * 900 + 100)}`;
+      const sellerEmail = 'victorndu393@gmail.com';
+      // const sellerEmail = 'enitzglobal@gmail.com';
+      const uniqueOrderNumber = `ORDER-${Date.now().toString().slice(-6)}${Math.floor(Math.random() * 900 + 100)}`;
 
+      // 1. SAFETY CHECK: Ensure order number doesn't somehow collide
+      const ordersRef = collection(db, "orders");
+      const qCheck = query(ordersRef, where("orderNumber", "==", uniqueOrderNumber));
+      const existingCheck = await getDocs(qCheck);
+      
+      if (!existingCheck.empty) {
+        throw new Error("Order number collision detected. Please try again.");
+      }
 
       const orderPayload = {
         orderNumber: uniqueOrderNumber,
@@ -265,28 +384,38 @@ const uniqueOrderNumber = `KINGS-${Date.now().toString().slice(-6)}${Math.floor(
         },
         paymentType: 'PAYMENT ON DELIVERY',
         paymentStatus: 'Pending',
-        orderStatus:'Pending',
+        orderStatus: 'Pending',
         createdAt: serverTimestamp()
       };
 
-      // 1. Save complete order payload to Firestore under "orders" collection
+      // 2. Save complete order payload to Firestore under "orders" collection
       const docRef = await addDoc(collection(db, "orders"), orderPayload);
 
-      // 2. Send email payload to both seller and buyer
-      await fetch('/api/send-order-email', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          orderId: docRef.id,
-          payload: orderPayload,
-          recipients: [buyerEmail, sellerEmail].filter(Boolean)
-        })
-      }).catch((err) => {
-        console.error("Error triggering email notification:", err);
-      });
+      // 3. ISOLATED EMAIL BLOCK: Ensure email failure never stops order completion or cart clearing
+      try {
+        // Create a clean email payload object (replacing serverTimestamp with an ISO string for safety)
+        const emailPayload = {
+          ...orderPayload,
+          createdAt: new Date().toISOString()
+        };
 
-      // Clear local storage and cart state
-      clearCart();
+        await fetch('/api/send-order-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            orderId: docRef.id,
+            payload: emailPayload,
+            recipients: [buyerEmail, sellerEmail].filter(Boolean)
+          })
+        });
+      } catch (emailErr) {
+        console.error("Error triggering email notification (non-fatal):", emailErr);
+      }
+
+      // 4. Guaranteed Cleanup (Runs regardless of email success/failure)
+      if (typeof clearCart === 'function') {
+        clearCart();
+      }
       localStorage.removeItem('selectedAddress');
       localStorage.removeItem('pendingOrder');
 
@@ -301,15 +430,12 @@ const uniqueOrderNumber = `KINGS-${Date.now().toString().slice(-6)}${Math.floor(
 
     } catch (error) {
       console.error("Error processing Pay on Delivery order:", error);
-      Swal.fire('Error', 'Failed to place your order. Please try again.', 'error');
+      Swal.fire('Error', error.message || 'Failed to place your order. Please try again.', 'error');
     } finally {
       setIsSubmitting(false);
-      Swal.close(); // Close the loading modal
+      Swal.close(); // Close the loading modal safely
     }
   };
-
-
-
 
 
 
@@ -450,52 +576,7 @@ const uniqueOrderNumber = `KINGS-${Date.now().toString().slice(-6)}${Math.floor(
 
         {/* Right Column: Pricing & Checkout */}
         <Sidebar>
-          {/* <SummaryCard>
-            <h3>Order Totals</h3>
-            
-            <SummaryRow>
-              <span>Subtotal</span>
-              <span>₦{cartSubtotal.toLocaleString()}</span>
-            </SummaryRow>
-
-            <SummaryRow>
-              <span>Delivery Fee</span>
-              <span>₦{deliveryFee.toLocaleString()}</span>
-            </SummaryRow>
-
-            {discount > 0 && (
-              <SummaryRow discount>
-                <span>Discount ({appliedPromo})</span>
-                <span>-₦{discount.toLocaleString()}</span>
-              </SummaryRow>
-            )}
-
-            <Divider />
-
-            <TotalRow>
-              <span>Final Total</span>
-              <span>₦{finalTotal.toLocaleString()}</span>
-            </TotalRow>
-
-            
-            <PromoForm onSubmit={handleApplyPromo}>
-              <PromoInput 
-                type="text" 
-                placeholder="Enter promo code" 
-                value={promoCode}
-                onChange={(e) => setPromoCode(e.target.value)}
-              />
-              <ApplyButton type="submit">Apply</ApplyButton>
-            </PromoForm>
-
-            <PayNowButton onClick={handlePayNow} disabled={cart.length === 0 || !deliveryAddress}>
-              PAY NOW (₦{finalTotal.toLocaleString()})
-            </PayNowButton>
-            <PayOnDeliveryButton onClick={handlePayOnDelivery} disabled={cart.length === 0 || !deliveryAddress || isSubmitting}>
-              {isSubmitting ? 'Processing Order...' : 'PAY ON DELIVERY'}
-            </PayOnDeliveryButton>
-          </SummaryCard> */}
-
+         
 <SummaryCard>
   <h3>Order Totals</h3>
   
@@ -556,7 +637,13 @@ const uniqueOrderNumber = `KINGS-${Date.now().toString().slice(-6)}${Math.floor(
   );
 }
 
-// // --- Styled Components (Bees Interior Theme: #2563eb Blue & Gold #D4AF37) ---
+
+
+// // --- Styled Components (Theme Colors: Pink #ec4899, Turquoise #06b6d4, Gradient) ---
+
+// const PrimaryColor = "#ec4899";
+// const AccentGradient = "linear-gradient(135deg, #ec4899 0%, #f59e0b 50%, #06b6d4 100%)";
+// const Turquoise = "#06b6d4";
 
 // const Container = styled.div`
 //   max-width: 1200px;
@@ -575,10 +662,10 @@ const uniqueOrderNumber = `KINGS-${Date.now().toString().slice(-6)}${Math.floor(
 
 // const PageTitle = styled.h2`
 //   font-size: 1.5rem;
-//   color: #2563eb;
+//   // color: orange;
 //   font-weight: 800;
 //   margin-bottom: 16px;
-//   border-bottom: 2px solid #D4AF37;
+//   border-bottom: 2px solid ${Turquoise};
 //   padding-bottom: 8px;
 
 //   @media (min-width: 768px) {
@@ -621,9 +708,9 @@ const uniqueOrderNumber = `KINGS-${Date.now().toString().slice(-6)}${Math.floor(
 // const Card = styled.div`
 //   background: #ffffff;
 //   border: 1px solid #e2e2e2;
-//   border-top: 4px solid #2563eb;
+//   border-top: 4px solid ${Turquoise};
 //   border-radius: 8px;
-//   box-shadow: 0 2px 6px rgba(37, 99, 235, 0.03);
+//   box-shadow: 0 2px 6px rgba(236, 72, 153, 0.03);
 //   overflow: hidden;
 //   width: 100%;
 //   box-sizing: border-box;
@@ -642,18 +729,17 @@ const uniqueOrderNumber = `KINGS-${Date.now().toString().slice(-6)}${Math.floor(
 //   h3 {
 //     margin: 0;
 //     font-size: 1rem;
-//     color: #2563eb;
+//     // color: ${PrimaryColor};
 //     font-weight: 700;
-
-  
 //   }
 
-//     span {
-//       display:none;
-//       font-size: 0.75rem;
-//       @media (max-width: 480px) {
-//       display:inline;
-//       }
+//   span {
+//     display: none;
+//     font-size: 0.75rem;
+//     @media (max-width: 480px) {
+//       display: inline;
+//     }
+//   }
 
 //   @media (min-width: 768px) {
 //     padding: 16px 20px;
@@ -703,7 +789,7 @@ const uniqueOrderNumber = `KINGS-${Date.now().toString().slice(-6)}${Math.floor(
 // const AddressName = styled.h4`
 //   margin: 0 0 4px 0;
 //   font-size: 1rem;
-//   color: #2563eb;
+//   color: ${PrimaryColor};
 //   font-weight: 700;
 // `;
 
@@ -716,7 +802,7 @@ const uniqueOrderNumber = `KINGS-${Date.now().toString().slice(-6)}${Math.floor(
 
 // const TextButton = styled.button`
 //   background: transparent;
-//   color: #2563eb;
+//   color: ${PrimaryColor};
 //   border: none;
 //   font-size: 0.8rem;
 //   font-weight: 600;
@@ -724,22 +810,22 @@ const uniqueOrderNumber = `KINGS-${Date.now().toString().slice(-6)}${Math.floor(
 //   padding: 0;
 //   &:hover {
 //     text-decoration: underline;
-//     color: #D4AF37;
+//     color: ${Turquoise};
 //   }
 // `;
 
 // const ActionButton = styled.button`
-//   background: #2563eb;
+//   background: ${PrimaryColor};
 //   color: #ffffff;
-//   border: 1px solid #D4AF37;
+//   border: 1px solid ${Turquoise};
 //   padding: 8px 16px;
 //   border-radius: 6px;
 //   font-weight: 600;
 //   font-size: 0.9rem;
 //   cursor: pointer;
 //   &:hover {
-//     background: #D4AF37;
-//     color: #2563eb;
+//     background: ${Turquoise};
+//     color: #ffffff;
 //   }
 // `;
 
@@ -839,10 +925,10 @@ const uniqueOrderNumber = `KINGS-${Date.now().toString().slice(-6)}${Math.floor(
 
 // const SummaryCard = styled.div`
 //   background: #ffffff;
-//   border: 1px solid #D4AF37;
+//   border: 1px solid ${Turquoise};
 //   border-radius: 8px;
 //   padding: 16px;
-//   box-shadow: 0 4px 12px rgba(37, 99, 235, 0.05);
+//   box-shadow: 0 4px 12px rgba(236, 72, 153, 0.05);
 //   width: 100%;
 //   box-sizing: border-box;
 
@@ -856,7 +942,7 @@ const uniqueOrderNumber = `KINGS-${Date.now().toString().slice(-6)}${Math.floor(
 //     margin-top: 0;
 //     margin-bottom: 16px;
 //     font-size: 1.1rem;
-//     color: #2563eb;
+//     color: ${PrimaryColor};
 //     font-weight: 700;
 //     border-bottom: 2px solid #f0f0f0;
 //     padding-bottom: 8px;
@@ -898,7 +984,7 @@ const uniqueOrderNumber = `KINGS-${Date.now().toString().slice(-6)}${Math.floor(
 //   justify-content: space-between;
 //   font-size: 1.1rem;
 //   font-weight: 800;
-//   color: #2563eb;
+//   color: ${PrimaryColor};
 //   margin-bottom: 16px;
 
 //   @media (min-width: 768px) {
@@ -926,7 +1012,7 @@ const uniqueOrderNumber = `KINGS-${Date.now().toString().slice(-6)}${Math.floor(
 //   font-size: 0.9rem;
 //   &:focus {
 //     outline: none;
-//     border-color: #2563eb;
+//     border-color: ${PrimaryColor};
 //   }
 // `;
 
@@ -941,15 +1027,15 @@ const uniqueOrderNumber = `KINGS-${Date.now().toString().slice(-6)}${Math.floor(
 //   cursor: pointer;
 //   white-space: nowrap;
 //   &:hover {
-//     background: #2563eb;
+//     background: ${PrimaryColor};
 //   }
 // `;
 
 // const PayNowButton = styled.button`
 //   width: 100%;
-//   background: #2563eb;
+//   background: ${AccentGradient};
 //   color: #ffffff;
-//   border: 2px solid #D4AF37;
+//   border: none;
 //   padding: 12px;
 //   border-radius: 6px;
 //   font-size: 0.95rem;
@@ -960,8 +1046,8 @@ const uniqueOrderNumber = `KINGS-${Date.now().toString().slice(-6)}${Math.floor(
 //   box-sizing: border-box;
 
 //   &:hover {
-//     background: #D4AF37;
-//     color: #2563eb;
+//     opacity: 0.92;
+//     transform: translateY(-1px);
 //   }
 //   &:disabled {
 //     opacity: 0.6;
@@ -978,15 +1064,15 @@ const uniqueOrderNumber = `KINGS-${Date.now().toString().slice(-6)}${Math.floor(
 //   text-align: center;
 //   padding: 60px;
 //   font-size: 1.1rem;
-//   color: #2563eb;
+//   color: ${PrimaryColor};
 //   font-weight: 600;
 // `;
 
 // const PayOnDeliveryButton = styled.button`
 //   width: 100%;
 //   background: #ffffff;
-//   color: #2563eb;
-//   border: 2px solid #2563eb;
+//   color: ${PrimaryColor};
+//   border: 2px solid ${PrimaryColor};
 //   padding: 12px;
 //   border-radius: 6px;
 //   font-size: 0.95rem;
@@ -998,7 +1084,7 @@ const uniqueOrderNumber = `KINGS-${Date.now().toString().slice(-6)}${Math.floor(
 //   box-sizing: border-box;
 
 //   &:hover {
-//     background: #2563eb;
+//     background: ${PrimaryColor};
 //     color: #ffffff;
 //   }
 //   &:disabled {
@@ -1017,19 +1103,23 @@ const uniqueOrderNumber = `KINGS-${Date.now().toString().slice(-6)}${Math.floor(
 
 
 
+// --- Styled Components (Theme Colors: PrimaryNavy #0B1B48, PrimaryCyan #00AEEF, Gradient) ---
 
-// --- Styled Components (Theme Colors: Pink #ec4899, Turquoise #06b6d4, Gradient) ---
-
-const PrimaryColor = "#ec4899";
-const AccentGradient = "linear-gradient(135deg, #ec4899 0%, #f59e0b 50%, #06b6d4 100%)";
-const Turquoise = "#06b6d4";
+const PrimaryNavy = "#0B1B48";
+const PrimaryCyan = "#00AEEF";
+const Dark = "#0f172a";
+const Border = "#cbd5e1";
+const White = "#ffffff";
+const TextMuted = "#475569";
+const LightBg = "#f8fafc";
+const ThemeGradient = "linear-gradient(135deg, #0B1B48 0%, #00AEEF 100%)";
 
 const Container = styled.div`
   max-width: 1200px;
   margin: 20px auto;
   padding: 0 10px;
   box-sizing: border-box;
-  color: #1a1a1a;
+  color: ${Dark};
   width: 100%;
   overflow-x: hidden;
 
@@ -1041,11 +1131,11 @@ const Container = styled.div`
 
 const PageTitle = styled.h2`
   font-size: 1.5rem;
-  // color: orange;
   font-weight: 800;
   margin-bottom: 16px;
-  border-bottom: 2px solid ${Turquoise};
+  border-bottom: 2px solid ${PrimaryCyan};
   padding-bottom: 8px;
+  color: ${PrimaryNavy};
 
   @media (min-width: 768px) {
     font-size: 2rem;
@@ -1085,11 +1175,11 @@ const Sidebar = styled.div`
 `;
 
 const Card = styled.div`
-  background: #ffffff;
-  border: 1px solid #e2e2e2;
-  border-top: 4px solid ${Turquoise};
+  background: ${White};
+  border: 1px solid ${Border};
+  border-top: 4px solid ${PrimaryCyan};
   border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(236, 72, 153, 0.03);
+  box-shadow: 0 2px 6px rgba(11, 27, 72, 0.04);
   overflow: hidden;
   width: 100%;
   box-sizing: border-box;
@@ -1102,13 +1192,13 @@ const CardHeader = styled.div`
   align-items: center;
   gap: 8px;
   padding: 12px 14px;
-  background: #fbfbfb;
-  border-bottom: 1px solid #eee;
+  background: ${LightBg};
+  border-bottom: 1px solid ${Border};
 
   h3 {
     margin: 0;
     font-size: 1rem;
-    // color: ${PrimaryColor};
+    color: ${PrimaryNavy};
     font-weight: 700;
   }
 
@@ -1152,7 +1242,7 @@ const InfoGrid = styled.div`
 const Label = styled.span`
   display: block;
   font-size: 0.75rem;
-  color: #777;
+  color: ${TextMuted};
   text-transform: uppercase;
   letter-spacing: 0.5px;
   margin-bottom: 2px;
@@ -1160,7 +1250,7 @@ const Label = styled.span`
 
 const Value = styled.span`
   font-size: 0.9rem;
-  color: #222;
+  color: ${Dark};
   font-weight: 600;
   word-break: break-word;
 `;
@@ -1168,20 +1258,20 @@ const Value = styled.span`
 const AddressName = styled.h4`
   margin: 0 0 4px 0;
   font-size: 1rem;
-  color: ${PrimaryColor};
+  color: ${PrimaryNavy};
   font-weight: 700;
 `;
 
 const AddressText = styled.p`
   margin: 2px 0;
   font-size: 0.85rem;
-  color: #555;
+  color: ${TextMuted};
   word-break: break-word;
 `;
 
 const TextButton = styled.button`
   background: transparent;
-  color: ${PrimaryColor};
+  color: ${PrimaryNavy};
   border: none;
   font-size: 0.8rem;
   font-weight: 600;
@@ -1189,22 +1279,22 @@ const TextButton = styled.button`
   padding: 0;
   &:hover {
     text-decoration: underline;
-    color: ${Turquoise};
+    color: ${PrimaryCyan};
   }
 `;
 
 const ActionButton = styled.button`
-  background: ${PrimaryColor};
-  color: #ffffff;
-  border: 1px solid ${Turquoise};
+  background: ${PrimaryNavy};
+  color: ${White};
+  border: 1px solid ${PrimaryCyan};
   padding: 8px 16px;
   border-radius: 6px;
   font-weight: 600;
   font-size: 0.9rem;
   cursor: pointer;
   &:hover {
-    background: ${Turquoise};
-    color: #ffffff;
+    background: ${PrimaryCyan};
+    color: ${White};
   }
 `;
 
@@ -1216,7 +1306,7 @@ const EmptyStateBox = styled.div`
 `;
 
 const WarningText = styled.p`
-  color: #666;
+  color: ${TextMuted};
   font-size: 0.9rem;
   margin: 0;
   word-break: break-word;
@@ -1225,7 +1315,7 @@ const WarningText = styled.p`
 const EmptyCartText = styled.p`
   padding: 20px;
   text-align: center;
-  color: #666;
+  color: ${TextMuted};
   margin: 0;
 `;
 
@@ -1243,18 +1333,18 @@ const CartTable = styled.table`
   min-width: 280px;
 
   th {
-    background: #f4f6f9;
-    color: #333;
+    background: ${LightBg};
+    color: ${Dark};
     padding: 10px 12px;
     font-weight: 600;
-    border-bottom: 1px solid #e2e2e2;
+    border-bottom: 1px solid ${Border};
     white-space: nowrap;
   }
 
   td {
     padding: 10px 12px;
-    border-bottom: 1px solid #eee;
-    color: #444;
+    border-bottom: 1px solid ${Border};
+    color: ${TextMuted};
     vertical-align: middle;
     white-space: nowrap;
   }
@@ -1278,7 +1368,7 @@ const ItemImg = styled.img`
   height: 40px;
   object-fit: cover;
   border-radius: 6px;
-  border: 1px solid #ddd;
+  border: 1px solid ${Border};
   flex-shrink: 0;
 
   @media (min-width: 768px) {
@@ -1289,7 +1379,7 @@ const ItemImg = styled.img`
 
 const ItemName = styled.span`
   font-weight: 600;
-  color: #1a1a1a;
+  color: ${Dark};
   display: block;
   max-width: 140px;
   overflow: hidden;
@@ -1303,11 +1393,11 @@ const ItemName = styled.span`
 `;
 
 const SummaryCard = styled.div`
-  background: #ffffff;
-  border: 1px solid ${Turquoise};
+  background: ${White};
+  border: 1px solid ${PrimaryCyan};
   border-radius: 8px;
   padding: 16px;
-  box-shadow: 0 4px 12px rgba(236, 72, 153, 0.05);
+  box-shadow: 0 4px 12px rgba(11, 27, 72, 0.06);
   width: 100%;
   box-sizing: border-box;
 
@@ -1321,9 +1411,9 @@ const SummaryCard = styled.div`
     margin-top: 0;
     margin-bottom: 16px;
     font-size: 1.1rem;
-    color: ${PrimaryColor};
+    color: ${PrimaryNavy};
     font-weight: 700;
-    border-bottom: 2px solid #f0f0f0;
+    border-bottom: 2px solid ${LightBg};
     padding-bottom: 8px;
 
     @media (min-width: 768px) {
@@ -1339,8 +1429,8 @@ const SummaryRow = styled.div`
   justify-content: space-between;
   margin-bottom: 10px;
   font-size: 0.9rem;
-  color: ${props => props.discount ? '#2e7d32' : '#555'};
-  font-weight: ${props => props.discount ? '600' : '400'};
+  color: ${props => (props.discount ? '#2e7d32' : TextMuted)};
+  font-weight: ${props => (props.discount ? '600' : '400')};
 
   @media (min-width: 768px) {
     font-size: 0.95rem;
@@ -1350,7 +1440,7 @@ const SummaryRow = styled.div`
 
 const Divider = styled.hr`
   border: none;
-  border-top: 1px solid #e2e2e2;
+  border-top: 1px solid ${Border};
   margin: 12px 0;
 
   @media (min-width: 768px) {
@@ -1363,7 +1453,7 @@ const TotalRow = styled.div`
   justify-content: space-between;
   font-size: 1.1rem;
   font-weight: 800;
-  color: ${PrimaryColor};
+  color: ${PrimaryNavy};
   margin-bottom: 16px;
 
   @media (min-width: 768px) {
@@ -1386,18 +1476,18 @@ const PromoInput = styled.input`
   flex: 1;
   min-width: 0;
   padding: 10px 12px;
-  border: 1px solid #ccc;
+  border: 1px solid ${Border};
   border-radius: 6px;
   font-size: 0.9rem;
   &:focus {
     outline: none;
-    border-color: ${PrimaryColor};
+    border-color: ${PrimaryCyan};
   }
 `;
 
 const ApplyButton = styled.button`
-  background: #333;
-  color: #fff;
+  background: ${Dark};
+  color: ${White};
   border: none;
   padding: 0 14px;
   border-radius: 6px;
@@ -1406,14 +1496,14 @@ const ApplyButton = styled.button`
   cursor: pointer;
   white-space: nowrap;
   &:hover {
-    background: ${PrimaryColor};
+    background: ${PrimaryNavy};
   }
 `;
 
 const PayNowButton = styled.button`
   width: 100%;
-  background: ${AccentGradient};
-  color: #ffffff;
+  background: ${ThemeGradient};
+  color: ${White};
   border: none;
   padding: 12px;
   border-radius: 6px;
@@ -1443,15 +1533,15 @@ const LoadingText = styled.p`
   text-align: center;
   padding: 60px;
   font-size: 1.1rem;
-  color: ${PrimaryColor};
+  color: ${PrimaryNavy};
   font-weight: 600;
 `;
 
 const PayOnDeliveryButton = styled.button`
   width: 100%;
-  background: #ffffff;
-  color: ${PrimaryColor};
-  border: 2px solid ${PrimaryColor};
+  background: ${White};
+  color: ${PrimaryNavy};
+  border: 2px solid ${PrimaryNavy};
   padding: 12px;
   border-radius: 6px;
   font-size: 0.95rem;
@@ -1463,8 +1553,8 @@ const PayOnDeliveryButton = styled.button`
   box-sizing: border-box;
 
   &:hover {
-    background: ${PrimaryColor};
-    color: #ffffff;
+    background: ${PrimaryNavy};
+    color: ${White};
   }
   &:disabled {
     opacity: 0.6;

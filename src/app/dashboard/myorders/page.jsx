@@ -1,23 +1,25 @@
-// "use client";
 
-// import { useEffect, useState } from "react";
-// import { db } from "@/firebaseConfig";
-// import { 
-//   collection, 
-//   getDocs, 
-//   query, 
-//   where 
-// } from "firebase/firestore";
-// import styled from "styled-components";
+
+
+
+
+// 'use client';
+
+// import React, { useState, useEffect } from 'react';
+// import styled from 'styled-components';
+// import { useRouter } from 'next/navigation';
+// import { db, auth } from "@/firebaseConfig";
+// import { onAuthStateChanged } from "firebase/auth";
+// import { collection, getDocs, query, where } from "firebase/firestore";
 // import Swal from "sweetalert2";
-// import { useRouter } from "next/navigation";
 
-// // 🎨 BEES INTERIOR THEME COLORS
-// const Blue = "#2563eb";
+// // 🎨 NEW THEME COLORS & GRADIENTS (Vibrant Pink, Turquoise & Dynamic Accent)
+// const PrimaryColor = "#ec4899";
+// const Turquoise = "#06b6d4";
+// const AccentGradient = "linear-gradient(135deg, #ec4899 0%, #f59e0b 50%, #06b6d4 100%)";
 // const Dark = "#0f172a";
 // const Border = "#e5eaf2";
 // const White = "#ffffff";
-// const Gold = "#D4AF37";
 // const TextMuted = "#475569";
 // const Danger = "#ef4444";
 // const Success = "#10b981";
@@ -35,30 +37,31 @@
 // `;
 
 // const HeaderBanner = styled.div`
-//   background: linear-gradient(135deg, ${Blue} 0%, ${Gold} 100%);
+//   background: ${AccentGradient};
 //   color: ${White};
 //   padding: 10px;
 //   border-radius: 10px;
 //   display: flex;
 //   flex-direction: column;
 //   gap: 10px;
-//   box-shadow: 0 4px 15px rgba(15, 23, 42, 0.05);
+//   box-shadow: 0 6px 20px rgba(236, 72, 153, 0.15);
 // `;
 
 // const ColorfulTitle = styled.h1`
 //   font-size: 1.6rem;
 //   font-weight: 800;
 //   margin: 0;
-//   background: linear-gradient(90deg, #ffffff 0%, #fef08a 100%);
+//   background: linear-gradient(90deg, #ffffff 0%, #fbcfe8 100%);
 //   -webkit-background-clip: text;
 //   -webkit-text-fill-color: transparent;
 //   letter-spacing: -0.5px;
+//   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 // `;
 
 // const ColorfulSub = styled.p`
 //   font-size: 0.95rem;
 //   margin: 0;
-//   color: #f8fafc;
+//   color: #fdf2f8;
 //   opacity: 0.95;
 // `;
 
@@ -80,9 +83,11 @@
 //   box-sizing: border-box;
 //   margin: 0;
 //   background: ${White};
+//   transition: all 0.2s ease;
 
 //   &:focus {
-//     border-color: ${Blue};
+//     border-color: ${PrimaryColor};
+//     box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.15);
 //   }
 // `;
 
@@ -97,7 +102,7 @@
 //   font-size: 1.25rem;
 //   font-weight: 800;
 //   margin: 0;
-//   background: linear-gradient(135deg, ${Blue} 0%, ${Gold} 100%);
+//   background: ${AccentGradient};
 //   -webkit-background-clip: text;
 //   -webkit-text-fill-color: transparent;
 // `;
@@ -113,11 +118,17 @@
 //   border-radius: 10px;
 //   padding: 10px;
 //   border: 1px solid ${Border};
-//   border-left: 4px solid ${Gold};
-//   box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+//   border-left: 4px solid ${Turquoise};
+//   box-shadow: 0 4px 15px rgba(15, 23, 42, 0.04);
 //   display: flex;
 //   flex-direction: column;
 //   gap: 10px;
+//   transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+//   &:hover {
+//     transform: translateY(-2px);
+//     box-shadow: 0 6px 20px rgba(236, 72, 153, 0.08);
+//   }
 // `;
 
 // const CardHeader = styled.div`
@@ -163,13 +174,13 @@
 //     props.$variant === "danger" ? "rgba(239, 68, 68, 0.1)" : 
 //     props.$variant === "success" ? "rgba(16, 185, 129, 0.1)" : 
 //     props.$variant === "warning" ? "rgba(245, 158, 11, 0.1)" : 
-//     "rgba(37, 99, 235, 0.1)"
+//     "rgba(6, 182, 212, 0.1)"
 //   };
 //   color: ${(props) => 
 //     props.$variant === "danger" ? Danger : 
 //     props.$variant === "success" ? Success : 
 //     props.$variant === "warning" ? Warning : 
-//     Blue
+//     Turquoise
 //   };
 //   padding: 3px 8px;
 //   border-radius: 6px;
@@ -191,7 +202,7 @@
 // const LoadingContainer = styled.div`
 //   padding: 10px;
 //   text-align: center;
-//   color: ${Dark};
+//   color: ${PrimaryColor};
 //   font-weight: 600;
 // `;
 
@@ -201,34 +212,80 @@
 //   font-size: 0.85rem;
 //   font-weight: 600;
 //   color: ${White};
-//   background: ${Blue};
+//   background: ${AccentGradient};
 //   border: none;
 //   border-radius: 6px;
 //   cursor: pointer;
+//   box-shadow: 0 2px 8px rgba(236, 72, 153, 0.25);
+//   transition: opacity 0.2s ease;
+
+//   &:hover {
+//     opacity: 0.9;
+//   }
 // `;
 
-// export default function CustomerOrdersPage({ customerEmail }) {
+
+
+//   export default function CustomerOrdersPage({ customerEmail }) {
 //   const [orders, setOrders] = useState([]);
 //   const [loading, setLoading] = useState(true);
 //   const [searchQuery, setSearchQuery] = useState("");
+//   const [currentUser, setCurrentUser] = useState(null);
 //   const router = useRouter();
 
-//   const fetchCustomerOrders = async () => {
+//   // Listen to the authenticated user session
+//   useEffect(() => {
+//     const unsubscribe = onAuthStateChanged(auth, (user) => {
+//       if (user) {
+//         setCurrentUser(user);
+//       } else {
+//         setCurrentUser(null);
+//       }
+//     });
+//     return () => unsubscribe();
+//   }, []);
+
+
+
+
+
+// const fetchCustomerOrders = async (user) => {
 //     try {
 //       setLoading(true);
       
-//       // If customerEmail prop is provided, query specifically for their orders
-//       // Falls back to fetching all if email isn't passed (adjust based on your auth implementation)
-//       let q = collection(db, "orders");
-//       if (customerEmail) {
-//         q = query(collection(db, "orders"), where("accountInfo.email", "==", customerEmail));
+//       const targetEmail = customerEmail || user?.email;
+//       const targetUserId = user?.uid;
+
+//       if (!targetEmail && !targetUserId) {
+//         setOrders([]);
+//         setLoading(false);
+//         return;
+//       }
+
+//       // Query by userId first, or fallback to customerEmail prop / user email
+//       let q;
+//       if (targetUserId) {
+//         q = query(collection(db, "orders"), where("userId", "==", targetUserId));
+//       } else {
+//         q = query(collection(db, "orders"), where("accountInfo.email", "==", targetEmail));
 //       }
 
 //       const querySnapshot = await getDocs(q);
-//       const list = querySnapshot.docs.map((doc) => ({
+//       let list = querySnapshot.docs.map((doc) => ({
 //         id: doc.id,
 //         ...doc.data(),
 //       }));
+
+//       // Fallback safeguard if userId wasn't stored on older documents
+//       if (list.length === 0 && targetEmail) {
+//         const emailQuery = query(collection(db, "orders"), where("accountInfo.email", "==", targetEmail));
+//         const emailSnap = await getDocs(emailQuery);
+//         list = emailSnap.docs.map((doc) => ({
+//           id: doc.id,
+//           ...doc.data(),
+//         }));
+//       }
+
 //       setOrders(list);
 //     } catch (error) {
 //       console.error("Error fetching customer orders:", error);
@@ -239,10 +296,17 @@
 //   };
 
 //   useEffect(() => {
+//     if (currentUser !== undefined) {
+//       fetchCustomerOrders(currentUser);
+//     }
+//   }, [currentUser, customerEmail]);
+
+  
+
+//   useEffect(() => {
 //     fetchCustomerOrders();
 //   }, [customerEmail]);
 
-//   // Retain search filter strictly by order number (or order id fallback)
 //   const filteredOrders = orders.filter((o) => {
 //     const orderNoMatch = o.orderNumber?.toLowerCase().includes(searchQuery.toLowerCase()) || false;
 //     const docIdMatch = o.id?.toLowerCase().includes(searchQuery.toLowerCase()) || false;
@@ -334,7 +398,6 @@
 
 
 
-
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -345,10 +408,10 @@ import { onAuthStateChanged } from "firebase/auth";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import Swal from "sweetalert2";
 
-// 🎨 NEW THEME COLORS & GRADIENTS (Vibrant Pink, Turquoise & Dynamic Accent)
-const PrimaryColor = "#ec4899";
-const Turquoise = "#06b6d4";
-const AccentGradient = "linear-gradient(135deg, #ec4899 0%, #f59e0b 50%, #06b6d4 100%)";
+// 🎨 NAVY & CYAN THEME COLORS & GRADIENTS
+const PrimaryNavy = "#0B1B48";
+const PrimaryCyan = "#00AEEF";
+const ThemeGradient = "linear-gradient(135deg, #0B1B48 0%, #00AEEF 100%)";
 const Dark = "#0f172a";
 const Border = "#e5eaf2";
 const White = "#ffffff";
@@ -369,21 +432,21 @@ const Container = styled.div`
 `;
 
 const HeaderBanner = styled.div`
-  background: ${AccentGradient};
+  background: ${ThemeGradient};
   color: ${White};
   padding: 10px;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  box-shadow: 0 6px 20px rgba(236, 72, 153, 0.15);
+  box-shadow: 0 6px 20px rgba(11, 27, 72, 0.15);
 `;
 
 const ColorfulTitle = styled.h1`
   font-size: 1.6rem;
   font-weight: 800;
   margin: 0;
-  background: linear-gradient(90deg, #ffffff 0%, #fbcfe8 100%);
+  background: linear-gradient(90deg, #ffffff 0%, #e0f2fe 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   letter-spacing: -0.5px;
@@ -393,7 +456,7 @@ const ColorfulTitle = styled.h1`
 const ColorfulSub = styled.p`
   font-size: 0.95rem;
   margin: 0;
-  color: #fdf2f8;
+  color: #f8fafc;
   opacity: 0.95;
 `;
 
@@ -418,8 +481,8 @@ const StyledInput = styled.input`
   transition: all 0.2s ease;
 
   &:focus {
-    border-color: ${PrimaryColor};
-    box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.15);
+    border-color: ${PrimaryCyan};
+    box-shadow: 0 0 0 3px rgba(0, 174, 239, 0.15);
   }
 `;
 
@@ -434,9 +497,7 @@ const ColorfulSectionTitle = styled.h2`
   font-size: 1.25rem;
   font-weight: 800;
   margin: 0;
-  background: ${AccentGradient};
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: ${PrimaryNavy};
 `;
 
 const OrdersGrid = styled.div`
@@ -450,7 +511,7 @@ const OrderCard = styled.div`
   border-radius: 10px;
   padding: 10px;
   border: 1px solid ${Border};
-  border-left: 4px solid ${Turquoise};
+  border-left: 4px solid ${PrimaryCyan};
   box-shadow: 0 4px 15px rgba(15, 23, 42, 0.04);
   display: flex;
   flex-direction: column;
@@ -459,7 +520,7 @@ const OrderCard = styled.div`
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(236, 72, 153, 0.08);
+    box-shadow: 0 6px 20px rgba(0, 174, 239, 0.08);
   }
 `;
 
@@ -506,13 +567,13 @@ const Badge = styled.span`
     props.$variant === "danger" ? "rgba(239, 68, 68, 0.1)" : 
     props.$variant === "success" ? "rgba(16, 185, 129, 0.1)" : 
     props.$variant === "warning" ? "rgba(245, 158, 11, 0.1)" : 
-    "rgba(6, 182, 212, 0.1)"
+    "rgba(0, 174, 239, 0.1)"
   };
   color: ${(props) => 
     props.$variant === "danger" ? Danger : 
     props.$variant === "success" ? Success : 
     props.$variant === "warning" ? Warning : 
-    Turquoise
+    PrimaryCyan
   };
   padding: 3px 8px;
   border-radius: 6px;
@@ -534,7 +595,7 @@ const OrderDetailsBox = styled.div`
 const LoadingContainer = styled.div`
   padding: 10px;
   text-align: center;
-  color: ${PrimaryColor};
+  color: ${PrimaryNavy};
   font-weight: 600;
 `;
 
@@ -544,11 +605,11 @@ const MoreDetailsButton = styled.button`
   font-size: 0.85rem;
   font-weight: 600;
   color: ${White};
-  background: ${AccentGradient};
+  background: ${ThemeGradient};
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(236, 72, 153, 0.25);
+  box-shadow: 0 2px 8px rgba(11, 27, 72, 0.25);
   transition: opacity 0.2s ease;
 
   &:hover {
@@ -556,9 +617,7 @@ const MoreDetailsButton = styled.button`
   }
 `;
 
-
-
-  export default function CustomerOrdersPage({ customerEmail }) {
+export default function CustomerOrdersPage({ customerEmail }) {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
@@ -577,11 +636,7 @@ const MoreDetailsButton = styled.button`
     return () => unsubscribe();
   }, []);
 
-
-
-
-
-const fetchCustomerOrders = async (user) => {
+  const fetchCustomerOrders = async (user) => {
     try {
       setLoading(true);
       
@@ -632,8 +687,6 @@ const fetchCustomerOrders = async (user) => {
       fetchCustomerOrders(currentUser);
     }
   }, [currentUser, customerEmail]);
-
-  
 
   useEffect(() => {
     fetchCustomerOrders();

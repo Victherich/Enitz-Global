@@ -1,5 +1,7 @@
 
 
+
+
 // "use client";
 
 // import { useState, useEffect } from "react";
@@ -8,17 +10,18 @@
 // import { usePathname } from "next/navigation";
 // import { auth, db } from "../firebaseConfig";
 // import { onAuthStateChanged } from "firebase/auth";
-// import { doc, onSnapshot } from "firebase/firestore"; // Changed getDoc to onSnapshot
+// import { doc, onSnapshot } from "firebase/firestore";
 // import PaymentInProgressModal from "./PaymentInProgressModal";
 // import { useAppContext } from "./Context";
 // import { useCart } from "@/components/CartContext";
 
 // /* ================= COLORS ================= */
-// const Blue = "#2563eb";
-// const Dark = "#0f172a";
-// const Border = "#e5eaf2";
+// const PrimaryColor = "#ec4899"; // Vibrant Pink from the logo
+// const AccentGradient = "linear-gradient(135deg, #ec4899 0%, #f59e0b 50%, #06b6d4 100%)"; // Pink -> Orange -> Turquoise
+// const Dark = "#1e293b";
+// const Border = "#e2e8f0";
 // const White = "#ffffff";
-// const Gold = "#D4AF37";
+// const Turquoise = "#06b6d4";
 
 // /* ================= HEADER ================= */
 // const HeaderContainer = styled.header`
@@ -28,12 +31,12 @@
 //   width: 100%;
 //   z-index: 300;
 
-//   background: rgba(255, 255, 255, 0.85);
+//   background: rgba(255, 255, 255, 0.9);
 //   backdrop-filter: blur(14px);
 //   -webkit-backdrop-filter: blur(14px);
 
 //   border-bottom: 1px solid ${Border};
-//   box-shadow: 0 4px 20px rgba(15, 23, 42, 0.03);
+//   box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
 // `;
 
 // const Inner = styled.div`
@@ -56,7 +59,7 @@
 //   gap: 4px;
 
 //   span {
-//     background: linear-gradient(135deg, ${Blue} 0%, ${Gold} 100%);
+//     background: ${AccentGradient};
 //     -webkit-background-clip: text;
 //     -webkit-text-fill-color: transparent;
 //   }
@@ -92,12 +95,12 @@
 //   text-decoration: none;
 //   font-size: 0.95rem;
 //   font-weight: 600;
-//   color: ${(p) => (p.$active ? Blue : Dark)};
+//   color: ${(p) => (p.$active ? PrimaryColor : Dark)};
 //   position: relative;
 //   transition: color 0.2s ease;
 
 //   &:hover {
-//     color: ${Blue};
+//     color: ${PrimaryColor};
 //   }
 
 //   &::after {
@@ -107,7 +110,7 @@
 //     bottom: -4px;
 //     width: ${(p) => (p.$active ? "100%" : "0")};
 //     height: 2px;
-//     background: ${Blue};
+//     background: ${AccentGradient};
 //     transition: width 0.3s ease;
 //   }
 
@@ -147,14 +150,14 @@
 //   text-align: center;
 //   transition: all 0.2s ease;
 
-//   background: ${(p) => (p.$isPrimary ? Blue : "transparent")};
+//   background: ${(p) => (p.$isPrimary ? AccentGradient : "transparent")};
 //   color: ${(p) => (p.$isPrimary ? White : Dark)};
 //   border: ${(p) => (p.$isPrimary ? "none" : `1px solid ${Border}`)};
 
 //   &:hover {
 //     opacity: 0.9;
 //     transform: translateY(-1px);
-//     border-color: ${Blue};
+//     border-color: ${PrimaryColor};
 //   }
 
 //   @media (max-width: 768px) {
@@ -189,6 +192,7 @@
 
 //   &.open div:nth-child(1) {
 //     transform: translateY(9px) rotate(45deg);
+//     background: ${PrimaryColor};
 //   }
 
 //   &.open div:nth-child(2) {
@@ -197,6 +201,7 @@
 
 //   &.open div:nth-child(3) {
 //     transform: translateY(-9px) rotate(-45deg);
+//     background: ${Turquoise};
 //   }
 // `;
 
@@ -224,8 +229,6 @@
 
 //     const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
 //       if (user) {
-//         // Fix: Listen in real-time. If the signup process is slightly delayed 
-//         // in creating the document, this will instantly catch it when it finishes.
 //         const userRef = doc(db, "users", user.uid);
 //         unsubscribeDoc = onSnapshot(userRef, (userSnap) => {
 //           if (userSnap.exists()) {
@@ -235,7 +238,7 @@
 //       } else {
 //         setUserData(null);
 //         if (unsubscribeDoc) {
-//           unsubscribeDoc(); // Clean up doc listener when user logs out
+//           unsubscribeDoc();
 //         }
 //       }
 //     });
@@ -255,10 +258,7 @@
 //         <Inner>
 //           <Link href="/" onClick={() => setOpen(false)} style={{ textDecoration: 'none' }}> 
 //             <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-//               <img src="/logo1.png" alt="Bees Interior Logo" style={{ height: "50px", borderRadius:"10px" }} />    
-//               <Logo>
-//                 {/* Bees<span>Interior</span> */}
-//               </Logo>
+//               <img src="/logo1.png" alt="Kingsword Bag Craft Logo" style={{ height: "45px", borderRadius: "8px" }} />    
 //             </div>
 //           </Link>
 
@@ -266,8 +266,10 @@
 //             <Nav $open={open}>
 //               <NavLink href="/" $active={pathname === "/"} onClick={() => setOpen(false)}>Home</NavLink>
 //               <NavLink href="/about" $active={pathname === "/about"} onClick={() => setOpen(false)}>About</NavLink>
+//               <NavLink href="/services" $active={pathname === "/services"} onClick={() => setOpen(false)}>Services</NavLink>
+              
 //               <NavLink href="/store" $active={pathname === "/store"} onClick={() => setOpen(false)}>Store</NavLink>
-//               <NavLink href="/blogs" $active={pathname === "/blogs"} onClick={() => setOpen(false)}>Blogs</NavLink>
+//               <NavLink href="/pricing" $active={pathname === "/pricing"} onClick={() => setOpen(false)}>Pricing</NavLink>
 //               <NavLink href="/contact" $active={pathname === "/contact"} onClick={() => setOpen(false)}>Contact</NavLink>
 //               <NavLink href="/cart" $active={pathname === "/cart"} onClick={() => setOpen(false)}>
 //                 Cart ({cartTotalItems})
@@ -328,14 +330,16 @@ import { doc, onSnapshot } from "firebase/firestore";
 import PaymentInProgressModal from "./PaymentInProgressModal";
 import { useAppContext } from "./Context";
 import { useCart } from "@/components/CartContext";
+import HostingExpiryGuard from "./HostingExpiryGuard";
 
 /* ================= COLORS ================= */
-const PrimaryColor = "#ec4899"; // Vibrant Pink from the logo
-const AccentGradient = "linear-gradient(135deg, #ec4899 0%, #f59e0b 50%, #06b6d4 100%)"; // Pink -> Orange -> Turquoise
-const Dark = "#1e293b";
+const PrimaryColor = "#00AEEF"; // Bright Cyan / Teal Blue from the logo
+const AccentGradient = "linear-gradient(135deg, #0B1B48 0%, #00AEEF 100%)"; // Dark Navy -> Bright Cyan
+const Dark = "#0B1B48"; // Updated to Enitz Dark Navy Blue
 const Border = "#e2e8f0";
 const White = "#ffffff";
-const Turquoise = "#06b6d4";
+const Turquoise = "#00AEEF";
+// const ThemeGradient = "linear-gradient(135deg, #0B1B48 0%, #00AEEF 100%)";
 
 /* ================= HEADER ================= */
 const HeaderContainer = styled.header`
@@ -360,6 +364,16 @@ const Inner = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 0.3rem 1.5rem;
+
+ span {
+    background: ${AccentGradient};
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight:900;
+  }
+
+
 `;
 
 /* ================= LOGO ================= */
@@ -572,7 +586,8 @@ export default function Header() {
         <Inner>
           <Link href="/" onClick={() => setOpen(false)} style={{ textDecoration: 'none' }}> 
             <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-              <img src="/logo1.png" alt="Kingsword Bag Craft Logo" style={{ height: "45px", borderRadius: "8px" }} />    
+              <img src="/logo.jpeg" alt="Enitz Global Limited Logo" style={{ height: "45px", borderRadius: "8px" }} />    
+            <span style={{color:`${AccentGradient}`}}>ENITZ GLOBAL</span>
             </div>
           </Link>
 
@@ -580,10 +595,8 @@ export default function Header() {
             <Nav $open={open}>
               <NavLink href="/" $active={pathname === "/"} onClick={() => setOpen(false)}>Home</NavLink>
               <NavLink href="/about" $active={pathname === "/about"} onClick={() => setOpen(false)}>About</NavLink>
-              <NavLink href="/services" $active={pathname === "/services"} onClick={() => setOpen(false)}>Services</NavLink>
               
               <NavLink href="/store" $active={pathname === "/store"} onClick={() => setOpen(false)}>Store</NavLink>
-              <NavLink href="/pricing" $active={pathname === "/pricing"} onClick={() => setOpen(false)}>Pricing</NavLink>
               <NavLink href="/contact" $active={pathname === "/contact"} onClick={() => setOpen(false)}>Contact</NavLink>
               <NavLink href="/cart" $active={pathname === "/cart"} onClick={() => setOpen(false)}>
                 Cart ({cartTotalItems})
@@ -624,6 +637,7 @@ export default function Header() {
       </HeaderContainer>
 
       <div style={{ height: "73px" }} />
+      <HostingExpiryGuard/>
     </>
   );
 }

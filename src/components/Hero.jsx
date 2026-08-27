@@ -1,350 +1,5 @@
-// "use client";
 
-// import React, { useState, useEffect } from "react";
-// import Link from "next/link";
-// import styled, { keyframes } from "styled-components";
-// import { Sparkles, ArrowRight, Calendar } from "lucide-react";
 
-// // Static main title and badges, with rotating backgrounds and subtitles
-// const heroSlides = [
-//   {
-//     image: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1920&q=80",
-//     badge: "Where Vision Meets Timeless Elegance",
-//     subtitle: "At Bees Interior, we specialize in transforming ordinary spaces into elegant, functional, and timeless environments through bespoke design and premium luxury accessories."
-//   },
-//   {
-//     image: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1920&q=80",
-//     badge: "Bespoke Architecture & Design",
-//     subtitle: "Experience sophisticated modern architecture, custom spatial layouts, and rich textures carefully curated to reflect your distinct personal standard of living."
-//   },
-//   {
-//     image: "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1920&q=80",
-//     badge: "Exquisite Furniture & Decor",
-//     subtitle: "Discover our exclusive collections of high-end statement furnishings, ambient designer lighting, and immaculate decor pieces built for absolute comfort."
-//   },
-//   {
-//     image: "https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=1920&q=80",
-//     badge: "Premium Interior Consultation",
-//     subtitle: "Book an elite design consultation today and let our seasoned professionals bring your structural and aesthetic aspirations into breathtaking reality."
-//   }
-// ];
-
-// // Fluid & Smooth Keyframe Animations
-// const smoothFadeInUp = keyframes`
-//   0% {
-//     opacity: 0;
-//     transform: translateY(20px);
-//     filter: blur(4px);
-//   }
-//   100% {
-//     opacity: 1;
-//     transform: translateY(0);
-//     // filter: blur(0px);
-//   }
-// `;
-
-// const smoothZoom = keyframes`
-//   0% {
-//     transform: scale(1);
-//   }
-//   50% {
-//     transform: scale(1.08);
-//   }
-//   100% {
-//     transform: scale(1.03);
-//   }
-// `;
-
-// const shimmer = keyframes`
-//   0% {
-//     background-position: -200% 0;
-//   }
-//   100% {
-//     background-position: 200% 0;
-//   }
-// `;
-
-// // Styled Components
-// const HeroSectionWrapper = styled.section`
-//   position: relative;
-//   min-h: 90vh;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   overflow: hidden;
-//   background-color: #020617;
-//     background-color: #020617;
-// //   padding: 5rem 1rem;
-  
-// //   @media (min-width: 640px) {
-//     padding: 5rem 1.5rem;
-//   }
-//   @media (min-width: 1024px) {
-//     // padding: 5rem 2rem;
-//   }
-// `;
-
-// const BackgroundImage = styled.div`
-//   position: absolute;
-//   inset: 0;
-//   background-image: url(${props => props.$bgImage});
-//   background-size: cover;
-//   background-position: center;
-//   opacity: ${props => (props.$isActive ? 1 : 0)};
-//   transition: opacity 1.6s cubic-bezier(0.4, 0, 0.2, 1);
-//   animation: ${props => (props.$isActive ? smoothZoom : "none")} 7s ease-in-out infinite alternate;
-//   will-change: opacity, transform;
-// `;
-
-// const GradientOverlay = styled.div`
-//   position: absolute;
-//   inset: 0;
-//   background: linear-gradient(to top, rgba(2, 6, 23, 0.96), rgba(2, 6, 23, 0.5), rgba(2, 6, 23, 0.3));
-// //   backdrop-filter: blur(3px);
-//   z-index: 1;
-// `;
-
-// const ContentContainer = styled.div`
-//   position: relative;
-//   z-index: 10;
-//   max-width: 56rem;
-//   margin: 0 auto;
-//   text-align: center;
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-//   gap: 2rem;
-//   margin-top: 1.5rem;
-// `;
-
-// const Badge = styled.div`
-//   display: inline-flex;
-//   align-items: center;
-//   gap: 0.5rem;
-//   padding: 0.5rem 1.25rem;
-//   border-radius: 9999px;
-//   background-color: rgba(255, 255, 255, 0.08);
-//   backdrop-filter: blur(16px);
-//   border: 1px solid rgba(255, 255, 255, 0.2);
-//   color: #ffffff;
-//   font-size: 0.75rem;
-//   font-weight: 500;
-//   letter-spacing: 0.05em;
-//   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4);
-//   transition: transform 0.3s ease;
-
-//   &:hover {
-//     transform: scale(1.03);
-//   }
-
-//   @media (min-width: 640px) {
-//     font-size: 0.875rem;
-//   }
-// `;
-
-// const Title = styled.h1`
-//   font-size: 2.25rem;
-//   font-weight: 700;
-//   letter-spacing: -0.025em;
-//   color: #ffffff;
-//   line-height: 1.15;
-
-//   @media (min-width: 640px) {
-//     font-size: 3.75rem;
-//   }
-//   @media (min-width: 768px) {
-//     font-size: 4.5rem;
-//   }
-// `;
-
-// const HighlightSpan = styled.span`
-//   background: linear-gradient(90deg, #fde68a 0%, #fbbf24 35%, #f59e0b 70%, #fde68a 100%);
-//   background-size: 200% auto;
-//   -webkit-background-clip: text;
-//   -webkit-text-fill-color: transparent;
-//   animation: ${shimmer} 5s linear infinite;
-// `;
-
-// const Subtitle = styled.p`
-//   max-width: 42rem;
-//   font-size: 1rem;
-//   color: #cbd5e1;
-//   font-weight: 400;
-//   line-height: 1.625;
-//   animation: ${smoothFadeInUp} 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-//   will-change: opacity, transform, filter;
-
-//   @media (min-width: 640px) {
-//     // font-size: 08rem;
-//   }
-//   @media (min-width: 768px) {
-//     // font-size: 1.25rem;
-//   }
-// `;
-
-// const ButtonGroup = styled.div`
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-//   justify-content: center;
-//   gap: 1rem;
-//   width: 100%;
-//   padding-top: 1rem;
-
-//   @media (min-width: 640px) {
-//     flex-direction: row;
-//     width: auto;
-//   }
-// `;
-
-// const PrimaryButton = styled(Link)`
-//   width: 100%;
-//   display: inline-flex;
-//   align-items: center;
-//   justify-content: center;
-//   gap: 0.75rem;
-//   padding: 1rem 2rem;
-//   border-radius: 9999px;
-//   background-color: #f59e0b;
-//   color: #020617;
-//   font-weight: 600;
-//   font-size: 1rem;
-//   box-shadow: 0 10px 25px -5px rgba(245, 158, 11, 0.4);
-//   transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-
-//   &:hover {
-//     background-color: #d97706;
-//     transform: translateY(-3px) scale(1.02);
-//     box-shadow: 0 15px 30px -5px rgba(245, 158, 11, 0.6);
-//   }
-
-//   @media (min-width: 640px) {
-//     width: auto;
-//   }
-// `;
-
-// const SecondaryButton = styled(Link)`
-//   width: 100%;
-//   display: inline-flex;
-//   align-items: center;
-//   justify-content: center;
-//   gap: 0.75rem;
-//   padding: 1rem 2rem;
-//   border-radius: 9999px;
-//   background-color: rgba(255, 255, 255, 0.08);
-//   color: #ffffff;
-//   border: 1px solid rgba(255, 255, 255, 0.25);
-//   backdrop-filter: blur(12px);
-//   font-weight: 600;
-//   font-size: 1rem;
-//   transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-
-//   &:hover {
-//     background-color: rgba(255, 255, 255, 0.18);
-//     border-color: rgba(255, 255, 255, 0.4);
-//     transform: translateY(-3px) scale(1.02);
-//   }
-
-//   @media (min-width: 640px) {
-//     width: auto;
-//   }
-// `;
-
-// const IndicatorsContainer = styled.div`
-//   display: flex;
-//   align-items: center;
-//   gap: 0.6rem;
-//   padding-top: 1.5rem;
-// `;
-
-// const IndicatorDot = styled.button`
-//   height: 0.5rem;
-//   border-radius: 9999px;
-//   transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-//   border: none;
-//   cursor: pointer;
-//   width: ${props => (props.$isActive ? "2.5rem" : "0.5rem")};
-//   background-color: ${props => (props.$isActive ? "#fbbf24" : "rgba(255, 255, 255, 0.35)")};
-//   box-shadow: ${props => (props.$isActive ? "0 0 12px rgba(251, 191, 36, 0.6)" : "none")};
-
-//   &:hover {
-//     background-color: ${props => (props.$isActive ? "#fbbf24" : "rgba(255, 255, 255, 0.6)")};
-//   }
-// `;
-
-// export default function HeroSection() {
-//   const [currentIndex, setCurrentIndex] = useState(0);
-
-//   // Automatically switch backgrounds and subtitles smoothly every 5 seconds
-//   useEffect(() => {
-//     const timer = setInterval(() => {
-//       setCurrentIndex((prevIndex) => (prevIndex + 1) % heroSlides.length);
-//     }, 5000);
-//     return () => clearInterval(timer);
-//   }, []);
-
-//   const currentSlide = heroSlides[currentIndex];
-
-//   return (
-//     <HeroSectionWrapper>
-//       {/* Background Images with Fluid Crossfade & Subtle Zoom */}
-//       {heroSlides.map((slide, index) => (
-//         <BackgroundImage
-//           key={slide.image}
-//           $bgImage={slide.image}
-//           $isActive={index === currentIndex}
-//         />
-//       ))}
-
-//       <GradientOverlay />
-
-//       <ContentContainer>
-        
-//         {/* Luxury Static Badge */}
-//         <Badge>
-//           <Sparkles className="w-4 h-4 text-amber-400 animate-pulse" />
-//           <span>{currentSlide.badge}</span>
-//         </Badge>
-
-//         {/* Static Main Headline */}
-//         <Title>
-//           BEES<HighlightSpan> INTERIOR</HighlightSpan>
-//         </Title>
-
-//         {/* Dynamic Animated Subtitle Description */}
-//         <Subtitle key={currentIndex}>
-//           {currentSlide.subtitle}
-//         </Subtitle>
-
-//         {/* Dual Call-To-Action Buttons */}
-//         <ButtonGroup>
-//           <PrimaryButton href="/store">
-//             Explore Collections
-//             <ArrowRight className="w-5 h-5 transition-transform duration-300 hover:translate-x-1" />
-//           </PrimaryButton>
-
-//           <SecondaryButton href="/contact">
-//             <Calendar className="w-5 h-5 text-amber-400" />
-//             Book Consultation
-//           </SecondaryButton>
-//         </ButtonGroup>
-
-//         {/* Interactive Carousel Indicators */}
-//         <IndicatorsContainer>
-//           {heroSlides.map((_, idx) => (
-//             <IndicatorDot
-//               key={idx}
-//               onClick={() => setCurrentIndex(idx)}
-//               $isActive={idx === currentIndex}
-//               aria-label={`Go to slide ${idx + 1}`}
-//             />
-//           ))}
-//         </IndicatorsContainer>
-
-//       </ContentContainer>
-//     </HeroSectionWrapper>
-//   );
-// }
 
 
 
@@ -355,27 +10,27 @@ import Link from "next/link";
 import styled, { keyframes } from "styled-components";
 import { Sparkles, ArrowRight, ShoppingBag } from "lucide-react";
 
-// Static main title and badges, with rotating backgrounds and subtitles tailored for Kingsword Bag Craft
+// Static main title and badges, with rotating backgrounds and subtitles tailored for Enitz Global Limited
 const heroSlides = [
   {
-    image: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=1920&q=80",
-    badge: "Handcrafted Luxury & Artisan Craftsmanship",
-    subtitle: "At Kingsword Bag Craft, we specialize in transforming unique artistry into striking, durable, and timeless fashion pieces through bespoke bag design and meticulous creation."
+    image: "https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1920&q=80",
+    badge: "Quality Products. Great Prices.",
+    subtitle: "At Enitz Global Limited, we bring you carefully selected personal and household products designed to make everyday living easy, affordable, and convenient."
   },
   {
-    image: "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=1920&q=80",
-    badge: "Bespoke Bag Architecture & Style",
-    subtitle: "Experience sophisticated modern silhouettes, custom structural layouts, and vibrant textures carefully curated to reflect your distinct personal standard of fashion."
+    image: "./h1.png",
+    badge: "Everyday Essentials & Retail",
+    subtitle: "Explore our wide range of useful, high-quality merchandise suited for your modern lifestyle, all backed by convenient ordering and reliable delivery."
   },
   {
-    image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=1920&q=80",
-    badge: "Exquisite Collections & Craft",
-    subtitle: "Discover our exclusive collections of high-end statement bags, vibrant artistic patterns, and immaculate accessories built for absolute elegance and utility."
+    image: "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=1920&q=80",
+    badge: "Smart Shopping Experience",
+    subtitle: "Discover incredible value on household goods and personal items with seamless purchasing and top-tier customer service right at your fingertips."
   },
   {
-    image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=1920&q=80",
-    badge: "Custom Order Consultation",
-    subtitle: "Book an elite design consultation today and let our seasoned artisans bring your fashion and aesthetic aspirations into breathtaking reality."
+    image: "https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=1920&q=80",
+    badge: "Shop With Confidence",
+    subtitle: "Browse our latest catalog today and enjoy unmatched pricing on everyday essentials designed to elevate your home and personal spaces."
   }
 ];
 
@@ -413,7 +68,7 @@ const shimmer = keyframes`
   }
 `;
 
-// Styled Components (Updated with Logo Gradient Theme: Pink, Orange, Turquoise)
+// Styled Components (Updated with Enitz Global Theme: Dark Navy Blue & Bright Cyan)
 const HeroSectionWrapper = styled.section`
   position: relative;
   min-height: 90vh;
@@ -421,7 +76,7 @@ const HeroSectionWrapper = styled.section`
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background-color: #020617;
+  background-color: #0b1b48;
 `;
 
 const BackgroundImage = styled.div`
@@ -439,7 +94,7 @@ const BackgroundImage = styled.div`
 const GradientOverlay = styled.div`
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(2, 6, 23, 0.96), rgba(2, 6, 23, 0.5), rgba(2, 6, 23, 0.3));
+  background: linear-gradient(to top, rgba(11, 27, 72, 0.96), rgba(11, 27, 72, 0.6), rgba(11, 27, 72, 0.4));
   z-index: 1;
 `;
 
@@ -498,7 +153,7 @@ const Title = styled.h1`
 `;
 
 const HighlightSpan = styled.span`
-  background: linear-gradient(135deg, #ec4899 0%, #f59e0b 50%, #06b6d4 100%);
+  background: linear-gradient(135deg, #00aeef 0%, #ffffff 100%);
   background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -542,18 +197,18 @@ const PrimaryButton = styled(Link)`
   gap: 0.75rem;
   padding: 1rem 2rem;
   border-radius: 9999px;
-  background: linear-gradient(135deg, #ec4899 0%, #f59e0b 100%);
+  background: linear-gradient(135deg, #00aeef 0%, #0b1b48 100%);
   color: #ffffff;
   font-weight: 600;
   font-size: 1rem;
-  box-shadow: 0 10px 25px -5px rgba(236, 72, 153, 0.4);
+  box-shadow: 0 10px 25px -5px rgba(0, 174, 239, 0.4);
   transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   text-decoration: none;
 
   &:hover {
     opacity: 0.95;
     transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 15px 30px -5px rgba(236, 72, 153, 0.6);
+    box-shadow: 0 15px 30px -5px rgba(0, 174, 239, 0.6);
   }
 
   @media (min-width: 640px) {
@@ -603,11 +258,11 @@ const IndicatorDot = styled.button`
   border: none;
   cursor: pointer;
   width: ${props => (props.$isActive ? "2.5rem" : "0.5rem")};
-  background-color: ${props => (props.$isActive ? "#ec4899" : "rgba(255, 255, 255, 0.35)")};
-  box-shadow: ${props => (props.$isActive ? "0 0 12px rgba(236, 72, 153, 0.6)" : "none")};
+  background-color: ${props => (props.$isActive ? "#00aeef" : "rgba(255, 255, 255, 0.35)")};
+  box-shadow: ${props => (props.$isActive ? "0 0 12px rgba(0, 174, 239, 0.6)" : "none")};
 
   &:hover {
-    background-color: ${props => (props.$isActive ? "#ec4899" : "rgba(255, 255, 255, 0.6)")};
+    background-color: ${props => (props.$isActive ? "#00aeef" : "rgba(255, 255, 255, 0.6)")};
   }
 `;
 
@@ -639,15 +294,15 @@ export default function HeroSection() {
 
       <ContentContainer>
         
-        {/* Luxury Static Badge */}
+        {/* Retail Badge */}
         <Badge>
-          <Sparkles className="w-4 h-4 text-pink-400 animate-pulse" />
+          <Sparkles className="w-4 h-4 text-cyan-400 animate-pulse" />
           <span>{currentSlide.badge}</span>
         </Badge>
 
         {/* Static Main Headline */}
         <Title>
-          KINGSWORD<HighlightSpan> BAG CRAFT</HighlightSpan>
+          ENITZ <HighlightSpan>GLOBAL</HighlightSpan>
         </Title>
 
         {/* Dynamic Animated Subtitle Description */}
@@ -658,13 +313,13 @@ export default function HeroSection() {
         {/* Dual Call-To-Action Buttons */}
         <ButtonGroup>
           <PrimaryButton href="/store">
-            Explore Collections
+            Explore Store
             <ArrowRight className="w-5 h-5 transition-transform duration-300 hover:translate-x-1" />
           </PrimaryButton>
 
           <SecondaryButton href="/contact">
             <ShoppingBag className="w-5 h-5 text-cyan-400" />
-            Custom Order
+            Contact Us
           </SecondaryButton>
         </ButtonGroup>
 

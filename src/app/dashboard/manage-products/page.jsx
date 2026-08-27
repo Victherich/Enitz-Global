@@ -1,3 +1,8 @@
+
+
+
+
+
 // "use client";
 
 // import { useEffect, useState } from "react";
@@ -15,14 +20,17 @@
 // import Swal from "sweetalert2";
 // import { useRouter } from "next/navigation";
 
-// // 🎨 BEES INTERIOR THEME COLORS
-// const Blue = "#2563eb";
+// // 🎨 KINGSWORD CRAFT THEME COLORS (Vibrant Luxury & Modern Palette)
+// const PrimaryPink = "#ec4899";
+// const AccentGold = "#f59e0b";
+// const AccentCyan = "#06b6d4";
 // const Dark = "#0f172a";
-// const Border = "#e5eaf2";
+// const Border = "rgba(226, 232, 240, 0.9)";
 // const White = "#ffffff";
-// const Gold = "#D4AF37";
+// const LightBg = "#f8fafc";
 // const TextMuted = "#475569";
 // const Danger = "#ef4444";
+// const ThemeGradient = "linear-gradient(135deg, #ec4899 0%, #f59e0b 50%, #06b6d4 100%)";
 
 // // 🌟 Styled Components (Strict max 10px spacing/gaps/margins/padding rule)
 // const Container = styled.div`
@@ -33,27 +41,28 @@
 //   width: 100%;
 //   padding: 10px;
 //   box-sizing: border-box;
+//   background-color: ${LightBg};
+//   min-height: 100vh;
 // `;
 
 // const HeaderBanner = styled.div`
-//   background: linear-gradient(135deg, ${Blue} 0%, ${Gold} 100%);
+//   background: ${ThemeGradient};
 //   color: ${White};
 //   padding: 10px;
 //   border-radius: 10px;
 //   display: flex;
 //   flex-direction: column;
 //   gap: 10px;
-//   box-shadow: 0 4px 15px rgba(15, 23, 42, 0.05);
+//   box-shadow: 0 10px 25px rgba(236, 72, 153, 0.15);
 // `;
 
 // const ColorfulTitle = styled.h1`
 //   font-size: 1.6rem;
-//   font-weight: 800;
+//   font-weight: 900;
 //   margin: 0;
-//   background: linear-gradient(90deg, #ffffff 0%, #fef08a 100%);
-//   -webkit-background-clip: text;
-//   -webkit-text-fill-color: transparent;
+//   color: ${White};
 //   letter-spacing: -0.5px;
+//   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 // `;
 
 // const ColorfulSub = styled.p`
@@ -61,6 +70,7 @@
 //   margin: 0;
 //   color: #f8fafc;
 //   opacity: 0.95;
+//   font-weight: 500;
 // `;
 
 // const ActionRow = styled.div`
@@ -76,7 +86,7 @@
 //   font-size: 1.25rem;
 //   font-weight: 800;
 //   margin: 0;
-//   background: linear-gradient(135deg, ${Blue} 0%, ${Gold} 100%);
+//   background: ${ThemeGradient};
 //   -webkit-background-clip: text;
 //   -webkit-text-fill-color: transparent;
 // `;
@@ -92,75 +102,46 @@
 //   max-width: 100%;
 //   box-sizing: border-box;
 //   margin: 0;
+//   background: ${White};
+//   box-shadow: 0 2px 6px rgba(15, 23, 42, 0.02);
 
 //   &:focus {
-//     border-color: ${Blue};
+//     border-color: ${PrimaryPink};
+//     box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.15);
 //   }
 // `;
 
 // const PrimaryButton = styled.button`
-//   background: linear-gradient(135deg, ${Blue} 0%, #1d4ed8 100%);
+//   background: ${ThemeGradient};
 //   color: ${White};
 //   border: none;
 //   border-radius: 8px;
-//   padding: 8px 10px;
+//   padding: 8px 12px;
 //   font-weight: 700;
 //   font-size: 0.9rem;
 //   cursor: pointer;
 //   display: flex;
 //   align-items: center;
 //   gap: 6px;
-//   box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
-//   transition: transform 0.2s ease;
+//   box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3);
+//   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 
 //   &:hover {
 //     transform: translateY(-2px);
+//     box-shadow: 0 6px 20px rgba(236, 72, 153, 0.45);
 //   }
 // `;
-
-// // const ProductsGrid = styled.div`
-// //   display: grid;
-// //   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-// //   gap: 10px;
-
-// // `;
-
-// // const ProductCard = styled.div`
-// //   background: ${White};
-// //   border-radius: 10px;
-// //   padding: 10px;
-// //   border: 1px solid ${Border};
-// //   border-left: 4px solid ${Gold};
-// //   box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
-// //   display: flex;
-// //   flex-direction: column;
-// //   gap: 10px;
-// //   cursor: pointer;
-// //   transition: transform 0.2s ease, box-shadow 0.2s ease;
-// //   max-width:250px;
-
-// //   &:hover {
-// //     transform: translateY(-2px);
-// //     box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
-// //   }
-
-// //   @media (max-width: 768px) {
-  
-// //   }
-
-
-// // `;
 
 // const ProductsGrid = styled.div`
 //   display: flex;
 //   flex-wrap: wrap;
 //   gap: 10px;
-//   justify-content: center; /* Centers cards if there's an odd number, use flex-start if you want them left-aligned */
+//   justify-content: center;
 //   width: 100%;
 //   box-sizing: border-box;
 
 //   @media (max-width: 768px) {
-//     gap: 4px; /* Adjust or set to 0px for zero space between cards */
+//     gap: 4px;
 //   }
 // `;
 
@@ -169,39 +150,37 @@
 //   border-radius: 10px;
 //   padding: 10px;
 //   border: 1px solid ${Border};
-//   border-left: 4px solid ${Gold};
-//   box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+//   border-left: 4px solid ${PrimaryPink};
+//   box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
 //   display: flex;
 //   flex-direction: column;
 //   gap: 10px;
 //   cursor: pointer;
-//   transition: transform 0.2s ease, box-shadow 0.2s ease;
+//   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   
-//   /* 📏 Enforce strict sizing and max-width */
 //   width: 100%;
 //   max-width: 250px;
 //   box-sizing: border-box;
 
 //   &:hover {
-//     transform: translateY(-2px);
-//     box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
+//     transform: translateY(-3px);
+//     border-color: rgba(236, 72, 153, 0.4);
+//     box-shadow: 0 10px 25px rgba(236, 72, 153, 0.12);
 //   }
 
 //   @media (max-width: 768px) {
 //     padding: 8px;
 //     gap: 6px;
-//     /* Calculates exact 50% width minus half of your mobile gap so exactly 2 fit per row */
 //     max-width: calc(50% - 2px); 
 //   }
 // `;
-
 
 // const ProductImageContainer = styled.div`
 //   width: 100%;
 //   height: 150px;
 //   border-radius: 6px;
 //   overflow: hidden;
-//   background: ${Border};
+//   background: #f1f5f9;
 //   display: flex;
 //   align-items: center;
 //   justify-content: center;
@@ -211,6 +190,11 @@
 //   width: 100%;
 //   height: 100%;
 //   object-fit: cover;
+//   transition: transform 0.4s ease;
+
+//   ${ProductCard}:hover & {
+//     transform: scale(1.05);
+//   }
 // `;
 
 // const ProductInfo = styled.div`
@@ -229,7 +213,9 @@
 // const ProductAmount = styled.span`
 //   font-size: 0.95rem;
 //   font-weight: 800;
-//   color: ${Blue};
+//   background: ${ThemeGradient};
+//   -webkit-background-clip: text;
+//   -webkit-text-fill-color: transparent;
 // `;
 
 // const ProductStock = styled.span`
@@ -246,17 +232,18 @@
 // `;
 
 // const EditButton = styled.button`
-//   background: rgba(37, 99, 235, 0.1);
-//   color: ${Blue};
+//   background: rgba(236, 72, 153, 0.1);
+//   color: #db2777;
 //   border: none;
 //   border-radius: 6px;
 //   padding: 6px 10px;
 //   font-size: 0.8rem;
 //   font-weight: 700;
 //   cursor: pointer;
+//   transition: background 0.2s ease;
 
 //   &:hover {
-//     background: rgba(37, 99, 235, 0.2);
+//     background: rgba(236, 72, 153, 0.2);
 //   }
 // `;
 
@@ -269,6 +256,7 @@
 //   font-size: 0.8rem;
 //   font-weight: 700;
 //   cursor: pointer;
+//   transition: background 0.2s ease;
 
 //   &:hover {
 //     background: rgba(239, 68, 68, 0.2);
@@ -278,7 +266,7 @@
 // const LoadingContainer = styled.div`
 //   padding: 10px;
 //   text-align: center;
-//   color: ${Dark};
+//   color: ${TextMuted};
 //   font-weight: 600;
 // `;
 
@@ -289,7 +277,8 @@
 //   left: 0;
 //   width: 100%;
 //   height: 100%;
-//   background: rgba(15, 23, 42, 0.5);
+//   background: rgba(15, 23, 42, 0.6);
+//   backdrop-filter: blur(4px);
 //   display: flex;
 //   align-items: center;
 //   justify-content: center;
@@ -307,7 +296,7 @@
 //   max-height: 90vh;
 //   overflow-y: auto;
 //   border: 1px solid ${Border};
-//   box-shadow: 0 10px 25px rgba(15, 23, 42, 0.1);
+//   box-shadow: 0 20px 40px rgba(15, 23, 42, 0.15);
 //   display: flex;
 //   flex-direction: column;
 //   gap: 10px;
@@ -317,7 +306,7 @@
 //   margin: 0;
 //   font-size: 1.1rem;
 //   font-weight: 800;
-//   background: linear-gradient(135deg, ${Blue} 0%, ${Gold} 100%);
+//   background: ${ThemeGradient};
 //   -webkit-background-clip: text;
 //   -webkit-text-fill-color: transparent;
 // `;
@@ -332,9 +321,11 @@
 //   width: 100%;
 //   box-sizing: border-box;
 //   margin: 0;
+//   background: ${White};
 
 //   &:focus {
-//     border-color: ${Blue};
+//     border-color: ${PrimaryPink};
+//     box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.15);
 //   }
 // `;
 
@@ -350,9 +341,11 @@
 //   resize: vertical;
 //   min-height: 60px;
 //   margin: 0;
+//   background: ${White};
 
 //   &:focus {
-//     border-color: ${Blue};
+//     border-color: ${PrimaryPink};
+//     box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.15);
 //   }
 // `;
 
@@ -401,7 +394,7 @@
 // `;
 
 // const UploadButtonLabel = styled.label`
-//   background: ${Blue};
+//   background: ${ThemeGradient};
 //   color: ${White};
 //   font-size: 0.75rem;
 //   font-weight: 700;
@@ -409,9 +402,10 @@
 //   border-radius: 6px;
 //   cursor: pointer;
 //   text-align: center;
+//   box-shadow: 0 2px 8px rgba(236, 72, 153, 0.25);
 
 //   &:hover {
-//     background: #1d4ed8;
+//     opacity: 0.9;
 //   }
 // `;
 
@@ -470,32 +464,31 @@
 // `;
 
 // const SaveButton = styled.button`
-//   background: ${Blue};
+//   background: ${ThemeGradient};
 //   color: ${White};
 //   border: none;
 //   border-radius: 6px;
-//   padding: 6px 10px;
+//   padding: 6px 12px;
 //   font-size: 0.85rem;
 //   font-weight: 700;
 //   cursor: pointer;
+//   box-shadow: 0 2px 8px rgba(236, 72, 153, 0.3);
 
 //   &:hover {
-//     background: #1d4ed8;
+//     opacity: 0.9;
 //   }
 // `;
-
 
 // const ProductcategoryBadge = styled.span`
 //   font-size: 0.75rem;
 //   font-weight: 700;
-//   color: ${Blue};
-//   background: rgba(37, 99, 235, 0.1);
+//   color: #db2777;
+//   background: rgba(236, 72, 153, 0.1);
 //   padding: 3px 8px;
 //   border-radius: 4px;
 //   width: fit-content;
+//   border: 1px solid rgba(236, 72, 153, 0.2);
 // `;
-
-
 
 // // 🔹 Compression utility function
 // const compressImage = (file, maxSizeKB = 100) => {
@@ -567,19 +560,18 @@
 //     amount: "",
 //     quantity: "",
 //     neverFinishes: false,
-//     categoryId: "", // 📁 added category reference
+//     categoryId: "",
 //   });
 
 //   // 4 individual slots for files and previews
 //   const [imageFiles, setImageFiles] = useState([null, null, null, null]);
 //   const [imagePreviews, setImagePreviews] = useState(["", "", "", ""]);
-//   // Keep track of pre-existing Cloudinary URL strings when editing
 //   const [existingImageUrls, setExistingImageUrls] = useState(["", "", "", ""]);
-// // 📁 Add categories state
+
+//   // Categories state
 //   const [categories, setCategories] = useState([]);
 //   const [selectedCategory, setSelectedCategory] = useState("");
-// const [sortOrder, setSortOrder] = useState(""); // "" | "low-high" | "high-low"
-
+//   const [sortOrder, setSortOrder] = useState("");
 
 //   // Fetch categories from Firestore
 //   const fetchCategories = async () => {
@@ -597,13 +589,8 @@
 
 //   useEffect(() => {
 //     fetchProducts();
-//     fetchCategories(); // 📁 Call this on mount
+//     fetchCategories();
 //   }, []);
-
-
-
-
-
 
 //   const fetchProducts = async () => {
 //     try {
@@ -621,10 +608,6 @@
 //     }
 //   };
 
-//   useEffect(() => {
-//     fetchProducts();
-//   }, []);
-
 //   const handleSlotFileChange = (index, e) => {
 //     const file = e.target.files[0];
 //     if (!file) return;
@@ -637,12 +620,11 @@
 //     newPreviews[index] = URL.createObjectURL(file);
 //     setImagePreviews(newPreviews);
 
-//     // Clear old existing URL for this slot if replacing
 //     const newExisting = [...existingImageUrls];
 //     newExisting[index] = "";
 //     setExistingImageUrls(newExisting);
 
-//     e.target.value = ""; // Reset input
+//     e.target.value = "";
 //   };
 
 //   const handleRemoveSlot = (index) => {
@@ -669,7 +651,6 @@
 //         });
 //       }
 
-//       // First image slot is compulsory
 //       if (!imageFiles[0] && !existingImageUrls[0]) {
 //         return Swal.fire({
 //           icon: "warning",
@@ -687,13 +668,12 @@
 
 //       for (let i = 0; i < 4; i++) {
 //         if (imageFiles[i]) {
-//           // Compress to max 100kb
 //           const compressedBlob = await compressImage(imageFiles[i], 100);
 
 //           const data = new FormData();
 //           data.append("file", compressedBlob, `product_${i}.jpg`);
 //           data.append("upload_preset", "bees_interior");
-//           data.append("folder", "products");
+//           data.append("folder", "products_kingsword_craft");
 
 //           const res = await fetch(
 //             "https://api.cloudinary.com/v1_1/aqxyleoh/image/upload",
@@ -722,7 +702,7 @@
 //         quantity: form.neverFinishes ? 0 : Number(form.quantity || 0),
 //         neverFinishes: form.neverFinishes,
 //         images: finalImageUrls,
-//         image: finalImageUrls[0] || "", // Main primary thumbnail is the 1st image
+//         image: finalImageUrls[0] || "",
 //         categoryId: form.categoryId,
 //       };
 
@@ -743,9 +723,8 @@
 //         showConfirmButton: false,
 //       });
 
-//       // Reset modal state
 //       setShowModal(false);
-//       setForm({ name: "", description: "", amount: "", quantity: "", neverFinishes: false });
+//       setForm({ name: "", description: "", amount: "", quantity: "", neverFinishes: false, categoryId: "" });
 //       setImageFiles([null, null, null, null]);
 //       setImagePreviews(["", "", "", ""]);
 //       setExistingImageUrls(["", "", "", ""]);
@@ -762,7 +741,7 @@
 //   };
 
 //   const handleEdit = (item, e) => {
-//     e.stopPropagation(); // Prevent card navigation click
+//     e.stopPropagation();
 //     const itemImages = item.images || (item.image ? [item.image] : []);
     
 //     setForm({
@@ -791,7 +770,7 @@
 //   };
 
 //   const handleDelete = async (id, e) => {
-//     e.stopPropagation(); // Prevent card navigation click
+//     e.stopPropagation();
 //     const result = await Swal.fire({
 //       title: "Are you sure?",
 //       text: "This product will be deleted permanently.",
@@ -813,10 +792,6 @@
 //     }
 //   };
 
-//   // const filteredData = products.filter((item) =>
-//   //   item.name?.toLowerCase().includes(search.toLowerCase())
-//   // );
-
 //   const filteredData = products
 //   .filter((item) => {
 //     const matchesSearch = item.name?.toLowerCase().includes(search.toLowerCase());
@@ -829,15 +804,10 @@
 //     return 0;
 //   });
 
-
-
-// // Helper to get category name by ID
-// const getCategoryName = (catId) => {
-//   const found = categories.find((cat) => cat.id === catId);
-//   return found ? (found.name || found.title) : "Uncategorized";
-// };
-
-  
+//   const getCategoryName = (catId) => {
+//     const found = categories.find((cat) => cat.id === catId);
+//     return found ? (found.name || found.title) : "Uncategorized";
+//   };
 
 //   if (loading) {
 //     return <LoadingContainer>Loading products...</LoadingContainer>;
@@ -852,16 +822,57 @@
 
 //       <ActionRow>
 //         <ColorfulSectionTitle>Inventory ({filteredData.length})</ColorfulSectionTitle>
-//         {/* <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+//         <div style={{ display: "flex", gap: "10px", alignItems: "center", flexWrap: "wrap" }}>
 //           <SearchInput
 //             type="text"
 //             placeholder="Search by product name..."
 //             value={search}
 //             onChange={(e) => setSearch(e.target.value)}
 //           />
+//           <select
+//             value={selectedCategory}
+//             onChange={(e) => setSelectedCategory(e.target.value)}
+//             style={{
+//               border: `1px solid ${Border}`,
+//               borderRadius: "8px",
+//               padding: "8px 10px",
+//               fontSize: "0.9rem",
+//               outline: "none",
+//               color: Dark,
+//               background: White,
+//               boxSizing: "border-box",
+//               margin: 0,
+//             }}
+//           >
+//             <option value="">All Categories</option>
+//             {categories.map((cat) => (
+//               <option key={cat.id} value={cat.id}>
+//                 {cat.name || cat.title}
+//               </option>
+//             ))}
+//           </select>
+//           <select
+//             value={sortOrder}
+//             onChange={(e) => setSortOrder(e.target.value)}
+//             style={{
+//               border: `1px solid ${Border}`,
+//               borderRadius: "8px",
+//               padding: "8px 10px",
+//               fontSize: "0.9rem",
+//               outline: "none",
+//               color: Dark,
+//               background: White,
+//               boxSizing: "border-box",
+//               margin: 0,
+//             }}
+//           >
+//             <option value="">Sort by Price</option>
+//             <option value="low-high">Price: Low to High</option>
+//             <option value="high-low">Price: High to Low</option>
+//           </select>
 //           <PrimaryButton onClick={() => {
 //             setEditingId(null);
-//             setForm({ name: "", description: "", amount: "", quantity: "", neverFinishes: false });
+//             setForm({ name: "", description: "", amount: "", quantity: "", neverFinishes: false, categoryId: "" });
 //             setImageFiles([null, null, null, null]);
 //             setImagePreviews(["", "", "", ""]);
 //             setExistingImageUrls(["", "", "", ""]);
@@ -869,68 +880,7 @@
 //           }}>
 //             <span>+ Add Product</span>
 //           </PrimaryButton>
-//         </div> */}
-
-// <div style={{ display: "flex", gap: "10px", alignItems: "center", flexWrap: "wrap" }}>
-//   <SearchInput
-//     type="text"
-//     placeholder="Search by product name..."
-//     value={search}
-//     onChange={(e) => setSearch(e.target.value)}
-//   />
-//   <select
-//     value={selectedCategory}
-//     onChange={(e) => setSelectedCategory(e.target.value)}
-//     style={{
-//       border: `1px solid ${Border}`,
-//       borderRadius: "8px",
-//       padding: "8px 10px",
-//       fontSize: "0.9rem",
-//       outline: "none",
-//       color: Dark,
-//       background: White,
-//       boxSizing: "border-box",
-//       margin: 0,
-//     }}
-//   >
-//     <option value="">All Categories</option>
-//     {categories.map((cat) => (
-//       <option key={cat.id} value={cat.id}>
-//         {cat.name || cat.title}
-//       </option>
-//     ))}
-//   </select>
-//   <select
-//     value={sortOrder}
-//     onChange={(e) => setSortOrder(e.target.value)}
-//     style={{
-//       border: `1px solid ${Border}`,
-//       borderRadius: "8px",
-//       padding: "8px 10px",
-//       fontSize: "0.9rem",
-//       outline: "none",
-//       color: Dark,
-//       background: White,
-//       boxSizing: "border-box",
-//       margin: 0,
-//     }}
-//   >
-//     <option value="">Sort by Price</option>
-//     <option value="low-high">Price: Low to High</option>
-//     <option value="high-low">Price: High to Low</option>
-//   </select>
-//  <PrimaryButton onClick={() => {
-//             setEditingId(null);
-//             setForm({ name: "", description: "", amount: "", quantity: "", neverFinishes: false });
-//             setImageFiles([null, null, null, null]);
-//             setImagePreviews(["", "", "", ""]);
-//             setExistingImageUrls(["", "", "", ""]);
-//             setShowModal(true);
-//           }}>
-//             <span>+ Add Product</span>
-//           </PrimaryButton>
-// </div>
-
+//         </div>
 //       </ActionRow>
 
 //       {filteredData.length === 0 ? (
@@ -946,16 +896,15 @@
 //                 </ProductImageContainer>
 //                 <ProductInfo>
 //                   <ProductName>
-//     {item.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ""}
-//   </ProductName>
-//                  {/* 📁 Display the category name here with the first letter capitalized */}
-//   <ProductcategoryBadge>
-//     {(() => {
-//       const name = getCategoryName(item.categoryId);
-//       return name ? name.charAt(0).toUpperCase() + name.slice(1) : "";
-//     })()}
-//   </ProductcategoryBadge>
-//                  <ProductAmount>₦{Number(item.amount || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</ProductAmount>
+//                     {item.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ""}
+//                   </ProductName>
+//                   <ProductcategoryBadge>
+//                     {(() => {
+//                       const name = getCategoryName(item.categoryId);
+//                       return name ? name.charAt(0).toUpperCase() + name.slice(1) : "";
+//                     })()}
+//                   </ProductcategoryBadge>
+//                   <ProductAmount>₦{Number(item.amount || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</ProductAmount>
 //                   <ProductStock>
 //                     {item.neverFinishes ? "∞ In Unlimited Stock" : `Stock: ${item.quantity ?? 0}`}
 //                   </ProductStock>
@@ -984,7 +933,6 @@
 //                 required
 //               />
 
-//             {/* 📁 Category Selection Dropdown */}
 //               <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
 //                 <label style={{ fontSize: "0.85rem", fontWeight: "700", color: Dark }}>
 //                   Product Category (Required)
@@ -1122,17 +1070,16 @@ import styled from "styled-components";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
 
-// 🎨 KINGSWORD CRAFT THEME COLORS (Vibrant Luxury & Modern Palette)
-const PrimaryPink = "#ec4899";
-const AccentGold = "#f59e0b";
-const AccentCyan = "#06b6d4";
+// 🎨 UPDATED THEME COLORS
+const PrimaryNavy = "#0B1B48";
+const PrimaryCyan = "#00AEEF";
 const Dark = "#0f172a";
-const Border = "rgba(226, 232, 240, 0.9)";
+const Border = "#cbd5e1";
 const White = "#ffffff";
-const LightBg = "#f8fafc";
 const TextMuted = "#475569";
+const LightBg = "#f8fafc";
 const Danger = "#ef4444";
-const ThemeGradient = "linear-gradient(135deg, #ec4899 0%, #f59e0b 50%, #06b6d4 100%)";
+const ThemeGradient = "linear-gradient(135deg, #0B1B48 0%, #00AEEF 100%)";
 
 // 🌟 Styled Components (Strict max 10px spacing/gaps/margins/padding rule)
 const Container = styled.div`
@@ -1155,7 +1102,7 @@ const HeaderBanner = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
-  box-shadow: 0 10px 25px rgba(236, 72, 153, 0.15);
+  box-shadow: 0 10px 25px rgba(11, 27, 72, 0.15);
 `;
 
 const ColorfulTitle = styled.h1`
@@ -1208,8 +1155,8 @@ const SearchInput = styled.input`
   box-shadow: 0 2px 6px rgba(15, 23, 42, 0.02);
 
   &:focus {
-    border-color: ${PrimaryPink};
-    box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.15);
+    border-color: ${PrimaryCyan};
+    box-shadow: 0 0 0 3px rgba(0, 174, 239, 0.15);
   }
 `;
 
@@ -1225,12 +1172,12 @@ const PrimaryButton = styled.button`
   display: flex;
   align-items: center;
   gap: 6px;
-  box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3);
+  box-shadow: 0 4px 15px rgba(0, 174, 239, 0.3);
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(236, 72, 153, 0.45);
+    box-shadow: 0 6px 20px rgba(0, 174, 239, 0.45);
   }
 `;
 
@@ -1252,7 +1199,7 @@ const ProductCard = styled.div`
   border-radius: 10px;
   padding: 10px;
   border: 1px solid ${Border};
-  border-left: 4px solid ${PrimaryPink};
+  border-left: 4px solid ${PrimaryNavy};
   box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
   display: flex;
   flex-direction: column;
@@ -1266,8 +1213,8 @@ const ProductCard = styled.div`
 
   &:hover {
     transform: translateY(-3px);
-    border-color: rgba(236, 72, 153, 0.4);
-    box-shadow: 0 10px 25px rgba(236, 72, 153, 0.12);
+    border-color: rgba(0, 174, 239, 0.4);
+    box-shadow: 0 10px 25px rgba(0, 174, 239, 0.12);
   }
 
   @media (max-width: 768px) {
@@ -1334,8 +1281,8 @@ const ButtonGroup = styled.div`
 `;
 
 const EditButton = styled.button`
-  background: rgba(236, 72, 153, 0.1);
-  color: #db2777;
+  background: rgba(0, 174, 239, 0.1);
+  color: #0284c7;
   border: none;
   border-radius: 6px;
   padding: 6px 10px;
@@ -1345,7 +1292,7 @@ const EditButton = styled.button`
   transition: background 0.2s ease;
 
   &:hover {
-    background: rgba(236, 72, 153, 0.2);
+    background: rgba(0, 174, 239, 0.2);
   }
 `;
 
@@ -1426,8 +1373,8 @@ const StyledInput = styled.input`
   background: ${White};
 
   &:focus {
-    border-color: ${PrimaryPink};
-    box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.15);
+    border-color: ${PrimaryCyan};
+    box-shadow: 0 0 0 3px rgba(0, 174, 239, 0.15);
   }
 `;
 
@@ -1446,8 +1393,8 @@ const StyledTextarea = styled.textarea`
   background: ${White};
 
   &:focus {
-    border-color: ${PrimaryPink};
-    box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.15);
+    border-color: ${PrimaryCyan};
+    box-shadow: 0 0 0 3px rgba(0, 174, 239, 0.15);
   }
 `;
 
@@ -1504,7 +1451,7 @@ const UploadButtonLabel = styled.label`
   border-radius: 6px;
   cursor: pointer;
   text-align: center;
-  box-shadow: 0 2px 8px rgba(236, 72, 153, 0.25);
+  box-shadow: 0 2px 8px rgba(0, 174, 239, 0.25);
 
   &:hover {
     opacity: 0.9;
@@ -1574,7 +1521,7 @@ const SaveButton = styled.button`
   font-size: 0.85rem;
   font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(236, 72, 153, 0.3);
+  box-shadow: 0 2px 8px rgba(0, 174, 239, 0.3);
 
   &:hover {
     opacity: 0.9;
@@ -1584,12 +1531,12 @@ const SaveButton = styled.button`
 const ProductcategoryBadge = styled.span`
   font-size: 0.75rem;
   font-weight: 700;
-  color: #db2777;
-  background: rgba(236, 72, 153, 0.1);
+  color: #0284c7;
+  background: rgba(0, 174, 239, 0.1);
   padding: 3px 8px;
   border-radius: 4px;
   width: fit-content;
-  border: 1px solid rgba(236, 72, 153, 0.2);
+  border: 1px solid rgba(0, 174, 239, 0.2);
 `;
 
 // 🔹 Compression utility function
@@ -1775,7 +1722,7 @@ export default function ProductsCrudPage() {
           const data = new FormData();
           data.append("file", compressedBlob, `product_${i}.jpg`);
           data.append("upload_preset", "bees_interior");
-          data.append("folder", "products_kingsword_craft");
+          data.append("folder", "products_enitz_global");
 
           const res = await fetch(
             "https://api.cloudinary.com/v1_1/aqxyleoh/image/upload",

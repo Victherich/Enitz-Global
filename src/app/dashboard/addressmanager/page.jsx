@@ -180,8 +180,8 @@
 //       text: "You won't be able to revert this!",
 //       icon: 'warning',
 //       showCancelButton: true,
-//       confirmButtonColor: '#2563eb',
-//       cancelButtonColor: '#d33',
+//       confirmButtonColor: '#ec4899',
+//       cancelButtonColor: '#ef4444',
 //       confirmButtonText: 'Yes, delete it!'
 //     });
 
@@ -208,7 +208,7 @@
 //     }
 //   };
 
-// const handleUseAddress = (addr) => {
+//   const handleUseAddress = (addr) => {
 //     try {
 //       localStorage.setItem('selectedAddress', JSON.stringify(addr));
 //       setSelectedId(addr.id);
@@ -367,12 +367,19 @@
 //   );
 // }
 
-// // --- Styled Components (Bees Interior Theme with #2563eb Blue & Gold) ---
+// // --- Styled Components (Theme Colors Set) ---
+
+// const PrimaryColor = "#ec4899"; // Vibrant Pink from the logo
+// const AccentGradient = "linear-gradient(135deg, #ec4899 0%, #f59e0b 50%, #06b6d4 100%)"; // Pink -> Orange -> Turquoise
+// const Dark = "#1e293b";
+// const Border = "#e2e8f0";
+// const White = "#ffffff";
+// const Turquoise = "#06b6d4";
 
 // const Container = styled.div`
 //   width: 100%;
 //   box-sizing: border-box;
-//   color: #1a1a1a;
+//   color: ${Dark};
 // `;
 
 // const HeaderRow = styled.div`
@@ -380,57 +387,67 @@
 //   justify-content: space-between;
 //   align-items: center;
 //   margin-bottom: 24px;
-//   border-bottom: 2px solid #D4AF37; /* Gold accent */
+//   border-bottom: 2px solid ${Turquoise};
 //   padding-bottom: 12px;
 
 //   h3 {
 //     margin: 0;
 //     font-size: 1.35rem;
-//     color: #2563eb; /* Primary Blue */
-//     font-weight: 700;
+//     color: ${PrimaryColor};
+//     font-weight: 800;
 //     letter-spacing: 0.5px;
 //   }
 // `;
 
 // const PrimaryButton = styled.button`
-//   background: #2563eb; /* Primary Blue */
-//   color: #ffffff; 
-//   border: 1px solid #D4AF37;
+//   background: ${AccentGradient};
+//   color: ${White}; 
+//   border: none;
 //   padding: 10px 18px;
-//   border-radius: 6px;
-//   font-weight: 600;
+//   border-radius: 8px;
+//   font-weight: 700;
 //   cursor: pointer;
 //   transition: all 0.3s ease;
+//   box-shadow: 0 4px 14px rgba(236, 72, 153, 0.25);
+
 //   &:hover { 
-//     background: #D4AF37; 
-//     color: #2563eb;
+//     opacity: 0.92;
+//     transform: translateY(-1px);
+//     box-shadow: 0 6px 18px rgba(236, 72, 153, 0.35);
 //   }
 // `;
 
 // const SecondaryButton = styled.button`
-//   background: #f4f4f4;
-//   color: #333;
-//   border: 1px solid #ccc;
+//   background: #f8fafc;
+//   color: ${Dark};
+//   border: 1px solid ${Border};
 //   padding: 10px 16px;
-//   border-radius: 6px;
+//   border-radius: 8px;
 //   font-weight: 600;
 //   cursor: pointer;
-//   &:hover { background: #e5e5e5; }
+//   transition: all 0.2s ease;
+
+//   &:hover { 
+//     background: ${Border};
+//     color: ${PrimaryColor};
+//   }
 // `;
 
 // const AddressForm = styled.form`
-//   background: #ffffff;
-//   border: 1px solid #D4AF37; /* Gold accent border */
-//   border-radius: 10px;
+//   background: ${White};
+//   border: 1px solid ${Border};
+//   border-top: 4px solid ${PrimaryColor};
+//   border-radius: 12px;
 //   padding: 24px;
 //   margin-bottom: 28px;
-//   box-shadow: 0 4px 12px rgba(37, 99, 235, 0.05);
+//   box-shadow: 0 8px 24px rgba(30, 41, 59, 0.04);
 
 //   h4 {
 //     margin-top: 0;
 //     margin-bottom: 18px;
 //     font-size: 1.15rem;
-//     color: #2563eb;
+//     color: ${PrimaryColor};
+//     font-weight: 700;
 //   }
 // `;
 
@@ -446,17 +463,20 @@
 
 // const Input = styled.input`
 //   padding: 12px;
-//   border: 1px solid #dcdcdc;
-//   border-radius: 6px;
+//   border: 1px solid ${Border};
+//   border-radius: 8px;
 //   font-size: 0.95rem;
 //   width: 100%;
 //   box-sizing: border-box;
-//   background: #fafafa;
-//   color: #1a1a1a;
+//   background: #f8fafc;
+//   color: ${Dark};
+//   transition: all 0.2s ease;
+
 //   &:focus { 
 //     outline: none; 
-//     border-color: #2563eb; 
-//     box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.3);
+//     border-color: ${PrimaryColor}; 
+//     box-shadow: 0 0 0 2px rgba(236, 72, 153, 0.2);
+//     background: ${White};
 //   }
 // `;
 
@@ -466,7 +486,7 @@
 //   gap: 8px;
 //   margin: 18px 0;
 //   font-size: 0.9rem;
-//   color: #333;
+//   color: ${Dark};
 //   cursor: pointer;
 // `;
 
@@ -482,21 +502,21 @@
 // `;
 
 // const AddressCard = styled.div`
-//   background: #ffffff;
-//   border: 2px solid ${props => props.selected ? '#2563eb' : '#e2e2e2'};
-//   border-top: 4px solid ${props => props.selected ? '#D4AF37' : '#2563eb'};
-//   border-radius: 8px;
+//   background: ${White};
+//   border: 2px solid ${props => props.selected ? PrimaryColor : Border};
+//   border-top: 4px solid ${props => props.selected ? Turquoise : PrimaryColor};
+//   border-radius: 12px;
 //   padding: 20px;
 //   position: relative;
-//   box-shadow: 0 2px 6px rgba(37, 99, 235, 0.03);
+//   box-shadow: ${props => props.selected ? '0 6px 16px rgba(236, 72, 153, 0.12)' : '0 2px 6px rgba(30, 41, 59, 0.02)'};
 //   transition: all 0.2s ease;
 //   display: flex;
 //   flex-direction: column;
 //   justify-content: space-between;
 
 //   &:hover {
-//     border-color: #2563eb;
-//     box-shadow: 0 4px 12px rgba(212, 175, 55, 0.15);
+//     border-color: ${PrimaryColor};
+//     box-shadow: 0 6px 18px rgba(6, 182, 212, 0.15);
 //   }
 // `;
 
@@ -504,32 +524,34 @@
 //   position: absolute;
 //   top: 16px;
 //   right: 16px;
-//   background: #fcf8e3;
-//   color: #8a6d3b;
-//   border: 1px solid #faebcc;
+//   background: #fdf2f8;
+//   color: ${PrimaryColor};
+//   border: 1px solid rgba(236, 72, 153, 0.3);
 //   font-size: 0.75rem;
-//   padding: 2px 8px;
-//   border-radius: 4px;
-//   font-weight: 600;
+//   padding: 3px 8px;
+//   border-radius: 6px;
+//   font-weight: 700;
+//   letter-spacing: 0.05em;
+//   text-transform: uppercase;
 // `;
 
 // const AddrName = styled.h4`
 //   margin: 0 0 8px 0;
 //   font-size: 1.05rem;
-//   color: #2563eb;
+//   color: ${Dark};
 //   font-weight: 700;
 // `;
 
 // const AddrText = styled.p`
 //   margin: 4px 0;
 //   font-size: 0.9rem;
-//   color: #555555;
+//   color: #64748b;
 // `;
 
 // const CardActions = styled.div`
 //   margin-top: 18px;
 //   padding-top: 12px;
-//   border-top: 1px solid #eee;
+//   border-top: 1px solid ${Border};
 //   display: flex;
 //   flex-direction: column;
 //   gap: 12px;
@@ -543,48 +565,59 @@
 
 // const EditBtn = styled.button`
 //   background: transparent;
-//   color: #2563eb;
+//   color: ${PrimaryColor};
 //   border: none;
 //   font-size: 0.85rem;
 //   cursor: pointer;
-//   font-weight: 600;
+//   font-weight: 700;
 //   padding: 0;
-//   &:hover { text-decoration: underline; }
+//   transition: color 0.2s ease;
+
+//   &:hover { 
+//     color: ${Turquoise};
+//     text-decoration: underline; 
+//   }
 // `;
 
 // const DeleteBtn = styled.button`
 //   background: transparent;
-//   color: #a94442;
+//   color: #ef4444;
 //   border: none;
 //   font-size: 0.85rem;
 //   cursor: pointer;
-//   font-weight: 600;
+//   font-weight: 700;
 //   padding: 0;
-//   &:hover { text-decoration: underline; }
+//   transition: opacity 0.2s ease;
+
+//   &:hover { 
+//     opacity: 0.8;
+//     text-decoration: underline; 
+//   }
 // `;
 
 // const UseAddressButton = styled.button`
 //   width: 100%;
-//   background: #2563eb;
-//   color: #ffffff;
-//   border: 1px solid #D4AF37;
+//   background: ${AccentGradient};
+//   color: ${White};
+//   border: none;
 //   padding: 10px 14px;
-//   border-radius: 6px;
+//   border-radius: 8px;
 //   font-size: 0.85rem;
 //   font-weight: 700;
 //   letter-spacing: 0.5px;
 //   cursor: pointer;
 //   transition: all 0.2s ease;
+
 //   &:hover {
-//     background: #D4AF37;
-   
+//     opacity: 0.92;
+//     background: ${AccentGradient};
 //   }
 // `;
 
 // const LoadingText = styled.p`
-//   color: #2563eb;
+//   color: ${PrimaryColor};
 //   font-size: 0.95rem;
-//   font-weight: 500;
+//   font-weight: 600;
 // `;
 
 // const EmptyContainer = styled.div`
@@ -599,11 +632,14 @@
 // `;
 
 // const EmptyText = styled.p`
-//   color: #2563eb;
+//   color: ${Dark};
 //   font-size: 1.25rem;
-//   font-weight: bold;
+//   font-weight: 700;
 //   margin: 0;
 // `;
+
+
+
 
 
 
@@ -627,6 +663,16 @@ import {
 } from 'firebase/firestore';
 import Swal from 'sweetalert2';
 import { useRouter } from 'next/navigation';
+
+// 🎨 NAVY & CYAN THEME COLORS & GRADIENTS
+const PrimaryNavy = "#0B1B48";
+const PrimaryCyan = "#00AEEF";
+const ThemeGradient = "linear-gradient(135deg, #0B1B48 0%, #00AEEF 100%)";
+const Dark = "#0f172a";
+const Border = "#e5eaf2";
+const White = "#ffffff";
+const TextMuted = "#475569";
+const Danger = "#ef4444";
 
 export default function AddressManager({ onSelectAddress }) {
   const [currentUser, setCurrentUser] = useState(null);
@@ -748,14 +794,12 @@ export default function AddressManager({ onSelectAddress }) {
     if (!activeUserId) return;
     try {
       if (editingId) {
-        // Update existing address
         const addressRef = doc(db, 'addresses', editingId);
         await updateDoc(addressRef, {
           ...formData,
           updatedAt: serverTimestamp()
         });
       } else {
-        // Add new address
         await addDoc(collection(db, 'addresses'), {
           ...formData,
           userId: activeUserId,
@@ -787,8 +831,8 @@ export default function AddressManager({ onSelectAddress }) {
       text: "You won't be able to revert this!",
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#ec4899',
-      cancelButtonColor: '#ef4444',
+      confirmButtonColor: PrimaryNavy,
+      cancelButtonColor: Danger,
       confirmButtonText: 'Yes, delete it!'
     });
 
@@ -822,7 +866,7 @@ export default function AddressManager({ onSelectAddress }) {
       if (onSelectAddress) {
         onSelectAddress(addr);
       }
-      router.push('/dashboard/order-summary'); // Adjust the route path as needed for your application
+      router.push('/dashboard/order-summary');
     } catch (error) {
       console.error("Error saving selected address to localStorage:", error);
     }
@@ -908,16 +952,7 @@ export default function AddressManager({ onSelectAddress }) {
               required 
             />
           </FormGrid>
-          <br/>
-          {/* <CheckboxLabel>
-            <input 
-              type="checkbox" 
-              name="isDefault" 
-              checked={formData.isDefault} 
-              onChange={handleChange} 
-            />
-            Set as default shipping address
-          </CheckboxLabel> */}
+          <div style={{ height: '10px' }} />
           <ButtonRow>
             <PrimaryButton type="submit">{editingId ? 'Update Address' : 'Save Address'}</PrimaryButton>
             <SecondaryButton type="button" onClick={() => { setShowForm(false); setEditingId(null); }}>Cancel</SecondaryButton>
@@ -974,18 +1009,19 @@ export default function AddressManager({ onSelectAddress }) {
   );
 }
 
-// --- Styled Components (Theme Colors Set) ---
-
-const PrimaryColor = "#ec4899"; // Vibrant Pink from the logo
-const AccentGradient = "linear-gradient(135deg, #ec4899 0%, #f59e0b 50%, #06b6d4 100%)"; // Pink -> Orange -> Turquoise
-const Dark = "#1e293b";
-const Border = "#e2e8f0";
-const White = "#ffffff";
-const Turquoise = "#06b6d4";
+// --- Styled Components (Navy & Cyan Theme Applied) ---
 
 const Container = styled.div`
-  width: 100%;
+  background: ${White};
+  padding: 10px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: 0 4px 15px rgba(15, 23, 42, 0.04);
+  border: 1px solid ${Border};
   box-sizing: border-box;
+  width: 100%;
   color: ${Dark};
 `;
 
@@ -993,67 +1029,69 @@ const HeaderRow = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
-  border-bottom: 2px solid ${Turquoise};
-  padding-bottom: 12px;
+  margin-bottom: 0px;
+  border-bottom: 2px solid ${PrimaryCyan};
+  padding-bottom: 10px;
 
   h3 {
     margin: 0;
-    font-size: 1.35rem;
-    color: ${PrimaryColor};
+    font-size: 20px;
+    color: ${PrimaryNavy};
     font-weight: 800;
-    letter-spacing: 0.5px;
   }
 `;
 
 const PrimaryButton = styled.button`
-  background: ${AccentGradient};
+  background: ${ThemeGradient};
   color: ${White}; 
   border: none;
-  padding: 10px 18px;
-  border-radius: 8px;
+  padding: 8px 16px;
+  border-radius: 6px;
   font-weight: 700;
+  font-size: 13px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 14px rgba(236, 72, 153, 0.25);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  box-shadow: 0 2px 8px rgba(11, 27, 72, 0.25);
 
   &:hover { 
-    opacity: 0.92;
+    opacity: 0.9;
     transform: translateY(-1px);
-    box-shadow: 0 6px 18px rgba(236, 72, 153, 0.35);
   }
 `;
 
 const SecondaryButton = styled.button`
-  background: #f8fafc;
+  background: #F8FAFC;
   color: ${Dark};
   border: 1px solid ${Border};
-  padding: 10px 16px;
-  border-radius: 8px;
+  padding: 8px 16px;
+  border-radius: 6px;
   font-weight: 600;
+  font-size: 13px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background 0.2s ease, border-color 0.2s ease;
 
   &:hover { 
     background: ${Border};
-    color: ${PrimaryColor};
+    border-color: ${PrimaryCyan};
   }
 `;
 
 const AddressForm = styled.form`
   background: ${White};
   border: 1px solid ${Border};
-  border-top: 4px solid ${PrimaryColor};
-  border-radius: 12px;
-  padding: 24px;
-  margin-bottom: 28px;
-  box-shadow: 0 8px 24px rgba(30, 41, 59, 0.04);
+  border-top: 4px solid ${PrimaryCyan};
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 10px;
+  box-shadow: 0 4px 15px rgba(15, 23, 42, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 
   h4 {
-    margin-top: 0;
-    margin-bottom: 18px;
-    font-size: 1.15rem;
-    color: ${PrimaryColor};
+    margin: 0;
+    font-size: 15px;
+    color: ${PrimaryNavy};
     font-weight: 700;
   }
 `;
@@ -1061,7 +1099,7 @@ const AddressForm = styled.form`
 const FormGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 14px;
+  gap: 10px;
 
   @media (max-width: 600px) {
     grid-template-columns: 1fr;
@@ -1069,128 +1107,122 @@ const FormGrid = styled.div`
 `;
 
 const Input = styled.input`
-  padding: 12px;
+  padding: 8px 10px;
   border: 1px solid ${Border};
-  border-radius: 8px;
-  font-size: 0.95rem;
+  border-radius: 6px;
+  font-size: 13px;
   width: 100%;
   box-sizing: border-box;
-  background: #f8fafc;
+  background: #F8FAFC;
   color: ${Dark};
-  transition: all 0.2s ease;
+  outline: none;
+  transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
 
   &:focus { 
-    outline: none; 
-    border-color: ${PrimaryColor}; 
-    box-shadow: 0 0 0 2px rgba(236, 72, 153, 0.2);
+    border-color: ${PrimaryCyan}; 
+    box-shadow: 0 0 0 3px rgba(0, 174, 239, 0.15);
     background: ${White};
   }
-`;
 
-const CheckboxLabel = styled.label`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: 18px 0;
-  font-size: 0.9rem;
-  color: ${Dark};
-  cursor: pointer;
+  &::placeholder {
+    color: ${TextMuted};
+  }
 `;
 
 const ButtonRow = styled.div`
   display: flex;
-  gap: 12px;
+  gap: 10px;
 `;
 
 const AddressGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 18px;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 10px;
+  width: 100%;
 `;
 
 const AddressCard = styled.div`
   background: ${White};
-  border: 2px solid ${props => props.selected ? PrimaryColor : Border};
-  border-top: 4px solid ${props => props.selected ? Turquoise : PrimaryColor};
-  border-radius: 12px;
-  padding: 20px;
+  border: 1px solid ${props => props.selected ? PrimaryCyan : Border};
+  border-left: 4px solid ${props => props.selected ? PrimaryCyan : PrimaryNavy};
+  border-radius: 10px;
+  padding: 10px;
   position: relative;
-  box-shadow: ${props => props.selected ? '0 6px 16px rgba(236, 72, 153, 0.12)' : '0 2px 6px rgba(30, 41, 59, 0.02)'};
-  transition: all 0.2s ease;
+  box-shadow: 0 4px 15px rgba(15, 23, 42, 0.04);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  gap: 6px;
 
   &:hover {
-    border-color: ${PrimaryColor};
-    box-shadow: 0 6px 18px rgba(6, 182, 212, 0.15);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 174, 239, 0.08);
   }
 `;
 
 const DefaultBadge = styled.span`
   position: absolute;
-  top: 16px;
-  right: 16px;
-  background: #fdf2f8;
-  color: ${PrimaryColor};
-  border: 1px solid rgba(236, 72, 153, 0.3);
-  font-size: 0.75rem;
-  padding: 3px 8px;
-  border-radius: 6px;
+  top: 10px;
+  right: 10px;
+  background: rgba(0, 174, 239, 0.1);
+  color: ${PrimaryCyan};
+  border: 1px solid rgba(0, 174, 239, 0.3);
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 4px;
   font-weight: 700;
-  letter-spacing: 0.05em;
   text-transform: uppercase;
 `;
 
 const AddrName = styled.h4`
-  margin: 0 0 8px 0;
-  font-size: 1.05rem;
-  color: ${Dark};
+  margin: 0;
+  font-size: 14px;
+  color: ${PrimaryNavy};
   font-weight: 700;
 `;
 
 const AddrText = styled.p`
-  margin: 4px 0;
-  font-size: 0.9rem;
-  color: #64748b;
+  margin: 0;
+  font-size: 12px;
+  color: ${TextMuted};
 `;
 
 const CardActions = styled.div`
-  margin-top: 18px;
-  padding-top: 12px;
+  margin-top: 4px;
+  padding-top: 8px;
   border-top: 1px solid ${Border};
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
 `;
 
 const ActionGroup = styled.div`
   display: flex;
-  gap: 12px;
+  gap: 10px;
   align-items: center;
 `;
 
 const EditBtn = styled.button`
   background: transparent;
-  color: ${PrimaryColor};
+  color: ${PrimaryCyan};
   border: none;
-  font-size: 0.85rem;
+  font-size: 12px;
   cursor: pointer;
   font-weight: 700;
   padding: 0;
-  transition: color 0.2s ease;
+  transition: opacity 0.2s ease;
 
   &:hover { 
-    color: ${Turquoise};
     text-decoration: underline; 
   }
 `;
 
 const DeleteBtn = styled.button`
   background: transparent;
-  color: #ef4444;
+  color: ${Danger};
   border: none;
-  font-size: 0.85rem;
+  font-size: 12px;
   cursor: pointer;
   font-weight: 700;
   padding: 0;
@@ -1204,27 +1236,28 @@ const DeleteBtn = styled.button`
 
 const UseAddressButton = styled.button`
   width: 100%;
-  background: ${AccentGradient};
+  background: ${ThemeGradient};
   color: ${White};
   border: none;
-  padding: 10px 14px;
-  border-radius: 8px;
-  font-size: 0.85rem;
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.5px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(11, 27, 72, 0.25);
+  transition: opacity 0.2s ease;
 
   &:hover {
-    opacity: 0.92;
-    background: ${AccentGradient};
+    opacity: 0.9;
   }
 `;
 
 const LoadingText = styled.p`
-  color: ${PrimaryColor};
-  font-size: 0.95rem;
+  color: ${PrimaryNavy};
+  font-size: 13px;
   font-weight: 600;
+  text-align: center;
+  padding: 10px;
 `;
 
 const EmptyContainer = styled.div`
@@ -1234,13 +1267,13 @@ const EmptyContainer = styled.div`
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 40px 20px;
-  gap: 20px;
+  padding: 20px;
+  gap: 10px;
 `;
 
 const EmptyText = styled.p`
   color: ${Dark};
-  font-size: 1.25rem;
+  font-size: 14px;
   font-weight: 700;
   margin: 0;
 `;
