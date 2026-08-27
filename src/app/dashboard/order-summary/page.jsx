@@ -353,8 +353,8 @@ const handleRemovePromo = () => {
 
     try {
       const buyerEmail = currentUser?.email || userData?.email || '';
-      const sellerEmail = 'victorndu393@gmail.com';
-      // const sellerEmail = 'enitzglobal@gmail.com';
+      // const sellerEmail = 'victorndu393@gmail.com';
+      const sellerEmail = 'enitzglobal@gmail.com';
       const uniqueOrderNumber = `ORDER-${Date.now().toString().slice(-6)}${Math.floor(Math.random() * 900 + 100)}`;
 
       // 1. SAFETY CHECK: Ensure order number doesn't somehow collide

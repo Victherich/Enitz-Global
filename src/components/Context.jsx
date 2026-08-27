@@ -115,8 +115,8 @@ const router = useRouter();
     const docRef = await addDoc(collection(db, "orders"), orderPayload);
 
     const buyerEmail = orderPayload.accountInfo?.email || '';
-    // const sellerEmail = 'enitzglobal@gmail.com';
-    const sellerEmail = 'victorndu393@gmail.com';
+    const sellerEmail = 'enitzglobal@gmail.com';
+    // const sellerEmail = 'victorndu393@gmail.com';
 
     // 3. ISOLATED EMAIL BLOCK: Ensure a failing email never blocks order cleanup
     try {
@@ -312,8 +312,8 @@ const router = useRouter();
         email,
         firstname: firstName,
         lastname: lastName,
-        // subaccount: "ACCT_7k2sd8z7pxgyce9",
-      // bearer: "subaccount",
+        subaccount: "ACCT_weypvhpue48sgcr",
+      bearer: "subaccount",
         metadata: {
           custom_payment_verification_number: verificationNumber,
           source,

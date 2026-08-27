@@ -165,8 +165,8 @@ export async function POST(request) {
       // Must use process.env.SMTP_USER as the actual email to avoid spam flags, 
       // but you can prepend the customer's name in the display string safely:
       from: `"${name} via Enitz Global Limited" <${process.env.SMTP_USER}>`,
-      // to: 'enitzglobal@gmail.com', // The inbox receiving the leads
-      to: 'victorndu393@gmail.com',
+      to: 'enitzglobal@gmail.com', // The inbox receiving the leads
+      // to: 'victorndu393@gmail.com',
       replyTo: email,           // Clicking "Reply" will reply straight to the customer
       subject: `New Contact Inquiry: ${name}`,
       html: htmlContent,
