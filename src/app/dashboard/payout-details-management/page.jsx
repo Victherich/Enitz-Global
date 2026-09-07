@@ -813,7 +813,7 @@ useEffect(() => {
         businessName: "",
         settlementBank: "",
         accountNumber: "",
-        percentageCharge: 10
+        percentageCharge: 1.5
       });
 
       Swal.fire("Deleted!", "The payout account has been unlinked.", "success");

@@ -929,7 +929,7 @@ export default function LandingProductsSection() {
                 </ProductTitle>
 
 {/* 🌟 Variations displayed on store card */}
-                {product.variations && product.variations.length > 0 && (
+                {/* {product.variations && product.variations.length > 0 && (
                   <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
                     {product.variations.map((v, idx) => (
                       <div key={idx} style={{ fontSize: "0.75rem", color: textMuted, fontWeight: "600" }}>
@@ -937,7 +937,7 @@ export default function LandingProductsSection() {
                       </div>
                     ))}
                   </div>
-                )}
+                )} */}
 
                 <ProductPriceRow>
                   <PriceText>
