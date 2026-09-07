@@ -489,7 +489,7 @@ import { collection, getDocs, doc, setDoc, deleteDoc, query, where, orderBy, lim
 import { onAuthStateChanged } from "firebase/auth";
 import Swal from "sweetalert2";
 
-// --- ENITZ GLOBAL RETAIL THEME & STYLES ---
+// --- ENITZ RETAIL THEME & STYLES ---
 const brandCyan = '#00aeef';
 const brandDarkNavy = '#0b1b48';
 const brandGradient = 'linear-gradient(135deg, #00aeef 0%, #0b1b48 100%)';
@@ -871,7 +871,7 @@ export default function LandingProductsSection() {
     return (
       <ProductsSection>
         <SectionHeader>
-          <SectionBadge>Enitz Global Limited</SectionBadge>
+          <SectionBadge>Enitz</SectionBadge>
           <SectionTitle>Explore Our <HighlightSpan>Featured Collection</HighlightSpan></SectionTitle>
           <SectionSubtitle>Discover premium everyday merchandise and essentials tailored for modern living.</SectionSubtitle>
         </SectionHeader>
@@ -884,7 +884,7 @@ export default function LandingProductsSection() {
     return (
       <ProductsSection>
         <SectionHeader>
-          <SectionBadge>Enitz Global Limited</SectionBadge>
+          <SectionBadge>Enitz</SectionBadge>
           <SectionTitle>Explore Our <HighlightSpan>Featured Collection</HighlightSpan></SectionTitle>
           <SectionSubtitle>Discover premium everyday merchandise and essentials tailored for modern living.</SectionSubtitle>
         </SectionHeader>
@@ -896,7 +896,7 @@ export default function LandingProductsSection() {
   return (
     <ProductsSection>
       <SectionHeader>
-        <SectionBadge>Enitz Global Limited</SectionBadge>
+        <SectionBadge>Enitz</SectionBadge>
         <SectionTitle>Explore Our <HighlightSpan>Featured Collection</HighlightSpan></SectionTitle>
         <SectionSubtitle>Discover premium everyday merchandise and essentials tailored for modern living.</SectionSubtitle>
       </SectionHeader>
@@ -927,6 +927,18 @@ export default function LandingProductsSection() {
                 <ProductTitle>
                   {product.name ? product.name.charAt(0).toUpperCase() + product.name.slice(1) : ""}
                 </ProductTitle>
+
+{/* 🌟 Variations displayed on store card */}
+                {product.variations && product.variations.length > 0 && (
+                  <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+                    {product.variations.map((v, idx) => (
+                      <div key={idx} style={{ fontSize: "0.75rem", color: textMuted, fontWeight: "600" }}>
+                        <span style={{ color: brandCyan }}>{v.name}:</span> {v.options}
+                      </div>
+                    ))}
+                  </div>
+                )}
+
                 <ProductPriceRow>
                   <PriceText>
                     ₦{productPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}

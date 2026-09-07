@@ -375,7 +375,7 @@ import Swal from "sweetalert2";
 import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/firebaseConfig";
 
-// 🎨 ENITZ GLOBAL BRAND THEME COLORS
+// 🎨 ENITZ BRAND THEME COLORS
 const PrimaryNavy = "#0B1B48";
 const PrimaryCyan = "#00AEEF";
 const Dark = "#0f172a";
@@ -670,7 +670,8 @@ export default function UserLogin() {
         {/* Left Visual Branding Panel */}
         <BrandingSide>
           <BrandLogo>
-            ENITZ <span>GLOBAL</span>
+            ENITZ 
+            {/* <span>GLOBAL</span> */}
           </BrandLogo>
           <BrandingContent>
             <Headline>Welcome Back</Headline>

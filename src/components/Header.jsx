@@ -328,7 +328,7 @@ import { auth, db } from "../firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
 import { doc, onSnapshot } from "firebase/firestore";
 import PaymentInProgressModal from "./PaymentInProgressModal";
-import { useAppContext } from "./Context";
+import  { useAppContext } from "./Context";
 import { useCart } from "@/components/CartContext";
 import HostingExpiryGuard from "./HostingExpiryGuard";
 
@@ -586,8 +586,8 @@ export default function Header() {
         <Inner>
           <Link href="/" onClick={() => setOpen(false)} style={{ textDecoration: 'none' }}> 
             <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-              <img src="/logo.jpeg" alt="Enitz Global Limited Logo" style={{ height: "45px", borderRadius: "8px" }} />    
-            <span style={{color:`${AccentGradient}`}}>ENITZ GLOBAL</span>
+              <img src="/logo.jpeg" alt="Enitz Logo" style={{ height: "45px", borderRadius: "8px" }} />    
+            <span style={{color:`${AccentGradient}`}}>ENITZ</span>
             </div>
           </Link>
 

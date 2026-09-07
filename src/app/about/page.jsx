@@ -5,7 +5,7 @@ import styled, { keyframes } from "styled-components";
 import Link from "next/link";
 import { ShieldCheck, Truck, Headphones, Award, ArrowRight, CheckCircle2, Globe, HeartHandshake } from "lucide-react";
 
-/* ================= THEME STYLES (ENITZ GLOBAL LIMITED) ================= */
+/* ================= THEME STYLES (ENITZ) ================= */
 const ThemeGradient = "linear-gradient(135deg, #00aeef 0%, #0b1b48 100%)";
 const LightBg = "#ffffff";
 const CardBg = "#f8fafc";
@@ -325,13 +325,13 @@ export default function AboutPage() {
       <HeroSection>
         <div className="container">
           <div className="badge">
-            <Globe className="w-4 h-4" /> About Enitz Global Limited
+            <Globe className="w-4 h-4" /> About Enitz
           </div>
           <h1>
             Redefining Retail & Merchandise Excellence with <span>Integrity and Trust</span>
           </h1>
           <p>
-            At Enitz Global Limited, we are dedicated to bringing high-standard products, dependable service, and a seamless shopping experience closer to households and modern consumers.
+            At Enitz, we are dedicated to bringing high-standard products, dependable service, and a seamless shopping experience closer to households and modern consumers.
           </p>
           <PrimaryButton href="/store">
             Explore Our Catalog
@@ -346,7 +346,7 @@ export default function AboutPage() {
           <div className="content">
             <h2>Built on a Passion for Quality and Customer Satisfaction</h2>
             <p>
-              Enitz Global Limited was founded with a clear vision: to simplify access to premium everyday goods and lifestyle items without compromising on value or customer care. 
+              Enitz was founded with a clear vision: to simplify access to premium everyday goods and lifestyle items without compromising on value or customer care. 
             </p>
             <p>
               We pride ourselves on our meticulous selection of merchandise, transparent pricing, and robust fulfillment channels designed to meet the demands of today's fast-paced digital shoppers.
@@ -367,7 +367,7 @@ export default function AboutPage() {
             {/* Unsplash image: Modern retail / workspace / lifestyle */}
             <img 
               src="./h5.png" 
-              alt="Enitz Global retail merchandise experience" 
+              alt="Enitz retail merchandise experience" 
             />
           </div>
         </div>
@@ -433,7 +433,7 @@ export default function AboutPage() {
           <div className="content">
             <h2>Delivering Value That Matters to Your Everyday Life</h2>
             <p>
-              Whether you are upgrading your home essentials, searching for practical lifestyle items, or exploring our latest featured arrivals, Enitz Global Limited is your trusted partner for a smooth, stress-free retail journey.
+              Whether you are upgrading your home essentials, searching for practical lifestyle items, or exploring our latest featured arrivals, Enitz is your trusted partner for a smooth, stress-free retail journey.
             </p>
             <PrimaryButton href="/store">
               Browse Store Items

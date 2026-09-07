@@ -751,7 +751,7 @@ import { collection, doc, getDoc, setDoc, deleteDoc, query, where, getDocs } fro
 import Swal from 'sweetalert2';
 import { useCart } from '@/components/CartContext';
 
-// --- ENITZ GLOBAL LIMITED THEME & STYLES ---
+// --- ENITZ LIMITED THEME & STYLES ---
 const brandCyan = '#00aeef';
 const brandDarkNavy = '#0b1b48';
 const brandGradient = 'linear-gradient(135deg, #00aeef 0%, #0b1b48 100%)';
@@ -1142,6 +1142,31 @@ const StateContainer = styled.div`
   font-weight: 500;
 `;
 
+const WhatsAppButton = styled.a`
+  background: #25d366;
+  color: #ffffff;
+  border: none;
+  padding: 14px 20px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-sizing: border-box;
+  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.3);
+  transition: all 0.3s ease;
+
+  &:hover {
+    opacity: 0.92;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(37, 211, 102, 0.45);
+  }
+`;
+
 // --- COMPONENT ---
 export default function ProductDetailPage({ params }) {
   const resolvedParams = use(params);
@@ -1154,7 +1179,8 @@ export default function ProductDetailPage({ params }) {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [feedback, setFeedback] = useState("");
-
+// Add this inside ProductDetailPage component state
+  const [selectedVariations, setSelectedVariations] = useState({});
   const [currentUser, setCurrentUser] = useState(null);
   const [userData, setUserData] = useState(null);
   const { addToCart } = useCart();
@@ -1259,6 +1285,8 @@ export default function ProductDetailPage({ params }) {
             reviews: data.reviews || [],
             averageRating: data.rating || 0,
             reviewCount: data.reviewCount || (data.reviews ? data.reviews.length : 0),
+            variations: data.variations || [],
+            features: data.features || [],
           };
           setProduct(fetchedProduct);
 
@@ -1288,16 +1316,71 @@ export default function ProductDetailPage({ params }) {
     fetchProductDetails();
   }, [productId]);
 
-  const handleAddToCart = () => {
+  // const handleAddToCart = () => {
+  //   if (!product) return;
+
+  //   addToCart({
+  //     id: product.id,
+  //     name: product.name,
+  //     price: product.amount,
+  //     image: product.images[0] || "",
+  //     // selectedColor: "Default",
+  //     // selectedSize: "Standard",
+  //     variations: selectedVariations,
+  //     quantity: 1,
+  //   });
+
+  //   setFeedback("✓ Successfully added to your cart!");
+
+  //   Swal.fire({
+  //     title: "Added to cart!",
+  //     text: "What would you like to do next?",
+  //     icon: "success",
+  //     showCancelButton: true,
+  //     confirmButtonText: "Proceed to Cart",
+  //     cancelButtonText: "Continue Shopping",
+  //     confirmButtonColor: brandCyan,
+  //     cancelButtonColor: textMuted,
+  //     background: "#ffffff",
+  //     color: "#0f172a"
+  //   }).then((result) => {
+  //     if (result.isConfirmed) {
+  //       router.push("/cart");
+  //     }
+  //   });
+
+  //   setTimeout(() => setFeedback(""), 3000);
+  // };
+
+
+
+const handleAddToCart = () => {
     if (!product) return;
+
+    // 🌟 Check if product has variations defined
+    if (product.variations && product.variations.length > 0) {
+      for (const v of product.variations) {
+        // Check if the user has selected an option for this variation name
+        if (!selectedVariations[v.name] || selectedVariations[v.name].trim() === "") {
+          Swal.fire({
+            title: "Selection Required",
+            text: `Please select a value for "${v.name}" before adding to cart.`,
+            icon: "warning",
+            confirmButtonColor: brandCyan,
+            background: "#ffffff",
+            color: "#0f172a"
+          });
+          return; // Stop execution if any variation is missing
+        }
+      }
+    }
 
     addToCart({
       id: product.id,
       name: product.name,
       price: product.amount,
       image: product.images[0] || "",
-      selectedColor: "Default",
-      selectedSize: "Standard",
+      variations: selectedVariations,
       quantity: 1,
     });
 
@@ -1322,6 +1405,48 @@ export default function ProductDetailPage({ params }) {
 
     setTimeout(() => setFeedback(""), 3000);
   };
+
+
+
+const handleWhatsAppOrder = (e) => {
+    if (!product) return;
+
+    // Validate variations if they exist
+    if (product.variations && product.variations.length > 0) {
+      for (const v of product.variations) {
+        if (!selectedVariations[v.name] || selectedVariations[v.name].trim() === "") {
+          e.preventDefault();
+          Swal.fire({
+            title: "Selection Required",
+            text: `Please select a value for "${v.name}" before ordering via WhatsApp.`,
+            icon: "warning",
+            confirmButtonColor: brandCyan,
+            background: "#ffffff",
+            color: "#0f172a"
+          });
+          return;
+        }
+      }
+    }
+
+    // Format selected variations text for message
+    const variationsText = Object.entries(selectedVariations)
+      .map(([key, val]) => `*${key}*: ${val}`)
+      .join(', ');
+
+    // Construct your custom pre-filled message
+    const message = encodeURIComponent(
+      `Hello Enitz, I would like to order this item:\n\n*Product:* ${product.name}\n*ID:* ${product.id}\n*Price:* ₦${product.amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}${variationsText ? `\n*Variations:* ${variationsText}` : ''}`
+    );
+
+    // Replace with your actual WhatsApp support phone number (with country code, no + or spaces)
+    const phoneNumber = "2349047103037"; 
+    
+    // Set href dynamically or trigger window.open
+    window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
+  };
+
+
 
   if (loading) {
     return (
@@ -1404,6 +1529,59 @@ export default function ProductDetailPage({ params }) {
               <p>{product.description}</p>
             </DescriptionSection>
 
+{/* 🌟 Product Variations Section */}
+            {product.variations && product.variations.length > 0 && (
+              <DescriptionSection>
+                <h3>Variations</h3>
+                <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                  {product.variations.map((v, idx) => (
+                    <div key={idx} style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                      <span style={{ fontSize: "0.85rem", fontWeight: "600", color: textMain }}>{v.name}:</span>
+                      <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
+                        {v.options.split(",").map((opt, optIdx) => {
+                          const optionTrimmed = opt.trim();
+                          const isSelected = selectedVariations[v.name] === optionTrimmed;
+                          return (
+                            <button
+                              key={optIdx}
+                              type="button"
+                              onClick={() => setSelectedVariations({ ...selectedVariations, [v.name]: optionTrimmed })}
+                              style={{
+                                padding: "6px 12px",
+                                borderRadius: "8px",
+                                fontSize: "0.85rem",
+                                fontWeight: "600",
+                                cursor: "pointer",
+                                border: `1px solid ${isSelected ? brandCyan : borderColor}`,
+                                background: isSelected ? "#f0f9ff" : cardBg,
+                                color: isSelected ? brandCyan : textMain,
+                              }}
+                            >
+                              {optionTrimmed}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </DescriptionSection>
+            )}
+
+            {/* 🌟 Product Features Section */}
+            {product.features && product.features.length > 0 && (
+              <DescriptionSection>
+                <h3>Key Features</h3>
+                <ul style={{ margin: 0, paddingLeft: "18px", display: "flex", flexDirection: "column", gap: "4px" }}>
+                  {product.features.map((feat, idx) => (
+                    <li key={idx} style={{ fontSize: "0.9rem", color: textMuted }}>
+                      {feat}
+                    </li>
+                  ))}
+                </ul>
+              </DescriptionSection>
+            )}
+
             <MetaGrid>
               <MetaItem>
                 <span>Availability</span>
@@ -1424,6 +1602,10 @@ export default function ProductDetailPage({ params }) {
               <WishlistButton $wishlisted={isWishlisted} onClick={handleToggleWishlist}>
                 {isWishlisted ? "❤️ Saved" : "🤍 Wishlist"}
               </WishlistButton>
+
+              <WhatsAppButton as="button" onClick={handleWhatsAppOrder}>
+              💬 Order on WhatsApp
+            </WhatsAppButton>
             </ActionsRow>
 
             {/* ⭐ Product Reviews Section */}

@@ -244,9 +244,70 @@ export async function POST(request) {
     } = payload;
 
     // Build items HTML table rows with exactly 2 columns: Image on left, stacked details & pricing on right
+    // const itemsHtml = items
+    //   .map(
+    //     (item) => `
+    //   <tr>
+    //     <td style="padding: 12px 10px; border-bottom: 1px solid #cbd5e1; vertical-align: top; width: 64px;">
+    //       ${item.image || item.imageUrl || item.img ? `
+    //         <img src="${item.image || item.imageUrl || item.img}" alt="${item.name || 'Product'}" style="width: 56px; height: 56px; object-fit: cover; border-radius: 6px; border: 1px solid #cbd5e1; display: block;" />
+    //       ` : `
+    //         <div style="width: 56px; height: 56px; background-color: #f8fafc; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #475569;">N/A</div>
+    //       `}
+    //     </td>
+    //     <td style="padding: 12px 10px; border-bottom: 1px solid #cbd5e1; vertical-align: top;">
+    //       <table style="width: 100%; border-collapse: collapse;">
+    //         <tr>
+    //           <td style="font-size: 14px; font-weight: 700; color: #0f172a; padding-bottom: 3px; line-height: 1.3;">
+    //             ${item.name || 'Product'}
+    //           </td>
+    //         </tr>
+    //         <tr>
+    //           <td style="font-size: 11px; color: #475569; font-family: monospace; padding-bottom: 3px;">
+    //             ID: ${item.id || 'N/A'}
+    //           </td>
+    //         </tr>
+    //         <tr>
+    //           <td style="font-size: 12px; color: #475569; padding-bottom: 6px;">
+    //             Qty: <strong>${item.quantity || 1}</strong>
+    //           </td>
+    //         </tr>
+    //         <tr>
+    //           <td style="font-size: 14px; font-weight: 700; color: #0B1B48; padding-top: 2px;">
+    //             ₦${Number((item.amount || item.price || 0) * (item.quantity || 1)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+    //           </td>
+    //         </tr>
+    //       </table>
+    //     </td>
+    //   </tr>
+    // `
+    //   )
+    //   .join('');
+
     const itemsHtml = items
-      .map(
-        (item) => `
+  .map((item) => {
+    // 🌟 1. Generate HTML markup for variations if they exist
+    let variationsHtml = '';
+    if (item.variations && typeof item.variations === 'object' && Object.keys(item.variations).length > 0) {
+      const badges = Object.entries(item.variations)
+        .map(([key, value]) => `
+          <span style="display: inline-block; font-size: 10px; color: #475569; background-color: #f1f5f9; border: 1px solid #cbd5e1; padding: 2px 6px; border-radius: 4px; font-weight: 600; text-transform: capitalize; margin-right: 4px; margin-bottom: 2px;">
+            ${key}: <strong style="color: #0f172a;">${String(value)}</strong>
+          </span>
+        `)
+        .join('');
+
+      variationsHtml = `
+        <tr>
+          <td style="padding-bottom: 4px;">
+            <div style="line-height: 1.4;">${badges}</div>
+          </td>
+        </tr>
+      `;
+    }
+
+    // 🌟 2. Return the table row with the injected variationsHtml
+    return `
       <tr>
         <td style="padding: 12px 10px; border-bottom: 1px solid #cbd5e1; vertical-align: top; width: 64px;">
           ${item.image || item.imageUrl || item.img ? `
@@ -262,6 +323,7 @@ export async function POST(request) {
                 ${item.name || 'Product'}
               </td>
             </tr>
+            ${variationsHtml}
             <tr>
               <td style="font-size: 11px; color: #475569; font-family: monospace; padding-bottom: 3px;">
                 ID: ${item.id || 'N/A'}
@@ -280,9 +342,9 @@ export async function POST(request) {
           </table>
         </td>
       </tr>
-    `
-      )
-      .join('');
+    `;
+  })
+  .join('');
 
     // Format delivery address text/HTML
     const addressHtml = typeof deliveryAddress === 'object' 
@@ -312,7 +374,7 @@ export async function POST(request) {
         <body>
           <div class="container">
             <div class="header">
-              <h1>ENITZ GLOBAL LIMITED</h1>
+              <h1>ENITZ</h1>
               <p>Order Confirmation & Summary</p>
             </div>
             <div class="content">
@@ -379,9 +441,9 @@ export async function POST(request) {
     // Loop through each recipient and send individually to prevent delivery drops or SMTP provider blocks
     const emailPromises = recipients.map(async (recipientEmail) => {
       const mailOptions = {
-        from: `"Enitz Global Limited" <${process.env.SMTP_USER}>`,
+        from: `"Enitz" <${process.env.SMTP_USER}>`,
         to: recipientEmail,
-        subject: `Order Confirmation #${orderNumber} - Enitz Global Limited`,
+        subject: `Order Confirmation #${orderNumber} - Enitz`,
         html: htmlContent,
       };
       return transporter.sendMail(mailOptions);

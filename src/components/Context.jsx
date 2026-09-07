@@ -236,7 +236,7 @@ const router = useRouter();
     };
   };
 
-  const payWithPaystack = async (amount,currency) => {
+  const payWithPaystack = async (amount,currency,subaccountCode) => {
     const email = auth.currentUser?.email;
     const name = auth.currentUser?.displayName || "";
     const nameParts = name.trim().split(/\s+/);
@@ -277,7 +277,8 @@ const router = useRouter();
       createdAt: new Date().toISOString(),
       paymentMethod: "Paystack",
       currency: currency,
-      subaccount: "ACCT_7k2sd8z7pxgyce9",
+      // subaccount: "ACCT_weypvhpue48sgcr",
+    subaccount:subaccountCode,
       bearer: "subaccount",
       metadata: {
         custom_payment_verification_number: verificationNumber,
@@ -312,7 +313,8 @@ const router = useRouter();
         email,
         firstname: firstName,
         lastname: lastName,
-        subaccount: "ACCT_weypvhpue48sgcr",
+        // subaccount: "ACCT_weypvhpue48sgcr",
+        subaccount:subaccountCode,
       bearer: "subaccount",
         metadata: {
           custom_payment_verification_number: verificationNumber,

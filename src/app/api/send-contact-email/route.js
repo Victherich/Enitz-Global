@@ -139,7 +139,7 @@ export async function POST(request) {
         <body>
           <div class="container">
             <div class="header">
-              <h1>ENITZ GLOBAL LIMITED</h1>
+              <h1>ENITZ</h1>
               <p>New Contact Form Submission</p>
             </div>
             <div class="content">
@@ -164,7 +164,7 @@ export async function POST(request) {
     const mailOptions = {
       // Must use process.env.SMTP_USER as the actual email to avoid spam flags, 
       // but you can prepend the customer's name in the display string safely:
-      from: `"${name} via Enitz Global Limited" <${process.env.SMTP_USER}>`,
+      from: `"${name} via Enitz" <${process.env.SMTP_USER}>`,
       to: 'enitzglobal@gmail.com', // The inbox receiving the leads
       // to: 'victorndu393@gmail.com',
       replyTo: email,           // Clicking "Reply" will reply straight to the customer

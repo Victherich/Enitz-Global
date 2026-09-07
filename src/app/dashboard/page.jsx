@@ -508,7 +508,7 @@ import styled from "styled-components";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 
-// 🎨 ENITZ GLOBAL BRAND THEME COLORS
+// 🎨 ENITZ BRAND THEME COLORS
 const PrimaryNavy = "#0B1B48";
 const PrimaryCyan = "#00AEEF";
 const Dark = "#0f172a";
@@ -888,6 +888,14 @@ const DashboardHome = () => {
               <MenuContent>
                 <MenuTitle>Analytics</MenuTitle>
                 <MenuDesc>View store performance metrics</MenuDesc>
+              </MenuContent>
+              <MenuIcon>📈</MenuIcon>
+            </MenuCard>
+
+              <MenuCard clickable onClick={() => router.push("/dashboard/payout-details-management")}>
+              <MenuContent>
+                <MenuTitle>Payout Account</MenuTitle>
+                <MenuDesc>View and manage payout details</MenuDesc>
               </MenuContent>
               <MenuIcon>📈</MenuIcon>
             </MenuCard>

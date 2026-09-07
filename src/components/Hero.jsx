@@ -10,12 +10,13 @@ import Link from "next/link";
 import styled, { keyframes } from "styled-components";
 import { Sparkles, ArrowRight, ShoppingBag } from "lucide-react";
 
-// Static main title and badges, with rotating backgrounds and subtitles tailored for Enitz Global Limited
+// Static main title and badges, with rotating backgrounds and subtitles tailored for Enitz 
 const heroSlides = [
   {
-    image: "https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1920&q=80",
-    badge: "Quality Products. Great Prices.",
-    subtitle: "At Enitz Global Limited, we bring you carefully selected personal and household products designed to make everyday living easy, affordable, and convenient."
+    // image: "https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1920&q=80",
+    badge: "Quality Within Reach",
+    image:'./shop1.png',
+    subtitle: "At Enitz Limited, we bring you carefully selected personal and household products designed to make everyday living easy, affordable, and convenient."
   },
   {
     image: "./h1.png",
@@ -23,13 +24,15 @@ const heroSlides = [
     subtitle: "Explore our wide range of useful, high-quality merchandise suited for your modern lifestyle, all backed by convenient ordering and reliable delivery."
   },
   {
-    image: "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=1920&q=80",
+    // image: "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=1920&q=80",
     badge: "Smart Shopping Experience",
+   image:'./shop4.jpg',
     subtitle: "Discover incredible value on household goods and personal items with seamless purchasing and top-tier customer service right at your fingertips."
   },
   {
-    image: "https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=1920&q=80",
+    // image: "https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=1920&q=80",
     badge: "Shop With Confidence",
+    image:"./shop3.jpg",
     subtitle: "Browse our latest catalog today and enjoy unmatched pricing on everyday essentials designed to elevate your home and personal spaces."
   }
 ];
@@ -68,7 +71,7 @@ const shimmer = keyframes`
   }
 `;
 
-// Styled Components (Updated with Enitz Global Theme: Dark Navy Blue & Bright Cyan)
+// Styled Components (Updated with Enitz Theme: Dark Navy Blue & Bright Cyan)
 const HeroSectionWrapper = styled.section`
   position: relative;
   min-height: 90vh;
@@ -302,7 +305,7 @@ export default function HeroSection() {
 
         {/* Static Main Headline */}
         <Title>
-          ENITZ <HighlightSpan>GLOBAL</HighlightSpan>
+          ENITZ <HighlightSpan></HighlightSpan>
         </Title>
 
         {/* Dynamic Animated Subtitle Description */}

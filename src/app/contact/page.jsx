@@ -638,7 +638,7 @@ import {
 } from "lucide-react";
 import Swal from "sweetalert2";
 
-// --- ENITZ GLOBAL THEME & STYLES ---
+// --- ENITZ THEME & STYLES ---
 const brandCyan = '#00aeef';
 const brandDarkNavy = '#0b1b48';
 const brandGradient = 'linear-gradient(135deg, #00aeef 0%, #0b1b48 100%)';
@@ -1060,7 +1060,7 @@ export default function ContactUsPage() {
       if (data.success) {
         Swal.fire({
           title: "Message Sent Successfully!",
-          text: "Thank you for connecting with Enitz Global Limited. We appreciate your interest and are dedicated to delivering exceptional merchandise and service, ensuring a lasting and meaningful relationship with every customer.",
+          text: "Thank you for connecting with Enitz. We appreciate your interest and are dedicated to delivering exceptional merchandise and service, ensuring a lasting and meaningful relationship with every customer.",
           icon: "success",
           confirmButtonText: "Done",
           confirmButtonColor: "#00aeef",
@@ -1120,7 +1120,7 @@ export default function ContactUsPage() {
             />
             <ImageOverlayText>
               <div>
-                <span>Enitz Global</span>
+                <span>Enitz</span>
                 <span>Customer Support Center</span>
               </div>
               <ImageBadgeTag>

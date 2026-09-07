@@ -7,6 +7,7 @@ import WhyChooseUsSection from '@/components/WhyChooseUsSection';
 import HeroSection2 from '@/components/Hero';
 import LandingPageComponent from '@/components/LandingPageComponent';
 import TestimonialsSection from '@/components/TestimonialSection';
+import ProofAndTestimonials from '@/components/ProofAndTestimonials';
 
 
 
@@ -516,6 +517,7 @@ export default function CompleteLandingPage() {
     <LandingPageComponent/>
     <LandingProductsSection/>
  <TestimonialsSection/>
+ {/* <ProofAndTestimonials/>+ */}
     </>
 
   );

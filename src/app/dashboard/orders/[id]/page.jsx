@@ -1176,7 +1176,7 @@ export default function OrderDetailsPage() {
           {/* Products Card */}
           <Card>
             <CardTitle>Ordered Products ({items.length})</CardTitle>
-            <ProductsList>
+            {/* <ProductsList>
               {items.map((item, index) => {
                 const price = Number(item.price || item.amount || 0);
                 const qty = Number(item.quantity || 1);
@@ -1225,7 +1225,82 @@ export default function OrderDetailsPage() {
                   </ProductItem>
                 );
               })}
-            </ProductsList>
+            </ProductsList> */}
+<ProductsList>
+  {items.map((item, index) => {
+    const price = Number(item.price || item.amount || 0);
+    const qty = Number(item.quantity || 1);
+    const itemTotal = price * qty;
+    const imgSrc = item.image || item.img || item.imageUrl || "https://placehold.co/100x100?text=Product";
+
+    return (
+      <ProductItem key={`${item.id || index}-${JSON.stringify(item.variations || {})}`}>
+        <ProductImage 
+          src={imgSrc} 
+          alt={item.name || item.title || "Product Image"} 
+          onClick={() => router.push(`/productdetail/${item.id}`)}
+          style={{ cursor: "pointer" }}
+        />
+        <ProductDetails onClick={() => router.push(`/productdetail/${item.id}`)} style={{ cursor: "pointer" }}>
+          <ProductName>{item.name || item.title || "Unnamed Product"}</ProductName>
+          
+          {/* 🌟 Display Saved Variations */}
+          {item.variations && typeof item.variations === 'object' && Object.keys(item.variations).length > 0 && (
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "4px", marginTop: "4px" }}>
+              {Object.entries(item.variations).map(([key, value]) => (
+                <span 
+                  key={key} 
+                  style={{ 
+                    fontSize: "0.65rem", 
+                    color: "#475569", 
+                    background: "#f1f5f9", 
+                    padding: "1px 6px", 
+                    borderRadius: "4px", 
+                    fontWeight: "600", 
+                    textTransform: "capitalize",
+                    border: "1px solid #e2e8f0"
+                  }}
+                >
+                  {key}: <strong style={{ color: "#0f172a" }}>{String(value)}</strong>
+                </span>
+              ))}
+            </div>
+          )}
+
+          <p style={{fontSize:'0.6rem', margin: '2px 0 0 0', color: '#94a3b8'}}>ID: {item.id}</p>
+          <ProductMeta>Qty: {qty} × ₦{price.toLocaleString()}</ProductMeta>
+        </ProductDetails>
+        
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "6px" }}>
+          <ProductPriceTag>
+            ₦{itemTotal.toLocaleString()}
+          </ProductPriceTag>
+          {item.id && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleOpenReviewModal(item);
+              }}
+              style={{
+                background: PrimaryCyan,
+                color: White,
+                border: "none",
+                padding: "4px 10px",
+                borderRadius: "6px",
+                fontSize: "0.75rem",
+                fontWeight: "700",
+                cursor: "pointer",
+              }}
+            >
+              ⭐ Review
+            </button>
+          )}
+        </div>
+      </ProductItem>
+    );
+  })}
+</ProductsList>
+
 
             <div style={{ marginTop: "10px", display: "flex", flexDirection: "column", gap: "8px" }}>
               <SummaryRow>
@@ -1409,3 +1484,8 @@ export default function OrderDetailsPage() {
     </Container>
   );
 }
+
+
+
+
+

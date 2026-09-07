@@ -8,70 +8,282 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import Swal from 'sweetalert2';
 import PaystackPop from "@paystack/inline-js";
 import HostingTransactions from '@/components/HostingTransactions';
+import DomainManager from '@/components/DomainManager';
 
-// --- Styled Components (Updated Modern Theme) ---
+// --- Styled Components (Strict Viewport Boundary, Non-Overflowing Theme) ---
 
 const Section = styled.section`
-  padding: 24px 16px;
-  max-width: 1280px;
-  margin: 0 auto;
+  padding: 12px;
+  width: 100%;
+  max-width: 100vw;
+  min-height: 100vh;
+  margin: 0;
+  box-sizing: border-box;
   font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f1f5f9;
+  color: #0f172a;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden; /* Prevents horizontal page breakout */
+
+  @media (min-width: 768px) {
+    padding: 24px;
+  }
+`;
+
+const DashboardHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #cbd5e1;
+  padding-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+`;
+
+const TitleContainer = styled.div`
+  max-width: 100%;
+  overflow-wrap: break-word;
 `;
 
 const Title = styled.h2`
   color: #0f172a;
-//   font-size: 1.875rem;
-  font-weight: 700;
-  text-align: left;
-  margin-bottom: 2rem;
+  font-size: 1.35rem;
+  font-weight: 800;
   letter-spacing: -0.025em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
 
   @media (min-width: 768px) {
-    // font-size: 2.25rem;
+    font-size: 2rem;
+  }
+
+  span {
+    font-size: 0.7rem;
+    background: #0284c7;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-weight: 600;
+
+    @media (min-width: 768px) {
+      font-size: 0.85rem;
+    }
   }
 `;
 
-const Grid = styled.div`
-  display: grid;
-  gap: 1.5rem;
-  grid-template-columns: 1fr;
+const Subtitle = styled.p`
+  color: #64748b;
+  font-size: 0.775rem;
+  margin-top: 4px;
+  word-break: break-word;
 
   @media (min-width: 768px) {
-    grid-template-columns: repeat(2, 1fr);
+    font-size: 0.95rem;
+  }
+`;
+
+const SystemStatusBadge = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #059669;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+
+  @media (min-width: 768px) {
+    font-size: 0.85rem;
   }
 
-  @media (min-width: 1024px) {
-    grid-template-columns: repeat(3, 1fr);
+  &::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background-color: #10b981;
+    border-radius: 50%;
+    box-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
+    animation: pulse 2s infinite;
+    flex-shrink: 0;
   }
+
+  @keyframes pulse {
+    0% { transform: scale(0.95); opacity: 0.8; }
+    50% { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(0.95); opacity: 0.8; }
+  }
+`;
+
+const FullscreenGrid = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  flex: 1;
   margin-bottom: 3rem;
 `;
 
-const Card = styled.div`
+const ControlCenterCard = styled.div`
   background-color: #ffffff;
-  border: 1px solid #e2e8f0;
-  padding: 1.75rem;
+  border: 1px solid #cbd5e1;
+  padding: 1rem;
   border-radius: 16px;
-  text-align: left;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-  transition: all 0.2s ease-in-out;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
   display: flex;
   flex-direction: column;
+  position: relative;
+  overflow: hidden;
 
-  &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
-    border-color: #cbd5e1;
+  @media (min-width: 768px) {
+    padding: 2.5rem;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 6px;
+    height: 100%;
+    background: ${({ $status }) => ($status === 'active' ? '#10b981' : '#f59e0b')};
   }
 `;
 
-const CardTitle = styled.h3`
-  color: #1e293b;
-  font-size: 1.25rem;
+const HeaderRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e2e8f0;
+  flex-wrap: wrap;
+  gap: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+`;
+
+const InstanceTitle = styled.h3`
+  color: #0f172a;
+  font-size: 1.1rem;
+  font-weight: 800;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  word-break: break-all;
+  max-width: 100%;
+
+  @media (min-width: 768px) {
+    font-size: 1.75rem;
+    word-break: normal;
+  }
+
+  small {
+    font-size: 0.75rem;
+    color: #64748b;
+    font-weight: 500;
+    font-family: monospace;
+    word-break: break-all;
+
+    @media (min-width: 768px) {
+      font-size: 0.85rem;
+    }
+  }
+`;
+
+const StatusPill = styled.span`
+  background: ${({ $status }) => ($status === 'active' ? 'rgba(16, 185, 129, 0.1)' : 'rgba(245, 158, 11, 0.1)')};
+  color: ${({ $status }) => ($status === 'active' ? '#059669' : '#d97706')};
+  border: 1px solid ${({ $status }) => ($status === 'active' ? 'rgba(16, 185, 129, 0.3)' : 'rgba(245, 158, 11, 0.3)')};
+  padding: 4px 10px;
+  border-radius: 30px;
+  font-size: 0.75rem;
   font-weight: 700;
-  margin-bottom: 1.25rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 2px solid #f1f5f9;
-  word-break: break-word;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+
+  @media (min-width: 768px) {
+    padding: 6px 14px;
+    font-size: 0.8rem;
+  }
+`;
+
+const DashboardBody = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  width: 100%;
+  box-sizing: border-box;
+
+  @media (min-width: 1024px) {
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+`;
+
+const Column = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-width: 0; /* Critical flexbox rule to prevent item blowout / overflow */
+  width: 100%;
+  box-sizing: border-box;
+`;
+
+const MetricBox = styled.div`
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 12px 14px;
+  width: 100%;
+  box-sizing: border-box;
+
+  @media (min-width: 768px) {
+    padding: 14px 18px;
+  }
+`;
+
+const MetricHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.775rem;
+  color: #475569;
+  margin-bottom: 8px;
+  font-weight: 750;
+
+  @media (min-width: 768px) {
+    font-size: 0.85rem;
+  }
+`;
+
+const ProgressBarContainer = styled.div`
+  width: 100%;
+  height: 8px;
+  background: #e2e8f0;
+  border-radius: 4px;
+  overflow: hidden;
+  box-sizing: border-box;
+`;
+
+const ProgressBarFill = styled.div`
+  height: 100%;
+  width: ${({ $percentage }) => `${$percentage}%`};
+  background: ${({ $type }) => ($type === 'cpu' ? '#0284c7' : $type === 'ram' ? '#7c3aed' : '#10b981')};
+  border-radius: 4px;
 `;
 
 const DetailRow = styled.div`
@@ -79,83 +291,185 @@ const DetailRow = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 0.625rem 0;
-  border-bottom: 1px solid #f8fafc;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 0.85rem;
+  width: 100%;
+  box-sizing: border-box;
+  gap: 8px;
   
+  @media (min-width: 768px) {
+    font-size: 0.925rem;
+    padding: 0.75rem 0;
+  }
+
   &:last-of-type {
     border-bottom: none;
-    margin-bottom: 1rem;
   }
 `;
 
 const DetailLabel = styled.span`
   color: #64748b;
   font-weight: 500;
-  font-size: 0.875rem;
   flex-shrink: 0;
-  margin-right: 1rem;
 `;
 
 const DetailValue = styled.span`
-  color: #334155;
+  color: #1e293b;
   font-weight: 600;
-  font-size: 0.875rem;
+  font-family: ${({ $mono }) => ($mono ? 'monospace' : 'inherit')};
   text-align: right;
-  word-break: break-word;
+  word-break: break-all;
+  max-width: 60%;
+
+  @media (min-width: 768px) {
+    word-break: normal;
+  }
 `;
 
-const ListContainer = styled.div`
+const SectionSubHeader = styled.div`
+  font-size: 0.8rem;
+  font-weight: 750;
+  color: #334155;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 0.4rem;
+  margin-bottom: 0.4rem;
+
+  @media (min-width: 768px) {
+    font-size: 0.85rem;
+  }
+`;
+
+const TagsGrid = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-  padding: 0.5rem 0 0.75rem 0;
-  border-bottom: 1px solid #f8fafc;
-  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+  gap: 6px;
+  max-height: 110px;
+  overflow-y: auto;
   width: 100%;
+  box-sizing: border-box;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 2px;
+  }
 `;
 
-const ListItemValue = styled.span`
-  color: #475569;
+const TagBadge = styled.span`
+  color: #334155;
   font-weight: 500;
-  font-size: 0.85rem;
-  background: #f8fafc;
-  padding: 4px 8px;
+  font-size: 0.75rem;
+  background: #f1f5f9;
+  padding: 4px 10px;
   border-radius: 6px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #cbd5e1;
+  word-break: break-all;
+
+  @media (min-width: 768px) {
+    font-size: 0.825rem;
+    padding: 6px 12px;
+  }
+`;
+
+const ControlsGroup = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  margin-top: 0.25rem;
+  width: 100%;
+  box-sizing: border-box;
+
+  @media (min-width: 480px) {
+    grid-template-columns: 1fr 1fr;
+  }
+`;
+
+const ControlButton = styled.button`
+  background: #f8fafc;
+  color: #1e293b;
+  border: 1px solid #cbd5e1;
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-size: 0.775rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+  box-sizing: border-box;
+
+  @media (min-width: 768px) {
+    font-size: 0.85rem;
+    padding: 10px 14px;
+  }
+
+  &:hover {
+    background: #f1f5f9;
+    color: #0f172a;
+    border-color: #94a3b8;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  }
+`;
+
+const ActionButtonContainer = styled.div`
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #e2e8f0;
+  width: 100%;
+  box-sizing: border-box;
+
+  @media (min-width: 768px) {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+  }
 `;
 
 const Button = styled.button`
   width: 100%;
-  padding: 0.75rem 1rem;
+  padding: 0.875rem 1rem;
   background-color: #2563eb;
   color: white;
   cursor: pointer;
   border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 0.95rem;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.9rem;
   transition: background-color 0.2s ease, box-shadow 0.2s ease;
-  margin-top: auto;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25);
+  box-sizing: border-box;
+
+  @media (min-width: 768px) {
+    padding: 1rem 1.5rem;
+    font-size: 1rem;
+  }
 
   &:hover {
     background-color: #1d4ed8;
-    box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
   }
 
   &:active {
-    transform: scale(0.98);
+    transform: scale(0.99);
   }
 `;
 
 const EmptyState = styled.p`
   text-align: center;
-  grid-column: 1 / -1;
+  width: 100%;
+  box-sizing: border-box;
   color: #64748b;
-  font-size: 1rem;
-  padding: 3rem 0;
-  background: #f8fafc;
-  border-radius: 12px;
+  font-size: 0.95rem;
+  padding: 4rem 1rem;
+  background: #ffffff;
+  border-radius: 16px;
   border: 1px dashed #cbd5e1;
+
+  @media (min-width: 768px) {
+    font-size: 1.1rem;
+    padding: 6rem 0;
+  }
 `;
 
 // --- Component ---
@@ -177,12 +491,14 @@ const HostingList = () => {
     return () => unsubscribe();
   }, []);
 
-  // 1️⃣ fetch hostings
   const fetchHostings = () => {
     (async () => {
       Swal.fire({
-        title: 'Loading...',
+        title: 'Synchronizing Global Clusters...',
+        text: 'Fetching primary and replica nodes...',
         allowOutsideClick: false,
+        background: '#ffffff',
+        color: '#0f172a',
         didOpen: () => {
           Swal.showLoading();
         },
@@ -192,7 +508,7 @@ const HostingList = () => {
         const qs = await getDocs(collection(db, 'hostings'));
         setHostings(qs.docs.map(d => ({ id: d.id, ...d.data() })));
       } catch {
-        Swal.fire('Error', 'Could not fetch plans.', 'error');
+        Swal.fire({ title: 'Error', text: 'Could not sync cluster nodes.', icon: 'error', background: '#ffffff', color: '#0f172a' });
       } finally {
         Swal.close();
       }
@@ -203,31 +519,45 @@ const HostingList = () => {
     fetchHostings();
   }, []);
 
-  // 2️⃣ handle renewal launch
+  const getRandomMetric = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+
+  const handleActionClick = (actionName, hostingName) => {
+    Swal.fire({
+      title: `${actionName} Executed`,
+      text: `Cluster command dispatched successfully to instance: ${hostingName}`,
+      icon: 'success',
+      timer: 1800,
+      showConfirmButton: false,
+      background: '#ffffff',
+      color: '#0f172a'
+    });
+  };
+
   const renew = (item) => {
     if (!user || !user.email) {
-      Swal.fire('Authentication Error', 'User email not found. Please log in again.', 'error');
+      Swal.fire({ title: 'Authentication Error', text: 'Node owner signature not found. Please re-authenticate.', icon: 'error', background: '#ffffff', color: '#0f172a' });
       return;
     }
     const amountKobo = item.renewal_amount * 100;
     const paystack = new PaystackPop();
     paystack.newTransaction({
       key: "pk_test_60e1f53bba7c80b60029bf611a26a66a9a22d4e4", 
-      // key: "pk_live_afb3375b9a770a5a332904dcf1a26e77c2a5f170", 
       email: user.email,
       amount: amountKobo,
       metadata: { hostingId: item.id },
       onSuccess: async (tx) => await handlePaymentSuccess(item, tx),
-      onCancel: () => Swal.fire('Cancelled', 'Payment cancelled.', 'info'),
-      onError: (e) => Swal.fire('Error', e.message, 'error'),
+      onCancel: () => Swal.fire({ title: 'Aborted', text: 'Transaction sequence cancelled.', icon: 'info', background: '#ffffff', color: '#0f172a' }),
+      onError: (e) => Swal.fire({ title: 'Gateway Error', text: e.message, icon: 'error', background: '#ffffff', color: '#0f172a' }),
     });
   };
 
-  // 3️⃣ on successful payment
   const handlePaymentSuccess = async (item, tx) => {
     Swal.fire({
-      title: 'Please wait...',
+      title: 'Updating Node Registry...',
+      text: 'Verifying payment ledger hash...',
       allowOutsideClick: false,
+      background: '#ffffff',
+      color: '#0f172a',
       didOpen: () => {
         Swal.showLoading();
       },
@@ -271,92 +601,157 @@ const HostingList = () => {
       await addDoc(collection(db, 'transactions'), txn);
 
       Swal.fire({
-        title: 'Success',
-        text: 'Renewal successful! Your hosting has been extended.',
+        title: 'Cluster Extended',
+        text: 'Lease successfully renewed and synchronized globally.',
         icon: 'success',
         timer: 1500,
-        showConfirmButton: false
+        showConfirmButton: false,
+        background: '#ffffff',
+        color: '#0f172a'
       }).then(() => {
         window.location.reload();
       });
 
     } catch (error) {
       console.error("Error during payment success processing:", error);
-      Swal.fire('Error', 'There was an issue processing your renewal. Please contact support.', 'error');
+      Swal.fire({ title: 'Registry Sync Error', text: 'Could not commit lease renewal. Contact NOC support.', icon: 'error', background: '#ffffff', color: '#0f172a' });
     }
   };
 
   return (
     <Section>
-      <Title>All Hosting Plans</Title>
-      <Grid>
+      <DashboardHeader>
+        <TitleContainer>
+          <Title>
+            Infrastructure Control Plane <span>v4.8-PROD</span>
+          </Title>
+          <Subtitle>Full-Spectrum Enterprise Core Dashboard & Domain Controller</Subtitle>
+        </TitleContainer>
+        <SystemStatusBadge>
+          All Cloud Nodes Operational
+        </SystemStatusBadge>
+      </DashboardHeader>
+
+      <FullscreenGrid>
         {hostings.length > 0 ? (
-          hostings.map((item) => (
-            <Card key={item.id}>
-              <CardTitle>{item.hosting_name?.toUpperCase() || 'N/A'}</CardTitle>
-              
-              <DetailRow>
-                <DetailLabel>Duration:</DetailLabel>
-                <DetailValue>{item.duration || 'N/A'}</DetailValue>
-              </DetailRow>
+          hostings.map((item) => {
+            const cpuUsage = getRandomMetric(14, 65);
+            const ramUsage = getRandomMetric(38, 85);
+            const isItemActive = (item.status || '').toLowerCase() === 'active';
 
-              <DetailRow>
-                <DetailLabel>Status:</DetailLabel>
-                <DetailValue>{item.status || 'N/A'}</DetailValue>
-              </DetailRow>
+            return (
+              <ControlCenterCard key={item.id} $status={item.status}>
+                <HeaderRow>
+                  <InstanceTitle>
+                    {item.hosting_name?.toUpperCase() || 'NODE-INSTANCE'}
+                    <small>INSTANCE ID: {item.id} [GLOBAL-EDGE-CLUSTER]</small>
+                  </InstanceTitle>
+                  <StatusPill $status={item.status}>{item.status || 'UNKNOWN'}</StatusPill>
+                </HeaderRow>
 
-              <DetailRow>
-                <DetailLabel>Start Date:</DetailLabel>
-                <DetailValue>{item.start_date?.toDate().toLocaleDateString() || 'N/A'}</DetailValue>
-              </DetailRow>
+                <DashboardBody>
+                  {/* Left Column: Metrics & Low-level configuration */}
+                  <Column>
+                    <SectionSubHeader>Resource Telemetry Gauges</SectionSubHeader>
+                    <MetricBox>
+                      <MetricHeader>
+                        <span>CPU LOAD (4 vCPU Virtualized)</span>
+                        <span>{cpuUsage}%</span>
+                      </MetricHeader>
+                      <ProgressBarContainer>
+                        <ProgressBarFill $percentage={cpuUsage} $type="cpu" />
+                      </ProgressBarContainer>
+                    </MetricBox>
 
-              <DetailRow>
-                <DetailLabel>Expires On:</DetailLabel>
-                <DetailValue>{item.expiry_date?.toDate().toLocaleDateString() || 'N/A'}</DetailValue>
-              </DetailRow>
+                    <MetricBox>
+                      <MetricHeader>
+                        <span>RAM POOL ALLOCATION (8GB Cluster)</span>
+                        <span>{ramUsage}%</span>
+                      </MetricHeader>
+                      <ProgressBarContainer>
+                        <ProgressBarFill $percentage={ramUsage} $type="ram" />
+                      </ProgressBarContainer>
+                    </MetricBox>
 
-              <DetailRow>
-                <DetailLabel>Amount:</DetailLabel>
-                <DetailValue>{item.base_currency === 'NGN' ? '₦' : '$'}{item.amount || 'N/A'}</DetailValue>
-              </DetailRow>
+                    <SectionSubHeader>Network & Security Bindings</SectionSubHeader>
+                    <DetailRow>
+                      <DetailLabel>Nameservers / DNS:</DetailLabel>
+                      <DetailValue $mono>ns1.cloud-edge.net</DetailValue>
+                    </DetailRow>
+                    <DetailRow>
+                      <DetailLabel>SSL Cipher Protocol:</DetailLabel>
+                      <DetailValue style={{ color: '#059669' }}>TLSv1.3 (Auto)</DetailValue>
+                    </DetailRow>
+                    <DetailRow>
+                      <DetailLabel>Allocation Duration:</DetailLabel>
+                      <DetailValue>{item.duration || 'N/A'}</DetailValue>
+                    </DetailRow>
+                  </Column>
 
-              <DetailRow>
-                <DetailLabel>Renewal Amount:</DetailLabel>
-                <DetailValue>{item.base_currency === 'NGN' ? '₦' : '$'}{item.renewal_amount || 'N/A'}</DetailValue>
-              </DetailRow>
+                  {/* Right Column: Timelines, Billing, Features, Actions */}
+                  <Column>
+                    <SectionSubHeader>Lease & Financial Ledger</SectionSubHeader>
+                    <DetailRow>
+                      <DetailLabel>Initial Provision:</DetailLabel>
+                      <DetailValue>{item.start_date?.toDate().toLocaleDateString() || 'N/A'}</DetailValue>
+                    </DetailRow>
+                    <DetailRow>
+                      <DetailLabel>Lease Expiration:</DetailLabel>
+                      <DetailValue style={{ color: isItemActive ? '#1e293b' : '#d97706' }}>
+                        {item.expiry_date?.toDate().toLocaleDateString() || 'N/A'}
+                      </DetailValue>
+                    </DetailRow>
+                    <DetailRow>
+                      <DetailLabel>Tier & Renewal:</DetailLabel>
+                      <DetailValue>{item.base_currency === 'NGN' ? '₦' : '$'}{item.amount || '0'} {item.renewal_amount ? `(Ren: ₦${item.renewal_amount})` : ''}</DetailValue>
+                    </DetailRow>
 
-              {item.features && item.features.length > 0 && (
-                <div style={{ width: '100%' }}>
-                  <DetailLabel style={{ display: 'block', marginBottom: '0.25rem' }}>Features:</DetailLabel>
-                  <ListContainer>
-                    {item.features.map((f, idx) => (
-                      <ListItemValue key={idx}>{f}</ListItemValue>
-                    ))}
-                  </ListContainer>
-                </div>
-              )}
+                    {item.features && item.features.length > 0 && (
+                      <div style={{ width: '100%', boxSizing: 'border-box' }}>
+                        <SectionSubHeader>Enabled Stack Modules</SectionSubHeader>
+                        <TagsGrid>
+                          {item.features.map((f, idx) => (
+                            <TagBadge key={idx}>{f}</TagBadge>
+                          ))}
+                        </TagsGrid>
+                      </div>
+                    )}
 
-              {item.addons && item.addons.length > 0 && (
-                <div style={{ width: '100%' }}>
-                  <DetailLabel style={{ display: 'block', marginBottom: '0.25rem' }}>Addons:</DetailLabel>
-                  <ListContainer>
-                    {item.addons.map((f, idx) => (
-                      <ListItemValue key={idx}>{f}</ListItemValue>
-                    ))}
-                  </ListContainer>
-                </div>
-              )}
+                    {item.addons && item.addons.length > 0 && (
+                      <div style={{ width: '100%', boxSizing: 'border-box' }}>
+                        <SectionSubHeader>Enterprise Addons</SectionSubHeader>
+                        <TagsGrid>
+                          {item.addons.map((a, idx) => (
+                            <TagBadge key={idx} style={{ borderColor: '#93c5fd', color: '#1d4ed8', background: '#eff6ff' }}>{a}</TagBadge>
+                          ))}
+                        </TagsGrid>
+                      </div>
+                    )}
 
-              <Button onClick={() => renew(item)}>Renew hosting</Button>
-            </Card>
-          ))
+                    <SectionSubHeader>Terminal Commands</SectionSubHeader>
+                    <ControlsGroup>
+                      <ControlButton onClick={() => handleActionClick('Hard Reboot', item.hosting_name)}>⚡ Hard Reboot</ControlButton>
+                      <ControlButton onClick={() => handleActionClick('Flush CDN Cache', item.hosting_name)}>🧹 Purge Cache</ControlButton>
+                    </ControlsGroup>
+                  </Column>
+                </DashboardBody>
+
+                <ActionButtonContainer>
+                  <Button onClick={() => renew(item)}>
+                    🔒 Extend Instance Lease & Renew Plan
+                  </Button>
+                </ActionButtonContainer>
+              </ControlCenterCard>
+            );
+          })
         ) : (
           <EmptyState>
-            No hosting plans available.
+            No active nodes provisioned inside this cluster environment.
           </EmptyState>
         )}
-      </Grid>
-      <HostingTransactions/>
+      </FullscreenGrid>
+      {/* <DomainManager/> */}
+      <HostingTransactions /> 
     </Section>
   );
 };

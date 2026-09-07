@@ -484,7 +484,7 @@ import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { auth, db } from "@/firebaseConfig";
 
-// 🎨 ENITZ GLOBAL BRAND THEME COLORS
+// 🎨 ENITZ BRAND THEME COLORS
 const PrimaryNavy = "#0B1B48";
 const PrimaryCyan = "#00AEEF";
 const Dark = "#0f172a";
@@ -839,7 +839,8 @@ export default function UserSignup() {
         {/* Left Visual Branding Panel */}
         <BrandingSide>
           <BrandLogo>
-            ENITZ <span>GLOBAL</span>
+            ENITZ 
+            {/* <span>GLOBAL</span> */}
           </BrandLogo>
           <BrandingContent>
             <Headline>Create Your Account</Headline>

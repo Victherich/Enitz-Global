@@ -387,7 +387,7 @@ import styled from "styled-components";
 import Swal from "sweetalert2";
 import { usePathname } from "next/navigation";
 
-// 🎨 ENITZ GLOBAL BRAND THEME COLORS
+// 🎨 ENITZ BRAND THEME COLORS
 const PrimaryNavy = "#0B1B48";
 const PrimaryCyan = "#00AEEF";
 const Dark = "#0f172a";
@@ -687,7 +687,8 @@ export default function DashboardLayout({ children }) {
       <Sidebar $open={sidebarOpen}>
         <SidebarTop>
           <BrandLogo>
-            ENITZ <span>GLOBAL</span>
+            ENITZ 
+            {/* <span>GLOBAL</span> */}
           </BrandLogo>
 
           <NavLinks>

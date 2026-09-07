@@ -1622,6 +1622,10 @@ export default function ProductsCrudPage() {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [sortOrder, setSortOrder] = useState("");
 
+  // 🌟 New State for Variations and Features Textarea
+  const [variations, setVariations] = useState([]); // Array of { name: "", options: "" }
+  const [featuresText, setFeaturesText] = useState(""); // Raw textarea value
+
   // Fetch categories from Firestore
   const fetchCategories = async () => {
     try {
@@ -1744,6 +1748,23 @@ export default function ProductsCrudPage() {
         }
       }
 
+      // const payload = {
+      //   name: form.name,
+      //   description: form.description,
+      //   amount: Number(form.amount),
+      //   quantity: form.neverFinishes ? 0 : Number(form.quantity || 0),
+      //   neverFinishes: form.neverFinishes,
+      //   images: finalImageUrls,
+      //   image: finalImageUrls[0] || "",
+      //   categoryId: form.categoryId,
+      // };
+
+      // Convert featuresText into an array of non-empty bullet points
+      const featuresList = featuresText
+        .split("\n")
+        .map((item) => item.trim())
+        .filter((item) => item.length > 0);
+
       const payload = {
         name: form.name,
         description: form.description,
@@ -1753,6 +1774,8 @@ export default function ProductsCrudPage() {
         images: finalImageUrls,
         image: finalImageUrls[0] || "",
         categoryId: form.categoryId,
+        variations: variations.filter((v) => v.name.trim() !== "" && v.options.trim() !== ""),
+        features: featuresList,
       };
 
       if (editingId) {
@@ -1779,6 +1802,9 @@ export default function ProductsCrudPage() {
       setExistingImageUrls(["", "", "", ""]);
       setEditingId(null);
       fetchProducts();
+      setVariations([]);
+  setFeaturesText("");
+
     } catch (error) {
       Swal.close();
       Swal.fire({
@@ -1816,7 +1842,28 @@ export default function ProductsCrudPage() {
     setImagePreviews(slotPreviews);
     setImageFiles([null, null, null, null]);
     setShowModal(true);
+    setVariations(item.variations || []);
+  setFeaturesText(item.features ? item.features.join("\n") : "");
   };
+
+
+
+const handleAddVariation = () => {
+    setVariations([...variations, { name: "", options: "" }]);
+  };
+
+  const handleVariationChange = (index, field, value) => {
+    const updated = [...variations];
+    updated[index][field] = value;
+    setVariations(updated);
+  };
+
+  const handleRemoveVariation = (index) => {
+    setVariations(variations.filter((_, i) => i !== index));
+  };
+
+
+
 
   const handleDelete = async (id, e) => {
     e.stopPropagation();
@@ -1925,6 +1972,8 @@ export default function ProductsCrudPage() {
             setImageFiles([null, null, null, null]);
             setImagePreviews(["", "", "", ""]);
             setExistingImageUrls(["", "", "", ""]);
+            setVariations([]); // 👈 Ensure variations reset on add
+            setFeaturesText("");
             setShowModal(true);
           }}>
             <span>+ Add Product</span>
@@ -1947,12 +1996,22 @@ export default function ProductsCrudPage() {
                   <ProductName>
                     {item.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ""}
                   </ProductName>
+                  
                   <ProductcategoryBadge>
                     {(() => {
                       const name = getCategoryName(item.categoryId);
                       return name ? name.charAt(0).toUpperCase() + name.slice(1) : "";
                     })()}
                   </ProductcategoryBadge>
+                {item.variations && item.variations.length > 0 && (
+                <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                  {item.variations.map((v, idx) => (
+                    <div key={idx} style={{ fontSize: "0.8rem", color: TextMuted, fontWeight: "600" }}>
+                      <span style={{ color: PrimaryNavy }}>{v.name}:</span> {v.options}
+                    </div>
+                  ))}
+                </div>
+              )}
                   <ProductAmount>₦{Number(item.amount || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</ProductAmount>
                   <ProductStock>
                     {item.neverFinishes ? "∞ In Unlimited Stock" : `Stock: ${item.quantity ?? 0}`}
@@ -2024,6 +2083,51 @@ export default function ProductsCrudPage() {
                 onChange={(e) => setForm({ ...form, amount: e.target.value })}
                 required
               />
+
+              {/* 🌟 Features Textarea (Split by Enter for Bullet Points) */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+              <label style={{ fontSize: "0.85rem", fontWeight: "700", color: Dark }}>
+                Product Features (Each line separated by Enter becomes a bullet point)
+              </label>
+              <StyledTextarea
+                placeholder="e.g. Waterproof material&#10;Easy to install&#10;Durable build"
+                value={featuresText}
+                onChange={(e) => setFeaturesText(e.target.value)}
+                style={{ minHeight: "80px" }}
+              />
+            </div>
+
+            {/* 🌟 Product Variations Section */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <span style={{ fontSize: "0.85rem", fontWeight: "700", color: Dark }}>
+                  Product Variations (e.g., Size, Color)
+                </span>
+                <PrimaryButton type="button" onClick={handleAddVariation} style={{ padding: "4px 8px", fontSize: "0.75rem" }}>
+                  + Add Variation
+                </PrimaryButton>
+              </div>
+
+              {variations.map((v, index) => (
+                <div key={index} style={{ display: "flex", gap: "6px", alignItems: "center" }}>
+                  <StyledInput
+                    type="text"
+                    placeholder="Attribute (e.g. Size)"
+                    value={v.name}
+                    onChange={(e) => handleVariationChange(index, "name", e.target.value)}
+                  />
+                  <StyledInput
+                    type="text"
+                    placeholder="Options (e.g. S, M, L)"
+                    value={v.options}
+                    onChange={(e) => handleVariationChange(index, "options", e.target.value)}
+                  />
+                  <DeleteButton type="button" onClick={() => handleRemoveVariation(index)} style={{ padding: "8px 10px" }}>
+                    ✕
+                  </DeleteButton>
+                </div>
+              ))}
+            </div>
               
               {!form.neverFinishes && (
                 <StyledInput

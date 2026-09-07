@@ -21,7 +21,7 @@ const pulseGlow = keyframes`
   100% { box-shadow: 0 0 0 0 rgba(0, 174, 239, 0); }
 `;
 
-/* ================= THEME STYLES (ENITZ GLOBAL RETAIL) ================= */
+/* ================= THEME STYLES (ENITZ RETAIL) ================= */
 const ThemeGradient = "linear-gradient(135deg, #00aeef 0%, #0b1b48 100%)";
 const SoftGradientBg = "linear-gradient(135deg, rgba(0, 174, 239, 0.05) 0%, rgba(11, 27, 72, 0.05) 100%)";
 const LightBg = "#f8fafc";
@@ -307,7 +307,7 @@ const BentoCard = styled.div`
 
 /* --- FEATURED PRODUCT SHOWCASE (SPLIT BANNER) --- */
 const ProductShowcaseSection = styled.section`
-  padding: 6rem 1.5rem;
+  // padding: 6rem 1.5rem;
   background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
 `;
 
@@ -317,7 +317,7 @@ const ProductContainer = styled.div`
   background: ${CardBg};
   border: 1px solid ${BorderColor};
   border-radius: 2.5rem;
-  padding: 3rem;
+  padding: 1rem;
   box-shadow: 0 30px 60px -20px rgba(15, 23, 42, 0.08);
   display: grid;
   grid-template-columns: 1fr;
@@ -503,7 +503,8 @@ export default function LandingPage() {
           <HeroVisual>
             <img 
               className="main-hero-img"
-              src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1000&q=80" 
+              // src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1000&q=80" 
+              src='./shop5.jpg'
               alt="Quality Retail Shopping Experience" 
             />
             <div className="floating-badge">
@@ -525,7 +526,7 @@ export default function LandingPage() {
           <div className="badge-pill">
             <Sparkles className="w-4 h-4" /> Exceptional Value
           </div>
-          <h2>Welcome to Enitz Global Limited</h2>
+          <h2>Welcome to Enitz</h2>
           <p>
             Your trusted destination for reliable personal merchandise and household products built for absolute convenience and reliability.
           </p>
@@ -572,7 +573,8 @@ export default function LandingPage() {
               <Sparkles className="w-4 h-4 text-cyan-600" /> Best Seller
             </div>
             <img 
-              src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=1000&q=80" 
+              // src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=1000&q=80" 
+              src='./shop4.jpg'
               alt="Featured Retail Product" 
             />
           </ImageWrapper>

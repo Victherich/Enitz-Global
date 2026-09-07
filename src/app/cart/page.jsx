@@ -477,7 +477,7 @@ import { auth, db } from '@/firebaseConfig';
 import { onAuthStateChanged } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 
-// --- ENITZ GLOBAL OFFICIAL BRAND THEME & STYLES ---
+// --- ENITZ OFFICIAL BRAND THEME & STYLES ---
 const primaryNavy = '#0B1B48';
 const primaryCyan = '#00AEEF';
 const brandGradient = 'linear-gradient(135deg, #0B1B48 0%, #00AEEF 100%)';
@@ -869,7 +869,7 @@ export default function CartPage() {
 
       <CartContent>
         {/* Items List */}
-        <ItemsList>
+        {/* <ItemsList>
           {cart.map((item) => {
             const itemPrice = item.price || item.amount || 0;
             return (
@@ -878,6 +878,49 @@ export default function CartPage() {
                 
                 <ItemDetails>
                   <ItemName>{item.name}</ItemName>
+                  <ItemPrice>₦{itemPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</ItemPrice>
+                </ItemDetails>
+
+                <QuantityWrapper>
+                  <QtyBtn onClick={() => updateQuantity(item.id, item.selectedColor, item.selectedSize, -1)}>-</QtyBtn>
+                  <QtyDisplay>{item.quantity}</QtyDisplay>
+                  <QtyBtn onClick={() => updateQuantity(item.id, item.selectedColor, item.selectedSize, 1)}>+</QtyBtn>
+                </QuantityWrapper>
+
+                <ItemTotal>₦{(itemPrice * item.quantity).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</ItemTotal>
+
+                <RemoveButton onClick={() => removeFromCart(item.id, item.selectedColor, item.selectedSize)} title="Remove item">
+                  &times;
+                </RemoveButton>
+              </CartCard>
+            );
+          })}
+
+          <ClearCartButton onClick={clearCart}>Clear Cart</ClearCartButton>
+        </ItemsList> */}
+
+     {/* Items List */}
+        <ItemsList>
+          {cart.map((item) => {
+            const itemPrice = item.price || item.amount || 0;
+            return (
+              <CartCard key={`${item.id}-${JSON.stringify(item.variations)}`}>
+                <ItemImage src={item.image || "https://placehold.co/90x90?text=No+Image"} alt={item.name} />
+                
+                <ItemDetails>
+                  <ItemName>{item.name}</ItemName>
+                  
+                  {/* 🌟 Dynamically display object variations */}
+                  {item.variations && typeof item.variations === 'object' && Object.keys(item.variations).length > 0 && (
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginTop: "4px", marginBottom: "4px" }}>
+                      {Object.entries(item.variations).map(([key, value]) => (
+                        <span key={key} style={{ fontSize: "0.75rem", color: textMuted, background: "#f1f5f9", padding: "2px 6px", borderRadius: "4px", fontWeight: "600", textTransform: "capitalize" }}>
+                          {key}: <strong style={{ color: textMain }}>{String(value)}</strong>
+                        </span>
+                      ))}
+                    </div>
+                  )}
+
                   <ItemPrice>₦{itemPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</ItemPrice>
                 </ItemDetails>
 

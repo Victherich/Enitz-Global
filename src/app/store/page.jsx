@@ -1182,6 +1182,7 @@ export default function StorePage() {
             amount: Number(data.amount) || 0,
             images: data.images || [],
             image: data.image || "",
+            variations: data.variations || [],
             createdAt: data.createdAt,
           };
         });
@@ -1413,6 +1414,17 @@ export default function StorePage() {
                     <ProductTitle>
                       {product.name ? product.name.charAt(0).toUpperCase() + product.name.slice(1) : ""}
                     </ProductTitle>
+
+                    {/* 🌟 Variations displayed on store card */}
+                {product.variations && product.variations.length > 0 && (
+                  <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+                    {product.variations.map((v, idx) => (
+                      <div key={idx} style={{ fontSize: "0.75rem", color: textMuted, fontWeight: "600" }}>
+                        <span style={{ color: brandCyan }}>{v.name}:</span> {v.options}
+                      </div>
+                    ))}
+                  </div>
+                )}
                     
                     <ProductPriceRow>
                       <PriceText>

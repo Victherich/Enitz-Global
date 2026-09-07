@@ -319,7 +319,7 @@ import styled from "styled-components";
 import Link from "next/link";
 import Image from "next/image";
 
-/* ================= COLORS (ENITZ GLOBAL THEME) ================= */
+/* ================= COLORS (ENITZ THEME) ================= */
 
 const ThemeGradient = "linear-gradient(135deg, #0B1B48 0%, #00AEEF 100%)";
 const Dark = "#0f172a";
@@ -536,9 +536,10 @@ export default function Footer() {
           {/* Col 1: Brand Info */}
           <FooterCol>
             <Link href="/" style={{ textDecoration: 'none' }}>
-              <img src='./logo.jpeg' alt='Enitz Global Limited Logo' style={{width:'50px', borderRadius:"10px"}}/>
+              <img src='./logo.jpeg' alt='Enitz Limited Logo' style={{width:'50px', borderRadius:"10px"}}/>
               <Logo>
-                ENITZ <span>GLOBAL</span>
+                ENITZ 
+                {/* <span>GLOBAL</span> */}
               </Logo>
             </Link>
             <FooterText>

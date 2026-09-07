@@ -144,7 +144,57 @@ const handleRemovePromo = () => {
 
 
 
-  const handlePayNow = () => {
+  // const handlePayNow = () => {
+  //   if (!deliveryAddress) {
+  //     Swal.fire('Missing Address', 'Please select a delivery address before proceeding.', 'warning');
+  //     router.push('/addresses');
+  //     return;
+  //   }
+
+  //   if (cart.length === 0) {
+  //     Swal.fire('Empty Cart', 'Your cart is empty.', 'warning');
+  //     return;
+  //   }
+
+  //   const uniqueOrderNumber = `ORDER-${Date.now().toString().slice(-6)}${Math.floor(Math.random() * 900 + 100)}`;
+
+  //   const orderPayload = {
+  //     orderNumber: uniqueOrderNumber,
+  //     userId: currentUser ? currentUser.uid : 'guest',
+  //     items: cart,
+  //     deliveryAddress,
+  //     subtotal: cartSubtotal,
+  //     deliveryFee,
+  //     discount,
+  //     finalTotal,
+  //     promoCode: appliedPromo,
+  //     currency: 'NGN',
+  //     accountInfo: {
+  //       name: userData?.fullName || currentUser.displayName || 'Valued Customer',
+  //       email: currentUser.email,
+  //       phone: userData?.phone || currentUser.phoneNumber || 'Not provided'
+  //     },
+  //        paymentType: 'ONLINE PAYMENT',
+  //       paymentStatus: 'Paid',
+  //       orderStatus:'Pending',
+  //       createdAt: serverTimestamp()
+  //   };
+
+  //   localStorage.setItem('pendingOrder', JSON.stringify(orderPayload));
+
+  //   payWithPaystack(finalTotal, 'NGN');
+    
+  //   // Swal.fire({
+  //   //   title: 'Proceeding to Payment',
+  //   //   text: `Total amount: ₦${finalTotal.toLocaleString()}`,
+  //   //   icon: 'info',
+  //   //   confirmButtonText: 'Continue'
+  //   // }).then(() => {
+      
+  //   // });
+  // };
+
+const handlePayNow = async () => {
     if (!deliveryAddress) {
       Swal.fire('Missing Address', 'Please select a delivery address before proceeding.', 'warning');
       router.push('/addresses');
@@ -156,157 +206,58 @@ const handleRemovePromo = () => {
       return;
     }
 
-    const uniqueOrderNumber = `ORDER-${Date.now().toString().slice(-6)}${Math.floor(Math.random() * 900 + 100)}`;
-
-    const orderPayload = {
-      orderNumber: uniqueOrderNumber,
-      userId: currentUser ? currentUser.uid : 'guest',
-      items: cart,
-      deliveryAddress,
-      subtotal: cartSubtotal,
-      deliveryFee,
-      discount,
-      finalTotal,
-      promoCode: appliedPromo,
-      currency: 'NGN',
-      accountInfo: {
-        name: userData?.fullName || currentUser.displayName || 'Valued Customer',
-        email: currentUser.email,
-        phone: userData?.phone || currentUser.phoneNumber || 'Not provided'
-      },
-         paymentType: 'ONLINE PAYMENT',
-        paymentStatus: 'Paid',
-        orderStatus:'Pending',
-        createdAt: serverTimestamp()
-    };
-
-    localStorage.setItem('pendingOrder', JSON.stringify(orderPayload));
-
-    payWithPaystack(finalTotal, 'NGN');
-    
-    // Swal.fire({
-    //   title: 'Proceeding to Payment',
-    //   text: `Total amount: ₦${finalTotal.toLocaleString()}`,
-    //   icon: 'info',
-    //   confirmButtonText: 'Continue'
-    // }).then(() => {
+    try {
+      // 1. Fetch the global subaccount from Firestore
+      const querySnapshot = await getDocs(collection(db, "subaccounts"));
       
-    // });
+      if (querySnapshot.empty) {
+        Swal.fire('Payout Account Missing', 'The seller has not added a payout account yet. Please try again later.', 'warning');
+        return; // Do not proceed
+      }
+
+      // Get the first available subaccount document data
+      const subaccountData = querySnapshot.docs[0].data();
+      const subaccountCode = subaccountData.subaccount_code;
+
+      if (!subaccountCode) {
+        Swal.fire('Invalid Payout Setup', 'The seller payout account configuration is invalid.', 'error');
+        return;
+      }
+
+      const uniqueOrderNumber = `ORDER-${Date.now().toString().slice(-6)}${Math.floor(Math.random() * 900 + 100)}`;
+
+      const orderPayload = {
+        orderNumber: uniqueOrderNumber,
+        userId: currentUser ? currentUser.uid : 'guest',
+        items: cart,
+        deliveryAddress,
+        subtotal: cartSubtotal,
+        deliveryFee,
+        discount,
+        finalTotal,
+        promoCode: appliedPromo,
+        currency: 'NGN',
+        accountInfo: {
+          name: userData?.fullName || currentUser?.displayName || 'Valued Customer',
+          email: currentUser?.email,
+          phone: userData?.phone || currentUser?.phoneNumber || 'Not provided'
+        },
+        paymentType: 'ONLINE PAYMENT',
+        paymentStatus: 'Paid',
+        orderStatus: 'Pending',
+        createdAt: serverTimestamp()
+      };
+
+      localStorage.setItem('pendingOrder', JSON.stringify(orderPayload));
+
+      // 2. Pass the subaccount code to your Paystack function
+      payWithPaystack(finalTotal, 'NGN', subaccountCode);
+
+    } catch (error) {
+      console.error("Error fetching subaccount:", error);
+      Swal.fire('Error', 'Could not verify the seller payout account. Please try again.', 'error');
+    }
   };
-
-
-
-
-
-
-
-
-
-
-// // Pay on Delivery Handler with Swal Confirmation
-//   const handlePayOnDelivery = async () => {
-//     if (!deliveryAddress) {
-//       Swal.fire('Missing Address', 'Please select a delivery address before proceeding.', 'warning');
-//       router.push('/dashboard/addressmanager');
-//       return;
-//     }
-
-//     if (cart.length === 0) {
-//       Swal.fire('Empty Cart', 'Your cart is empty.', 'warning');
-//       return;
-//     }
-
-//     // Confirmation Modal
-//     const confirmResult = await Swal.fire({
-//       title: 'Confirm Pay on Delivery',
-//       text: `Are you sure you want to place this order with Pay on Delivery? Total: ₦${finalTotal.toLocaleString()}`,
-//       icon: 'question',
-//       showCancelButton: true,
-//       confirmButtonColor: '#2563eb',
-//       cancelButtonColor: '#d33',
-//       confirmButtonText: 'Yes, Place Order'
-//     });
-
-//     if (!confirmResult.isConfirmed) {
-//       return; // Exit if user cancels
-//     }
-
-//     setIsSubmitting(true);
-//     Swal.fire({
-//       title: 'Processing Order...',
-//       text: 'Please wait while we process your order.',
-//       allowOutsideClick: false,
-//       showConfirmButton: false
-//     });
-//     Swal.showLoading();
-
-//     try {
-//       const buyerEmail = currentUser?.email || userData?.email || '';
-//       // const sellerEmail = 'victorndu393@gmail.com'; // Replace with your seller destination email
-//         const sellerEmail = 'admin@kingswordcraft.com'; // Replace with your seller destination email
-// const uniqueOrderNumber = `KINGS-${Date.now().toString().slice(-6)}${Math.floor(Math.random() * 900 + 100)}`;
-
-
-//       const orderPayload = {
-//         orderNumber: uniqueOrderNumber,
-//         userId: currentUser ? currentUser.uid : 'guest',
-//         items: cart,
-//         deliveryAddress,
-//         subtotal: cartSubtotal,
-//         deliveryFee,
-//         discount,
-//         finalTotal,
-//         promoCode: appliedPromo,
-//         currency: 'NGN',
-//         accountInfo: {
-//           name: userData?.fullName || currentUser?.displayName || 'Valued Customer',
-//           email: buyerEmail,
-//           phone: userData?.phone || currentUser?.phoneNumber || 'Not provided'
-//         },
-//         paymentType: 'PAYMENT ON DELIVERY',
-//         paymentStatus: 'Pending',
-//         orderStatus:'Pending',
-//         createdAt: serverTimestamp()
-//       };
-
-//       // 1. Save complete order payload to Firestore under "orders" collection
-//       const docRef = await addDoc(collection(db, "orders"), orderPayload);
-
-//       // 2. Send email payload to both seller and buyer
-//       await fetch('/api/send-order-email', {
-//         method: 'POST',
-//         headers: { 'Content-Type': 'application/json' },
-//         body: JSON.stringify({
-//           orderId: docRef.id,
-//           payload: orderPayload,
-//           recipients: [buyerEmail, sellerEmail].filter(Boolean)
-//         })
-//       }).catch((err) => {
-//         console.error("Error triggering email notification:", err);
-//       });
-
-//       // Clear local storage and cart state
-//       clearCart();
-//       localStorage.removeItem('selectedAddress');
-//       localStorage.removeItem('pendingOrder');
-
-//       await Swal.fire({
-//         title: 'Order Placed Successfully!',
-//         text: 'Your Pay on Delivery order has been placed. We have sent confirmation details to your email.',
-//         icon: 'success',
-//         confirmButtonText: 'View Orders'
-//       });
-
-//       router.push('/dashboard/myorders');
-
-//     } catch (error) {
-//       console.error("Error processing Pay on Delivery order:", error);
-//       Swal.fire('Error', 'Failed to place your order. Please try again.', 'error');
-//     } finally {
-//       setIsSubmitting(false);
-//       Swal.close(); // Close the loading modal
-//     }
-//   };
 
 
 // Pay on Delivery Handler with Swal Confirmation & Bulletproof Safeguards
@@ -526,25 +477,7 @@ const handleRemovePromo = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {/* {cart.map((item, index) => {
-                        const itemPrice = Number(item.price || item.amount || 0);
-                        const itemTotal = itemPrice * Number(item.quantity || 1);
-                        return (
-                          <tr key={`${item.id}-${item.selectedColor || ''}-${item.selectedSize || ''}-${index}`}>
-                            <td>
-                              <ItemInfo>
-                                {item.image && <ItemImg src={item.image} alt={item.name || item.title} />}
-                                <div>
-                                  <ItemName>{item.name || item.title}</ItemName>
-                                </div>
-                              </ItemInfo>
-                            </td>
-                            <td>₦{itemPrice.toLocaleString()}</td>
-                            <td>{item.quantity}</td>
-                            <td>₦{itemTotal.toLocaleString()}</td>
-                          </tr>
-                        );
-                      })} */}
+{/*                       
                       {cart.map((item, index) => {
   const itemPrice = Number(item.price || item.amount || 0);
   const itemTotal = itemPrice * Number(item.quantity || 1);
@@ -556,6 +489,51 @@ const handleRemovePromo = () => {
           <div>
             <ItemName>{item.name || item.title}</ItemName>
             <p style={{fontSize:'0.6rem'}}>ID: {item.id}</p>
+          </div>
+        </ItemInfo>
+      </td>
+
+      <td>₦{itemPrice.toLocaleString()}</td>
+      <td>{item.quantity}</td>
+      <td>₦{itemTotal.toLocaleString()}</td>
+    </tr>
+  );
+})} */}
+
+{cart.map((item, index) => {
+  const itemPrice = Number(item.price || item.amount || 0);
+  const itemTotal = itemPrice * Number(item.quantity || 1);
+  return (
+    <tr key={`${item.id}-${JSON.stringify(item.variations || {})}-${index}`}>
+      <td>
+        <ItemInfo>
+          {item.image && <ItemImg src={item.image} alt={item.name || item.title} />}
+          <div>
+            <ItemName>{item.name || item.title}</ItemName>
+            
+            {/* 🌟 Display Variations cleanly in Order Summary */}
+            {item.variations && typeof item.variations === 'object' && Object.keys(item.variations).length > 0 && (
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "4px", marginTop: "4px" }}>
+                {Object.entries(item.variations).map(([key, value]) => (
+                  <span 
+                    key={key} 
+                    style={{ 
+                      fontSize: "0.65rem", 
+                      color: "#475569", 
+                      background: "#f1f5f9", 
+                      padding: "1px 5px", 
+                      borderRadius: "4px", 
+                      fontWeight: "600", 
+                      textTransform: "capitalize" 
+                    }}
+                  >
+                    {key}: <strong style={{ color: "#0f172a" }}>{String(value)}</strong>
+                  </span>
+                ))}
+              </div>
+            )}
+
+            <p style={{ fontSize: '0.6rem', color: '#94a3b8', marginTop: '2px' }}>ID: {item.id}</p>
           </div>
         </ItemInfo>
       </td>
