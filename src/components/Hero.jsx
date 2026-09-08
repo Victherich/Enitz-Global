@@ -11,31 +11,60 @@ import styled, { keyframes } from "styled-components";
 import { Sparkles, ArrowRight, ShoppingBag } from "lucide-react";
 
 // Static main title and badges, with rotating backgrounds and subtitles tailored for Enitz 
+// const heroSlides = [
+//   {
+//     // image: "https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1920&q=80",
+//     badge: "Quality Within Reach",
+//     image:'./shop1.png',
+//     subtitle: "At Enitz Limited, we bring you carefully selected personal and household products designed to make everyday living easy, affordable, and convenient."
+//   },
+//   {
+//     image: "./h1.png",
+//     badge: "Everyday Essentials & Retail",
+//     subtitle: "Explore our wide range of useful, high-quality merchandise suited for your modern lifestyle, all backed by convenient ordering and reliable delivery."
+//   },
+//   {
+//     // image: "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=1920&q=80",
+//     badge: "Smart Shopping Experience",
+//    image:'./shop4.jpg',
+//     subtitle: "Discover incredible value on household goods and personal items with seamless purchasing and top-tier customer service right at your fingertips."
+//   },
+//   {
+//     // image: "https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=1920&q=80",
+//     badge: "Shop With Confidence",
+//     image:"./shop3.jpg",
+//     subtitle: "Browse our latest catalog today and enjoy unmatched pricing on everyday essentials designed to elevate your home and personal spaces."
+//   }
+// ];
+
+
 const heroSlides = [
   {
     // image: "https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1920&q=80",
     badge: "Quality Within Reach",
-    image:'./shop1.png',
-    subtitle: "At Enitz Limited, we bring you carefully selected personal and household products designed to make everyday living easy, affordable, and convenient."
+    image: "./shop1.png",
+    subtitle: "Shop carefully selected personal, household, and lifestyle products from ENITZ, with convenient ordering and reliable delivery."
   },
   {
     image: "./h1.png",
-    badge: "Everyday Essentials & Retail",
-    subtitle: "Explore our wide range of useful, high-quality merchandise suited for your modern lifestyle, all backed by convenient ordering and reliable delivery."
+    badge: "Quality Within Reach",
+    subtitle: "Discover high-quality personal and household products designed to elevate your everyday living without compromise."
   },
   {
     // image: "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=1920&q=80",
-    badge: "Smart Shopping Experience",
-   image:'./shop4.jpg',
-    subtitle: "Discover incredible value on household goods and personal items with seamless purchasing and top-tier customer service right at your fingertips."
+    badge: "Quality Within Reach",
+    image: "./shop4.jpg",
+    subtitle: "Enjoy a smooth, stress-free shopping experience with dependable delivery straight to your doorstep."
   },
   {
     // image: "https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=1920&q=80",
-    badge: "Shop With Confidence",
-    image:"./shop3.jpg",
-    subtitle: "Browse our latest catalog today and enjoy unmatched pricing on everyday essentials designed to elevate your home and personal spaces."
+    badge: "Quality Within Reach",
+    image: "./shop3.jpg",
+    subtitle: "Explore our curated catalog of trusted lifestyle and household essentials tailored for your modern needs."
   }
 ];
+
+
 
 // Fluid & Smooth Keyframe Animations
 const smoothFadeInUp = keyframes`

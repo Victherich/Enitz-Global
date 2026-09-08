@@ -7,15 +7,14 @@
 // import Link from "next/link";
 // import Image from "next/image";
 
-// /* ================= COLORS (KINGSWORD BAG CRAFT THEME) ================= */
+// /* ================= COLORS (ENITZ THEME) ================= */
 
-// const ThemeGradient = "linear-gradient(135deg, #ec4899 0%, #f59e0b 50%, #06b6d4 100%)";
+// const ThemeGradient = "linear-gradient(135deg, #0B1B48 0%, #00AEEF 100%)";
 // const Dark = "#0f172a";
 // const Border = "#334155";
 // const White = "#ffffff";
 // const TextMuted = "#94a3b8";
-// const PinkAccent = "#ec4899";
-// const CyanAccent = "#06b6d4";
+// const PrimaryAccent = "#00AEEF";
 
 // /* ================= FOOTER STYLES ================= */
 
@@ -92,7 +91,7 @@
 //   width: fit-content;
 
 //   &:hover {
-//     color: ${PinkAccent};
+//     color: ${PrimaryAccent};
 //     padding-left: 4px;
 //   }
 // `;
@@ -183,7 +182,7 @@
 //     font-size: 0.85rem;
 //     transition: color 0.2s ease;
 
-//     &:hover {
+//     fn &:hover {
 //       color: ${White};
 //     }
 //   }
@@ -225,13 +224,14 @@
 //           {/* Col 1: Brand Info */}
 //           <FooterCol>
 //             <Link href="/" style={{ textDecoration: 'none' }}>
-//             <img src='./logo1.png' alt='logo' style={{width:'100px'}}/>
+//               <img src='./logo.jpeg' alt='Enitz Limited Logo' style={{width:'50px', borderRadius:"10px"}}/>
 //               <Logo>
-//                 KINGSWORD <span>BAG CRAFT</span>
+//                 ENITZ 
+//                 {/* <span>GLOBAL</span> */}
 //               </Logo>
 //             </Link>
 //             <FooterText>
-//               Blending rich African heritage and modern everyday elegance into exquisite, handcrafted statement bags built to empower your style.
+//               Enitz Global Limited offers quality personal and household products at great prices, making everyday living easy with convenient ordering and delivery.
 //             </FooterText>
 //           </FooterCol>
 
@@ -239,10 +239,8 @@
 //           <FooterCol>
 //             <ColTitle>Quick Links</ColTitle>
 //             <FooterLink href="/">Home</FooterLink>
-//             <FooterLink href="/about">Our Artisan Story</FooterLink>
-//             <FooterLink href="/services">Services</FooterLink>
-//             <FooterLink href="/store">Shop</FooterLink>
-//             <FooterLink href="/pricing">Pricing</FooterLink>
+//             <FooterLink href="/about">About Us</FooterLink>
+//             <FooterLink href="/store">Store</FooterLink>
 //             <FooterLink href="/contact">Contact Us</FooterLink>
 //           </FooterCol>
 
@@ -250,9 +248,9 @@
 //           <FooterCol>
 //             <ColTitle>Get in Touch</ColTitle>
 //             <ContactInfo>
-//               <p>Email: <span>admin@kingswordcraft.com</span></p>
-//               <p>Phone: <span>+234 813 237 1949</span></p>
-//               <p>Location: <span>Oluku/Ugbowo, Benin City, Edo State</span></p>
+//               <p>Email: <span>enitzglobal@gmail.com</span></p>
+//               <p>Phone: <span>09047103037 / 08160801538</span></p>
+//               <p>Location: <span>116 Mushin Road, Isolo, Lagos, Nigeria</span></p>
 //             </ContactInfo>
 //           </FooterCol>
 
@@ -260,12 +258,12 @@
 //           <FooterCol>
 //             <ColTitle>Connect With Us</ColTitle>
 //             <FooterText>
-//               Follow us on social media for daily design inspiration and new collection releases.
+//               Follow us on Instagram for updates on new product arrivals and special offers.
 //             </FooterText>
 //             <SocialIconsContainer>
 //               {/* Instagram */}
 //               <SocialIconLink 
-//                 href="https://instagram.com" 
+//                 href="https://www.instagram.com/enitzglobalconcept/" 
 //                 target="_blank" 
 //                 rel="noopener noreferrer"
 //                 aria-label="Instagram"
@@ -282,11 +280,10 @@
 //         <BottomBarWrapper>
 //           <BottomBar>
 //             <Copyright>
-//               &copy; {currentYear} Kingsword Bag Craft. All rights reserved.
+//               &copy; {currentYear} Enitz Global Limited (RC 9059086). All rights reserved.
 //             </Copyright>
 //             <LegalLinks>
-//               {/* <Link href="/privacy">Privacy Policy</Link> */}
-//               {/* <Link href="/terms">Terms of Service</Link> */}
+//               {/* Optional Legal Links */}
 //             </LegalLinks>
 //           </BottomBar>
 //         </BottomBarWrapper>
@@ -294,7 +291,7 @@
 
 //       {/* Floating WhatsApp Icon */}
 //       <WhatsAppFloat 
-//         href="https://wa.me/2348132371949" 
+//         href="https://wa.me/2349047103037" 
 //         target="_blank" 
 //         rel="noopener noreferrer"
 //         aria-label="Chat on WhatsApp"
@@ -309,8 +306,6 @@
 //     </>
 //   );
 // }
-
-
 
 
 "use client";
@@ -494,7 +489,7 @@ const LegalLinks = styled.div`
     font-size: 0.85rem;
     transition: color 0.2s ease;
 
-    fn &:hover {
+    &:hover {
       color: ${White};
     }
   }
@@ -528,6 +523,9 @@ const WhatsAppFloat = styled.a`
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+  const whatsappMessage = encodeURIComponent(
+    "Hello Enitz, I just visited your website. I would love to order some products from your website."
+  );
 
   return (
     <>
@@ -539,7 +537,6 @@ export default function Footer() {
               <img src='./logo.jpeg' alt='Enitz Limited Logo' style={{width:'50px', borderRadius:"10px"}}/>
               <Logo>
                 ENITZ 
-                {/* <span>GLOBAL</span> */}
               </Logo>
             </Link>
             <FooterText>
@@ -554,6 +551,10 @@ export default function Footer() {
             <FooterLink href="/about">About Us</FooterLink>
             <FooterLink href="/store">Store</FooterLink>
             <FooterLink href="/contact">Contact Us</FooterLink>
+            <FooterLink href="/terms-conditions">Terms & Conditions</FooterLink>
+            <FooterLink href="/privacy-policy">Privacy Policy</FooterLink>
+            <FooterLink href="/delivery-policy">Delivery Policy</FooterLink>
+            <FooterLink href="/return-refund-policy">Return/Refund Policy</FooterLink>
           </FooterCol>
 
           {/* Col 3: Contact & Support */}
@@ -601,9 +602,9 @@ export default function Footer() {
         </BottomBarWrapper>
       </FooterContainer>
 
-      {/* Floating WhatsApp Icon */}
+      {/* Floating WhatsApp Icon with Pre-filled Text */}
       <WhatsAppFloat 
-        href="https://wa.me/2349047103037" 
+        href={`https://wa.me/2349047103037?text=${whatsappMessage}`} 
         target="_blank" 
         rel="noopener noreferrer"
         aria-label="Chat on WhatsApp"

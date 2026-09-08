@@ -921,11 +921,11 @@ export default function UserSignup() {
                 />
                 <PolicyText>
                   I agree to the{" "}
-                  <a href="/terms-conditions" target="_blank" rel="noopener noreferrer">
+                  <a href="/terms-conditions" rel="noopener noreferrer">
                     Terms & Conditions
                   </a>{" "}
                   and{" "}
-                  <a href="/privacy-policy" target="_blank" rel="noopener noreferrer">
+                  <a href="/privacy-policy" rel="noopener noreferrer">
                     Privacy Policy
                   </a>
                 </PolicyText>

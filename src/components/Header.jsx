@@ -594,14 +594,15 @@ export default function Header() {
           <>
             <Nav $open={open}>
               <NavLink href="/" $active={pathname === "/"} onClick={() => setOpen(false)}>Home</NavLink>
-              <NavLink href="/about" $active={pathname === "/about"} onClick={() => setOpen(false)}>About</NavLink>
-              
-              <NavLink href="/store" $active={pathname === "/store"} onClick={() => setOpen(false)}>Store</NavLink>
-              <NavLink href="/contact" $active={pathname === "/contact"} onClick={() => setOpen(false)}>Contact</NavLink>
+              <NavLink href="/store" $active={pathname === "/store"} onClick={() => setOpen(false)}>Shop</NavLink>
               <NavLink href="/cart" $active={pathname === "/cart"} onClick={() => setOpen(false)}>
                 Cart ({cartTotalItems})
               </NavLink>
 
+              <NavLink href="/about" $active={pathname === "/about"} onClick={() => setOpen(false)}>About Us</NavLink>
+              
+              <NavLink href="/contact" $active={pathname === "/contact"} onClick={() => setOpen(false)}>Contact</NavLink>
+ 
               <NavActions>
                 {!userData && (
                   <AuthButton 
