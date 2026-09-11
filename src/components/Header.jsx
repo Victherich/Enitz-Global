@@ -332,6 +332,7 @@ import  { useAppContext } from "./Context";
 import { useCart } from "@/components/CartContext";
 import HostingExpiryGuard from "./HostingExpiryGuard";
 
+
 /* ================= COLORS ================= */
 const PrimaryColor = "#00AEEF"; // Bright Cyan / Teal Blue from the logo
 const AccentGradient = "linear-gradient(135deg, #0B1B48 0%, #00AEEF 100%)"; // Dark Navy -> Bright Cyan
@@ -552,6 +553,7 @@ export default function Header() {
   const { paymentSession } = useAppContext();
   const { cartTotalItems } = useCart();
 
+
   useEffect(() => {
     let unsubscribeDoc = null;
 
@@ -600,6 +602,7 @@ export default function Header() {
               </NavLink>
 
               <NavLink href="/about" $active={pathname === "/about"} onClick={() => setOpen(false)}>About Us</NavLink>
+              <NavLink href="/#testimonials" $active={pathname === "/"} onClick={() => setOpen(false)}>Reviews</NavLink>
               
               <NavLink href="/contact" $active={pathname === "/contact"} onClick={() => setOpen(false)}>Contact</NavLink>
  

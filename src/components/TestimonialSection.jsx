@@ -640,7 +640,7 @@ const testimonialsData = [
 export default function TestimonialsSection() {
   return (
 <>
-    <SectionWrapper>
+    <SectionWrapper id='testimonials'>
       <Container>
         <SectionHeader>
           <div className="badge-pill">

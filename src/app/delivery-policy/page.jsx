@@ -295,7 +295,7 @@ export default function DeliveryPolicyPage() {
           <section>
             <h2>5. Delivery Updates and Receipt</h2>
             <p>
-              To ensure a smooth delivery experience, please ensure your active phone number and exact delivery address are accurately provided. Our dispatch personnel or courier partners will contact you prior to arrival to coordinate handover. Please inspect your package upon receipt to ensure all ordered items are intact and complete. If you receive a damaged, wrong, or incomplete item, please refer to our <Link href="/refund-policy">Return/Refund Policy</Link> for guidance on how to report it.
+              To ensure a smooth delivery experience, please ensure your active phone number and exact delivery address are accurately provided. Our dispatch personnel or courier partners will contact you prior to arrival to coordinate handover. Please inspect your package upon receipt to ensure all ordered items are intact and complete. If you receive a damaged, wrong, or incomplete item, please refer to our <Link href="/return-refund-policy">Return/Refund Policy</Link> for guidance on how to report it.
             </p>
           </section>
 
