@@ -267,6 +267,10 @@ export default function ReturnPolicyPage() {
                 <CheckCircle2 className="w-5 h-5" />
                 <span>Once your return request is reviewed and approved, our team will coordinate the pickup or drop-off of the item at our Isolo office location.</span>
               </li>
+              <li>
+                <CheckCircle2 className="w-5 h-5"/>
+                Customers should not send items to our office before receiving return instructions and approval from our support team.
+              </li>
             </ul>
           </section>
 

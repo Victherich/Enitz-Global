@@ -265,7 +265,8 @@ export default function TermsAndConditionsPage() {
           <section>
             <h2>5. Returns and Issue Resolution</h2>
             <p>
-              Customer satisfaction is a priority for us. If you receive a damaged, defective, or incorrect product, please notify our customer support team immediately via phone or email within 48 hours of delivery. Eligibility for exchanges or returns is evaluated on a case-by-case basis for items returned in their original packaging and unused condition.
+              Customer satisfaction is a priority for us. If you receive a damaged, defective, or incorrect product, please notify our customer support team immediately via phone or email within 48 hours of delivery; preferably with clear photographs or videos of the issue. Where a defect could not reasonably be discovered immediately, we will review the complaint fairly based on the nature of the product and the circumstances. Eligibility for exchanges or returns is evaluated on items returned in their original packaging and unused condition. For order related activities contact 09047103037 / 08160801538. 
+              For complaint & feedback contact 07069373886.
             </p>
           </section>
 

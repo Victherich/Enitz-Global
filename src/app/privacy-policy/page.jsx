@@ -235,11 +235,11 @@ export default function PrivacyPolicyPage() {
             <ul>
               <li>
                 <CheckCircle2 className="w-5 h-5" />
-                <span><strong>Customer Account & Contact Info:</strong> Your full name, telephone numbers (09047103037 / 08160801538), and email address (enitzglobal@gmail.com).</span>
+                <span><strong>Customer Account & Contact Info:</strong> Customer information may include the customer’s name, phone number, email address and other details provided when creating an account, placing an order or contacting our support team.</span>
               </li>
               <li>
                 <CheckCircle2 className="w-5 h-5" />
-                <span><strong>Shipping & Delivery Details:</strong> Physical delivery addresses, destination instructions, and recipient details necessary to dispatch your purchased goods.</span>
+                <span><strong>Waybill & Delivery Details:</strong> Physical delivery addresses, destination instructions, and recipient details necessary to dispatch your purchased goods.</span>
               </li>
               <li>
                 <CheckCircle2 className="w-5 h-5" />
@@ -248,8 +248,37 @@ export default function PrivacyPolicyPage() {
             </ul>
           </section>
 
+
+  <section>
+            <h2>3. Payment Provider</h2>
+            <p>
+            Payments may be processed through third-party payment providers. ENITZ does not ordinarily store customers’ complete card details. Payment information is handled according to the payment provider’s applicable privacy and security practices.
+              </p>
+          </section>
+
+           <section>
+            <h2>4. Cookies and website Analytics</h2>
+            <p>
+            We may use cookies and similar technologies to keep the website functioning, remember preferences, understand website usage and improve our marketing. Where required, customers will be given appropriate choices regarding non-essential cookies.
+              </p>
+          </section>
+
+           <section>
+            <h2>5. Information retainment</h2>
+            <p>
+           We retain personal information only for as long as reasonably necessary for order fulfilment, customer support, accounting, legal and business purposes.
+              </p>
+          </section>
+
+            <section>
+            <h2>6. Marketing Messages</h2>
+            <p>
+         Where permitted, we may send customers updates about orders, new products, promotions or special offers. Customers may request to stop receiving promotional messages at any time.
+              </p>
+          </section>
+
           <section>
-            <h2>3. How We Use Your E-Commerce Data</h2>
+            <h2>7. How We Use Your E-Commerce Data</h2>
             <p>Your information is used strictly to operate and enhance our e-commerce store functions, including:</p>
             <ul>
               <li>
@@ -272,28 +301,29 @@ export default function PrivacyPolicyPage() {
           </section>
 
           <section>
-            <h2>4. Sharing Information with Logistics Partners</h2>
+            <h2>8. Sharing Information with Logistics Partners</h2>
             <p>
               We respect your privacy. Enitz Global Limited does not sell or lease your personal information to outside marketers. We only share essential delivery data (such as your name, delivery phone number, and drop-off address) with verified shipping partners and dispatch riders exclusively to complete your product deliveries.
             </p>
           </section>
 
           <section>
-            <h2>5. Data Security</h2>
+            <h2>9. Data Security</h2>
             <p>
               We implement industry-standard administrative, electronic, and physical security controls to keep your e-commerce profile and transaction records safe from unauthorized entry, modification, or exposure. While we utilize encrypted protocols and secure checkout environments, please note that no internet framework can guarantee absolute invulnerability.
             </p>
           </section>
 
           <section>
-            <h2>6. Your Access & Control Rights</h2>
+            <h2>10. Your Access & Control Rights</h2>
             <p>
               As a valued customer, you have the right to inspect the personal information we possess about you, request updates to your shipping details, or have incorrect information corrected by getting in touch with our team.
             </p>
           </section>
 
+
           <section>
-            <h2>7. Contact Our Store Support</h2>
+            <h2>11. Contact Our Store Support</h2>
             <p>
               If you have any questions or requests concerning this Privacy Policy or your shopping data, please connect with us through our official channels:
             </p>

@@ -3,7 +3,8 @@
 import React from "react";
 import Link from "next/link";
 import styled from "styled-components";
-import { Truck, PackageCheck, MapPin, Clock, AlertCircle, Mail, Phone, ArrowLeft, CheckCircle2 } from "lucide-react";
+import { Truck, PackageCheck, MapPin, Clock, AlertCircle, Mail, Phone, ArrowLeft, CheckCircle2, MessageCircle } from "lucide-react";
+import { FaArrowCircleRight } from "react-icons/fa";
 
 /* ================= THEME STYLES ================= */
 const ThemeGradient = "linear-gradient(135deg, #00aeef 0%, #0b1b48 100%)";
@@ -132,6 +133,16 @@ const DeliveryBody = styled.div`
       color: ${TextMuted};
       font-size: 1.02rem;
       line-height: 1.75;
+
+      a {
+        color: #00aeef;
+        font-weight: 600;
+        text-decoration: underline;
+
+        &:hover {
+          color: #0b1b48;
+        }
+      }
     }
 
     ul {
@@ -195,12 +206,27 @@ const ContactBox = styled.div`
       font-weight: 600;
       color: ${TextPrimary};
     }
+
+    a {
+      color: ${TextPrimary};
+      font-weight: 600;
+      text-decoration: none;
+      transition: color 0.2s ease;
+
+      &:hover {
+        color: #00aeef;
+        text-decoration: underline;
+      }
+    }
   }
 `;
 
 /* ================= COMPONENT ================= */
 
 export default function DeliveryPolicyPage() {
+  const whatsappMessage = encodeURIComponent("Hello. I would like to give feedback or complaint about your product or service.");
+  const whatsappNumber = "2347069373886"; // International format for 07069373886
+
   return (
     <PageWrapper>
       <ContentContainer>
@@ -216,7 +242,7 @@ export default function DeliveryPolicyPage() {
             Delivery <span>Policy</span>
           </h1>
           <p>
-            Learn about our shipping options, dispatch procedures, and delivery timeframes for orders placed with Enitz Global Limited.
+            Learn about our waybill and delivery options, dispatch procedures, and delivery timeframes for orders placed with Enitz Global Limited.
           </p>
           <div className="effective-date">Effective Date: September 2026</div>
         </DeliveryHeader>
@@ -250,33 +276,33 @@ export default function DeliveryPolicyPage() {
             <ul>
               <li>
                 <CheckCircle2 className="w-5 h-5" />
-                <span><strong>Lagos Orders (Isolo & Environs):</strong> Deliveries within Lagos typically arrive within 1 to 2 business days following order confirmation.</span>
+                <span><strong>Lagos Orders (Orders within Lagos):</strong> Deliveries within Lagos typically arrive within 1 to 2 business days following order confirmation.</span>
               </li>
               <li>
                 <CheckCircle2 className="w-5 h-5" />
-                <span><strong>Interstate Shipments:</strong> For deliveries to other states across Nigeria, shipping timelines generally range from 3 to 6 business days depending on transit routes.</span>
+                <span><strong>Interstate Waybill / deliveries:</strong> For deliveries to other states across Nigeria, waybill and delivery timelines generally range from 3 to 5 working days depending on transit routes.</span>
               </li>
             </ul>
           </section>
 
           <section>
-            <h2>4. Shipping Rates and Fees</h2>
+            <h2>4. Delivery Rates and Fees</h2>
             <p>
-              Delivery costs are calculated based on the destination address, package weight, and order volume. Shipping fees are clearly outlined during the final checkout procedure or communicated directly by our sales team when completing your purchase via WhatsApp.
+              Delivery costs are calculated based on the destination address, package weight, and order volume. Delivery fees are clearly outlined during the final checkout procedure or communicated directly by our sales team when completing your purchase via WhatsApp.
             </p>
           </section>
 
           <section>
-            <h2>5. Order Tracking and Receipt</h2>
+            <h2>5. Delivery Updates and Receipt</h2>
             <p>
-              To ensure a smooth delivery experience, please ensure your active phone number (09047103037 / 08160801538) and exact delivery address are accurately provided. Our dispatch personnel or courier partners will contact you prior to arrival to coordinate handover. Please inspect your package upon receipt to ensure all ordered items are intact and complete.
+              To ensure a smooth delivery experience, please ensure your active phone number and exact delivery address are accurately provided. Our dispatch personnel or courier partners will contact you prior to arrival to coordinate handover. Please inspect your package upon receipt to ensure all ordered items are intact and complete. If you receive a damaged, wrong, or incomplete item, please refer to our <Link href="/refund-policy">Return/Refund Policy</Link> for guidance on how to report it.
             </p>
           </section>
 
           <section>
             <h2>6. Contact Our Support Team</h2>
             <p>
-              If you have any questions regarding your delivery status, shipping estimates, or require urgent assistance with an order, please reach out to us:
+              If you have any questions regarding your delivery status, delivery estimates, or require urgent assistance with an order, please reach out to us:
             </p>
             
             <ContactBox>
@@ -292,6 +318,19 @@ export default function DeliveryPolicyPage() {
               <div className="contact-detail">
                 <Mail />
                 <span>enitzglobal@gmail.com</span>
+              </div>
+              <div className="contact-detail">
+                <MessageCircle />
+                <span>
+                  Feedback / Complaints WhatsApp:{" "}
+                  <a
+                    href={`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Click <FaArrowCircleRight/> 07069373886
+                  </a>
+                </span>
               </div>
             </ContactBox>
           </section>
