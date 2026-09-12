@@ -728,7 +728,7 @@ import styled, { keyframes } from "styled-components";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { db, auth } from "@/firebaseConfig";
-import { collection, getDocs, doc, setDoc, deleteDoc, query, where } from "firebase/firestore";
+import { collection, getDocs, doc, setDoc, deleteDoc, query, where ,onSnapshot} from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import Swal from "sweetalert2";
 
@@ -1163,30 +1163,91 @@ export default function StorePage() {
   const [wishlistIds, setWishlistIds] = useState([]);
 
   // Fetch products and categories from Firestore
+  // useEffect(() => {
+  //   async function fetchStoreData() {
+  //     try {
+  //       setLoading(true);
+
+  //       const [productsSnapshot, categoriesSnapshot] = await Promise.all([
+  //         getDocs(collection(db, "products")),
+  //         getDocs(collection(db, "categories")),
+  //       ]);
+
+  //       const fetchedProducts = productsSnapshot.docs.map((doc) => {
+  //         const data = doc.data();
+  //         return {
+  //           id: doc.id,
+  //           name: data.name || "Untitled Product",
+  //           categoryId: data.categoryId || "",
+  //           amount: Number(data.amount) || 0,
+  //           images: data.images || [],
+  //           image: data.image || "",
+  //           variations: data.variations || [],
+  //           createdAt: data.createdAt,
+  //         };
+  //       });
+
+  //       const fetchedCategories = categoriesSnapshot.docs.map((doc) => {
+  //         const data = doc.data();
+  //         return {
+  //           id: doc.id,
+  //           title: data.title || "Untitled Category",
+  //           description: data.description || "",
+  //         };
+  //       });
+
+  //       setProducts(fetchedProducts);
+  //       setCategories(fetchedCategories);
+  //     } catch (error) {
+  //       console.error("Error fetching store data:", error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   }
+
+  //   fetchStoreData();
+  // }, []);
+
+
+  // Real-time listener for products and categories
   useEffect(() => {
-    async function fetchStoreData() {
-      try {
-        setLoading(true);
+    setLoading(true);
 
-        const [productsSnapshot, categoriesSnapshot] = await Promise.all([
-          getDocs(collection(db, "products")),
-          getDocs(collection(db, "categories")),
-        ]);
+    // 1. Set up real-time listener for products
+    const unsubscribeProducts = onSnapshot(
+      collection(db, "products"),
+      (productsSnapshot) => {
+        const fetchedProducts = productsSnapshot.docs
+          .map((doc) => {
+            const data = doc.data();
+            return {
+              id: doc.id,
+              name: data.name || "Untitled Product",
+              categoryId: data.categoryId || "",
+              amount: Number(data.amount) || 0,
+              images: data.images || [],
+              image: data.image || "",
+              variations: data.variations || [],
+              createdAt: data.createdAt,
+              isLive: data.isLive === true,
+            };
+          })
+          // Keep only live products
+          .filter((product) => product.isLive);
 
-        const fetchedProducts = productsSnapshot.docs.map((doc) => {
-          const data = doc.data();
-          return {
-            id: doc.id,
-            name: data.name || "Untitled Product",
-            categoryId: data.categoryId || "",
-            amount: Number(data.amount) || 0,
-            images: data.images || [],
-            image: data.image || "",
-            variations: data.variations || [],
-            createdAt: data.createdAt,
-          };
-        });
+        setProducts(fetchedProducts);
+        setLoading(false);
+      },
+      (error) => {
+        console.error("Error listening to products:", error);
+        setLoading(false);
+      }
+    );
 
+    // 2. Set up real-time listener for categories
+    const unsubscribeCategories = onSnapshot(
+      collection(db, "categories"),
+      (categoriesSnapshot) => {
         const fetchedCategories = categoriesSnapshot.docs.map((doc) => {
           const data = doc.data();
           return {
@@ -1196,17 +1257,21 @@ export default function StorePage() {
           };
         });
 
-        setProducts(fetchedProducts);
         setCategories(fetchedCategories);
-      } catch (error) {
-        console.error("Error fetching store data:", error);
-      } finally {
-        setLoading(false);
+      },
+      (error) => {
+        console.error("Error listening to categories:", error);
       }
-    }
+    );
 
-    fetchStoreData();
+    // Cleanup listeners on unmount
+    return () => {
+      unsubscribeProducts();
+      unsubscribeCategories();
+    };
   }, []);
+
+
 
   // Filter products by active category ID and search query
   const filteredProducts = products.filter((item) => {

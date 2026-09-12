@@ -3,6 +3,7 @@
 
 
 
+
 // "use client";
 
 // import { useEffect, useState } from "react";
@@ -20,17 +21,16 @@
 // import Swal from "sweetalert2";
 // import { useRouter } from "next/navigation";
 
-// // 🎨 KINGSWORD CRAFT THEME COLORS (Vibrant Luxury & Modern Palette)
-// const PrimaryPink = "#ec4899";
-// const AccentGold = "#f59e0b";
-// const AccentCyan = "#06b6d4";
+// // 🎨 UPDATED THEME COLORS
+// const PrimaryNavy = "#0B1B48";
+// const PrimaryCyan = "#00AEEF";
 // const Dark = "#0f172a";
-// const Border = "rgba(226, 232, 240, 0.9)";
+// const Border = "#cbd5e1";
 // const White = "#ffffff";
-// const LightBg = "#f8fafc";
 // const TextMuted = "#475569";
+// const LightBg = "#f8fafc";
 // const Danger = "#ef4444";
-// const ThemeGradient = "linear-gradient(135deg, #ec4899 0%, #f59e0b 50%, #06b6d4 100%)";
+// const ThemeGradient = "linear-gradient(135deg, #0B1B48 0%, #00AEEF 100%)";
 
 // // 🌟 Styled Components (Strict max 10px spacing/gaps/margins/padding rule)
 // const Container = styled.div`
@@ -53,7 +53,7 @@
 //   display: flex;
 //   flex-direction: column;
 //   gap: 10px;
-//   box-shadow: 0 10px 25px rgba(236, 72, 153, 0.15);
+//   box-shadow: 0 10px 25px rgba(11, 27, 72, 0.15);
 // `;
 
 // const ColorfulTitle = styled.h1`
@@ -106,8 +106,8 @@
 //   box-shadow: 0 2px 6px rgba(15, 23, 42, 0.02);
 
 //   &:focus {
-//     border-color: ${PrimaryPink};
-//     box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.15);
+//     border-color: ${PrimaryCyan};
+//     box-shadow: 0 0 0 3px rgba(0, 174, 239, 0.15);
 //   }
 // `;
 
@@ -123,12 +123,12 @@
 //   display: flex;
 //   align-items: center;
 //   gap: 6px;
-//   box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3);
+//   box-shadow: 0 4px 15px rgba(0, 174, 239, 0.3);
 //   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 
 //   &:hover {
 //     transform: translateY(-2px);
-//     box-shadow: 0 6px 20px rgba(236, 72, 153, 0.45);
+//     box-shadow: 0 6px 20px rgba(0, 174, 239, 0.45);
 //   }
 // `;
 
@@ -150,7 +150,7 @@
 //   border-radius: 10px;
 //   padding: 10px;
 //   border: 1px solid ${Border};
-//   border-left: 4px solid ${PrimaryPink};
+//   border-left: 4px solid ${PrimaryNavy};
 //   box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
 //   display: flex;
 //   flex-direction: column;
@@ -164,8 +164,8 @@
 
 //   &:hover {
 //     transform: translateY(-3px);
-//     border-color: rgba(236, 72, 153, 0.4);
-//     box-shadow: 0 10px 25px rgba(236, 72, 153, 0.12);
+//     border-color: rgba(0, 174, 239, 0.4);
+//     box-shadow: 0 10px 25px rgba(0, 174, 239, 0.12);
 //   }
 
 //   @media (max-width: 768px) {
@@ -232,8 +232,8 @@
 // `;
 
 // const EditButton = styled.button`
-//   background: rgba(236, 72, 153, 0.1);
-//   color: #db2777;
+//   background: rgba(0, 174, 239, 0.1);
+//   color: #0284c7;
 //   border: none;
 //   border-radius: 6px;
 //   padding: 6px 10px;
@@ -243,7 +243,7 @@
 //   transition: background 0.2s ease;
 
 //   &:hover {
-//     background: rgba(236, 72, 153, 0.2);
+//     background: rgba(0, 174, 239, 0.2);
 //   }
 // `;
 
@@ -324,8 +324,8 @@
 //   background: ${White};
 
 //   &:focus {
-//     border-color: ${PrimaryPink};
-//     box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.15);
+//     border-color: ${PrimaryCyan};
+//     box-shadow: 0 0 0 3px rgba(0, 174, 239, 0.15);
 //   }
 // `;
 
@@ -344,8 +344,8 @@
 //   background: ${White};
 
 //   &:focus {
-//     border-color: ${PrimaryPink};
-//     box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.15);
+//     border-color: ${PrimaryCyan};
+//     box-shadow: 0 0 0 3px rgba(0, 174, 239, 0.15);
 //   }
 // `;
 
@@ -402,7 +402,7 @@
 //   border-radius: 6px;
 //   cursor: pointer;
 //   text-align: center;
-//   box-shadow: 0 2px 8px rgba(236, 72, 153, 0.25);
+//   box-shadow: 0 2px 8px rgba(0, 174, 239, 0.25);
 
 //   &:hover {
 //     opacity: 0.9;
@@ -472,7 +472,7 @@
 //   font-size: 0.85rem;
 //   font-weight: 700;
 //   cursor: pointer;
-//   box-shadow: 0 2px 8px rgba(236, 72, 153, 0.3);
+//   box-shadow: 0 2px 8px rgba(0, 174, 239, 0.3);
 
 //   &:hover {
 //     opacity: 0.9;
@@ -482,13 +482,68 @@
 // const ProductcategoryBadge = styled.span`
 //   font-size: 0.75rem;
 //   font-weight: 700;
-//   color: #db2777;
-//   background: rgba(236, 72, 153, 0.1);
+//   color: #0284c7;
+//   background: rgba(0, 174, 239, 0.1);
 //   padding: 3px 8px;
 //   border-radius: 4px;
 //   width: fit-content;
-//   border: 1px solid rgba(236, 72, 153, 0.2);
+//   border: 1px solid rgba(0, 174, 239, 0.2);
 // `;
+
+
+// // 🌟 Toggle Switch Styles
+// const ToggleContainer = styled.div`
+//   display: flex;
+//   align-items: center;
+//   gap: 8px;
+//   margin: 0;
+//   cursor: pointer;
+//   user-select: none;
+// `;
+
+// const ToggleLabel = styled.span`
+//   font-size: 0.85rem;
+//   font-weight: 700;
+//   color: ${Dark};
+// `;
+
+// const ToggleSwitchBox = styled.div`
+//   position: relative;
+//   width: 44px;
+//   height: 24px;
+//   background: ${(props) => (props.$isChecked ? Success : Border)};
+//   border-radius: 12px;
+//   transition: background 0.3s ease;
+//   display: flex;
+//   align-items: center;
+//   padding: 2px;
+//   box-sizing: border-box;
+// `;
+
+// const ToggleThumb = styled.div`
+//   width: 20px;
+//   height: 20px;
+//   background: ${White};
+//   border-radius: 50%;
+//   transform: translateX(${(props) => (props.$isChecked ? "20px" : "0px")});
+//   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+//   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+// `;
+
+// const StatusBadge = styled.span`
+//   position: absolute;
+//   top: 6px;
+//   right: 6px;
+//   background: ${(props) => (props.$isLive ? Success : TextMuted)};
+//   color: ${White};
+//   font-size: 0.7rem;
+//   font-weight: 700;
+//   padding: 2px 6px;
+//   border-radius: 4px;
+//   z-index: 2;
+//   box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+// `;
+
 
 // // 🔹 Compression utility function
 // const compressImage = (file, maxSizeKB = 100) => {
@@ -561,6 +616,7 @@
 //     quantity: "",
 //     neverFinishes: false,
 //     categoryId: "",
+//     isLive: true,
 //   });
 
 //   // 4 individual slots for files and previews
@@ -572,6 +628,10 @@
 //   const [categories, setCategories] = useState([]);
 //   const [selectedCategory, setSelectedCategory] = useState("");
 //   const [sortOrder, setSortOrder] = useState("");
+
+//   // 🌟 New State for Variations and Features Textarea
+//   const [variations, setVariations] = useState([]); // Array of { name: "", options: "" }
+//   const [featuresText, setFeaturesText] = useState(""); // Raw textarea value
 
 //   // Fetch categories from Firestore
 //   const fetchCategories = async () => {
@@ -673,7 +733,7 @@
 //           const data = new FormData();
 //           data.append("file", compressedBlob, `product_${i}.jpg`);
 //           data.append("upload_preset", "bees_interior");
-//           data.append("folder", "products_kingsword_craft");
+//           data.append("folder", "products_enitz_global");
 
 //           const res = await fetch(
 //             "https://api.cloudinary.com/v1_1/aqxyleoh/image/upload",
@@ -695,6 +755,23 @@
 //         }
 //       }
 
+//       // const payload = {
+//       //   name: form.name,
+//       //   description: form.description,
+//       //   amount: Number(form.amount),
+//       //   quantity: form.neverFinishes ? 0 : Number(form.quantity || 0),
+//       //   neverFinishes: form.neverFinishes,
+//       //   images: finalImageUrls,
+//       //   image: finalImageUrls[0] || "",
+//       //   categoryId: form.categoryId,
+//       // };
+
+//       // Convert featuresText into an array of non-empty bullet points
+//       const featuresList = featuresText
+//         .split("\n")
+//         .map((item) => item.trim())
+//         .filter((item) => item.length > 0);
+
 //       const payload = {
 //         name: form.name,
 //         description: form.description,
@@ -704,6 +781,9 @@
 //         images: finalImageUrls,
 //         image: finalImageUrls[0] || "",
 //         categoryId: form.categoryId,
+//       isLive: form.isLive,
+//         variations: variations.filter((v) => v.name.trim() !== "" && v.options.trim() !== ""),
+//         features: featuresList,
 //       };
 
 //       if (editingId) {
@@ -730,6 +810,9 @@
 //       setExistingImageUrls(["", "", "", ""]);
 //       setEditingId(null);
 //       fetchProducts();
+//       setVariations([]);
+//   setFeaturesText("");
+
 //     } catch (error) {
 //       Swal.close();
 //       Swal.fire({
@@ -767,7 +850,28 @@
 //     setImagePreviews(slotPreviews);
 //     setImageFiles([null, null, null, null]);
 //     setShowModal(true);
+//     setVariations(item.variations || []);
+//   setFeaturesText(item.features ? item.features.join("\n") : "");
 //   };
+
+
+
+// const handleAddVariation = () => {
+//     setVariations([...variations, { name: "", options: "" }]);
+//   };
+
+//   const handleVariationChange = (index, field, value) => {
+//     const updated = [...variations];
+//     updated[index][field] = value;
+//     setVariations(updated);
+//   };
+
+//   const handleRemoveVariation = (index) => {
+//     setVariations(variations.filter((_, i) => i !== index));
+//   };
+
+
+
 
 //   const handleDelete = async (id, e) => {
 //     e.stopPropagation();
@@ -791,6 +895,27 @@
 //       Swal.fire("Error", "Could not delete product.", "error");
 //     }
 //   };
+
+
+//   // 🌟 Quick Toggle Switch directly on Product Card
+// const handleToggleLive = async (item, e) => {
+//   e.stopPropagation();
+//   const updatedStatus = !item.isLive;
+  
+//   // Optimistic UI update so it flips instantly
+//   setProducts(products.map(p => p.id === item.id ? { ...p, isLive: updatedStatus } : p));
+
+//   try {
+//     await updateDoc(doc(db, "products", item.id), {
+//       isLive: updatedStatus
+//     });
+//   } catch (error) {
+//     // Revert back if database write fails
+//     setProducts(products.map(p => p.id === item.id ? { ...p, isLive: item.isLive } : p));
+//     Swal.fire("Error", "Could not update product status.", "error");
+//   }
+// };
+
 
 //   const filteredData = products
 //   .filter((item) => {
@@ -872,11 +997,15 @@
 //           </select>
 //           <PrimaryButton onClick={() => {
 //             setEditingId(null);
-//             setForm({ name: "", description: "", amount: "", quantity: "", neverFinishes: false, categoryId: "" });
+//             // setForm({ name: "", description: "", amount: "", quantity: "", neverFinishes: false, categoryId: "" });
+//             setForm({ name: "", description: "", amount: "", quantity: "", neverFinishes: false, categoryId: "", isLive: true });
 //             setImageFiles([null, null, null, null]);
 //             setImagePreviews(["", "", "", ""]);
 //             setExistingImageUrls(["", "", "", ""]);
+//             setVariations([]); // 👈 Ensure variations reset on add
+//             setFeaturesText("");
 //             setShowModal(true);
+
 //           }}>
 //             <span>+ Add Product</span>
 //           </PrimaryButton>
@@ -898,18 +1027,35 @@
 //                   <ProductName>
 //                     {item.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : ""}
 //                   </ProductName>
+                  
 //                   <ProductcategoryBadge>
 //                     {(() => {
 //                       const name = getCategoryName(item.categoryId);
 //                       return name ? name.charAt(0).toUpperCase() + name.slice(1) : "";
 //                     })()}
 //                   </ProductcategoryBadge>
+//                 {item.variations && item.variations.length > 0 && (
+//                 <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+//                   {item.variations.map((v, idx) => (
+//                     <div key={idx} style={{ fontSize: "0.8rem", color: TextMuted, fontWeight: "600" }}>
+//                       <span style={{ color: PrimaryNavy }}>{v.name}:</span> {v.options}
+//                     </div>
+//                   ))}
+//                 </div>
+//               )}
 //                   <ProductAmount>₦{Number(item.amount || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</ProductAmount>
 //                   <ProductStock>
 //                     {item.neverFinishes ? "∞ In Unlimited Stock" : `Stock: ${item.quantity ?? 0}`}
 //                   </ProductStock>
 //                 </ProductInfo>
+
 //                 <ButtonGroup>
+//                 <ToggleContainer onClick={(e) => handleToggleLive(item, e)} title="Toggle Public Visibility">
+//   <ToggleSwitchBox $isChecked={item.isLive}>
+//     <ToggleThumb $isChecked={item.isLive} />
+//   </ToggleSwitchBox>
+//   <ToggleLabel>{item.isLive ? "On" : "Off"}</ToggleLabel>
+// </ToggleContainer>
 //                   <EditButton onClick={(e) => handleEdit(item, e)}>Edit</EditButton>
 //                   <DeleteButton onClick={(e) => handleDelete(item.id, e)}>Delete</DeleteButton>
 //                 </ButtonGroup>
@@ -975,6 +1121,51 @@
 //                 onChange={(e) => setForm({ ...form, amount: e.target.value })}
 //                 required
 //               />
+
+//               {/* 🌟 Features Textarea (Split by Enter for Bullet Points) */}
+//             <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+//               <label style={{ fontSize: "0.85rem", fontWeight: "700", color: Dark }}>
+//                 Product Features (Each line separated by Enter becomes a bullet point)
+//               </label>
+//               <StyledTextarea
+//                 placeholder="e.g. Waterproof material&#10;Easy to install&#10;Durable build"
+//                 value={featuresText}
+//                 onChange={(e) => setFeaturesText(e.target.value)}
+//                 style={{ minHeight: "80px" }}
+//               />
+//             </div>
+
+//             {/* 🌟 Product Variations Section */}
+//             <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+//               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+//                 <span style={{ fontSize: "0.85rem", fontWeight: "700", color: Dark }}>
+//                   Product Variations (e.g., Size, Color)
+//                 </span>
+//                 <PrimaryButton type="button" onClick={handleAddVariation} style={{ padding: "4px 8px", fontSize: "0.75rem" }}>
+//                   + Add Variation
+//                 </PrimaryButton>
+//               </div>
+
+//               {variations.map((v, index) => (
+//                 <div key={index} style={{ display: "flex", gap: "6px", alignItems: "center" }}>
+//                   <StyledInput
+//                     type="text"
+//                     placeholder="Attribute (e.g. Size)"
+//                     value={v.name}
+//                     onChange={(e) => handleVariationChange(index, "name", e.target.value)}
+//                   />
+//                   <StyledInput
+//                     type="text"
+//                     placeholder="Options (e.g. S, M, L)"
+//                     value={v.options}
+//                     onChange={(e) => handleVariationChange(index, "options", e.target.value)}
+//                   />
+//                   <DeleteButton type="button" onClick={() => handleRemoveVariation(index)} style={{ padding: "8px 10px" }}>
+//                     ✕
+//                   </DeleteButton>
+//                 </div>
+//               ))}
+//             </div>
               
 //               {!form.neverFinishes && (
 //                 <StyledInput
@@ -1053,6 +1244,9 @@
 
 
 
+
+
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -1079,6 +1273,7 @@ const White = "#ffffff";
 const TextMuted = "#475569";
 const LightBg = "#f8fafc";
 const Danger = "#ef4444";
+const Success = "#22c55e";
 const ThemeGradient = "linear-gradient(135deg, #0B1B48 0%, #00AEEF 100%)";
 
 // 🌟 Styled Components (Strict max 10px spacing/gaps/margins/padding rule)
@@ -1278,6 +1473,7 @@ const ButtonGroup = styled.div`
   gap: 10px;
   justify-content: flex-end;
   margin-top: auto;
+  align-items: center;
 `;
 
 const EditButton = styled.button`
@@ -1539,6 +1735,45 @@ const ProductcategoryBadge = styled.span`
   border: 1px solid rgba(0, 174, 239, 0.2);
 `;
 
+// 🌟 Toggle Switch Styles
+const ToggleContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  cursor: pointer;
+  user-select: none;
+`;
+
+const ToggleLabel = styled.span`
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: ${Dark};
+`;
+
+const ToggleSwitchBox = styled.div`
+  position: relative;
+  width: 44px;
+  height: 24px;
+  background: ${(props) => (props.$isChecked ? Success : Border)};
+  border-radius: 12px;
+  transition: background 0.3s ease;
+  display: flex;
+  align-items: center;
+  padding: 2px;
+  box-sizing: border-box;
+`;
+
+const ToggleThumb = styled.div`
+  width: 20px;
+  height: 20px;
+  background: ${White};
+  border-radius: 50%;
+  transform: translateX(${(props) => (props.$isChecked ? "20px" : "0px")});
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+`;
+
 // 🔹 Compression utility function
 const compressImage = (file, maxSizeKB = 100) => {
   return new Promise((resolve, reject) => {
@@ -1610,6 +1845,7 @@ export default function ProductsCrudPage() {
     quantity: "",
     neverFinishes: false,
     categoryId: "",
+    isLive: true,
   });
 
   // 4 individual slots for files and previews
@@ -1622,9 +1858,9 @@ export default function ProductsCrudPage() {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [sortOrder, setSortOrder] = useState("");
 
-  // 🌟 New State for Variations and Features Textarea
-  const [variations, setVariations] = useState([]); // Array of { name: "", options: "" }
-  const [featuresText, setFeaturesText] = useState(""); // Raw textarea value
+  // Variations and Features Textarea
+  const [variations, setVariations] = useState([]); 
+  const [featuresText, setFeaturesText] = useState(""); 
 
   // Fetch categories from Firestore
   const fetchCategories = async () => {
@@ -1748,18 +1984,6 @@ export default function ProductsCrudPage() {
         }
       }
 
-      // const payload = {
-      //   name: form.name,
-      //   description: form.description,
-      //   amount: Number(form.amount),
-      //   quantity: form.neverFinishes ? 0 : Number(form.quantity || 0),
-      //   neverFinishes: form.neverFinishes,
-      //   images: finalImageUrls,
-      //   image: finalImageUrls[0] || "",
-      //   categoryId: form.categoryId,
-      // };
-
-      // Convert featuresText into an array of non-empty bullet points
       const featuresList = featuresText
         .split("\n")
         .map((item) => item.trim())
@@ -1774,6 +1998,7 @@ export default function ProductsCrudPage() {
         images: finalImageUrls,
         image: finalImageUrls[0] || "",
         categoryId: form.categoryId,
+        isLive: form.isLive,
         variations: variations.filter((v) => v.name.trim() !== "" && v.options.trim() !== ""),
         features: featuresList,
       };
@@ -1796,14 +2021,14 @@ export default function ProductsCrudPage() {
       });
 
       setShowModal(false);
-      setForm({ name: "", description: "", amount: "", quantity: "", neverFinishes: false, categoryId: "" });
+      setForm({ name: "", description: "", amount: "", quantity: "", neverFinishes: false, categoryId: "", isLive: true });
       setImageFiles([null, null, null, null]);
       setImagePreviews(["", "", "", ""]);
       setExistingImageUrls(["", "", "", ""]);
       setEditingId(null);
-      fetchProducts();
       setVariations([]);
-  setFeaturesText("");
+      setFeaturesText("");
+      fetchProducts();
 
     } catch (error) {
       Swal.close();
@@ -1826,6 +2051,7 @@ export default function ProductsCrudPage() {
       quantity: item.quantity || "",
       neverFinishes: item.neverFinishes || false,
       categoryId: item.categoryId || item.category || "",
+      isLive: item.isLive ?? true,
     });
     setEditingId(item.id);
 
@@ -1843,12 +2069,10 @@ export default function ProductsCrudPage() {
     setImageFiles([null, null, null, null]);
     setShowModal(true);
     setVariations(item.variations || []);
-  setFeaturesText(item.features ? item.features.join("\n") : "");
+    setFeaturesText(item.features ? item.features.join("\n") : "");
   };
 
-
-
-const handleAddVariation = () => {
+  const handleAddVariation = () => {
     setVariations([...variations, { name: "", options: "" }]);
   };
 
@@ -1861,9 +2085,6 @@ const handleAddVariation = () => {
   const handleRemoveVariation = (index) => {
     setVariations(variations.filter((_, i) => i !== index));
   };
-
-
-
 
   const handleDelete = async (id, e) => {
     e.stopPropagation();
@@ -1888,17 +2109,33 @@ const handleAddVariation = () => {
     }
   };
 
+  const handleToggleLive = async (item, e) => {
+    e.stopPropagation();
+    const updatedStatus = !item.isLive;
+    
+    setProducts(products.map(p => p.id === item.id ? { ...p, isLive: updatedStatus } : p));
+
+    try {
+      await updateDoc(doc(db, "products", item.id), {
+        isLive: updatedStatus
+      });
+    } catch (error) {
+      setProducts(products.map(p => p.id === item.id ? { ...p, isLive: item.isLive } : p));
+      Swal.fire("Error", "Could not update product status.", "error");
+    }
+  };
+
   const filteredData = products
-  .filter((item) => {
-    const matchesSearch = item.name?.toLowerCase().includes(search.toLowerCase());
-    const matchesCategory = selectedCategory === "" || item.categoryId === selectedCategory;
-    return matchesSearch && matchesCategory;
-  })
-  .sort((a, b) => {
-    if (sortOrder === "low-high") return Number(a.amount || 0) - Number(b.amount || 0);
-    if (sortOrder === "high-low") return Number(b.amount || 0) - Number(a.amount || 0);
-    return 0;
-  });
+    .filter((item) => {
+      const matchesSearch = item.name?.toLowerCase().includes(search.toLowerCase());
+      const matchesCategory = selectedCategory === "" || item.categoryId === selectedCategory;
+      return matchesSearch && matchesCategory;
+    })
+    .sort((a, b) => {
+      if (sortOrder === "low-high") return Number(a.amount || 0) - Number(b.amount || 0);
+      if (sortOrder === "high-low") return Number(b.amount || 0) - Number(a.amount || 0);
+      return 0;
+    });
 
   const getCategoryName = (catId) => {
     const found = categories.find((cat) => cat.id === catId);
@@ -1968,11 +2205,11 @@ const handleAddVariation = () => {
           </select>
           <PrimaryButton onClick={() => {
             setEditingId(null);
-            setForm({ name: "", description: "", amount: "", quantity: "", neverFinishes: false, categoryId: "" });
+            setForm({ name: "", description: "", amount: "", quantity: "", neverFinishes: false, categoryId: "", isLive: true });
             setImageFiles([null, null, null, null]);
             setImagePreviews(["", "", "", ""]);
             setExistingImageUrls(["", "", "", ""]);
-            setVariations([]); // 👈 Ensure variations reset on add
+            setVariations([]);
             setFeaturesText("");
             setShowModal(true);
           }}>
@@ -2003,21 +2240,28 @@ const handleAddVariation = () => {
                       return name ? name.charAt(0).toUpperCase() + name.slice(1) : "";
                     })()}
                   </ProductcategoryBadge>
-                {item.variations && item.variations.length > 0 && (
-                <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-                  {item.variations.map((v, idx) => (
-                    <div key={idx} style={{ fontSize: "0.8rem", color: TextMuted, fontWeight: "600" }}>
-                      <span style={{ color: PrimaryNavy }}>{v.name}:</span> {v.options}
+                  {item.variations && item.variations.length > 0 && (
+                    <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                      {item.variations.map((v, idx) => (
+                        <div key={idx} style={{ fontSize: "0.8rem", color: TextMuted, fontWeight: "600" }}>
+                          <span style={{ color: PrimaryNavy }}>{v.name}:</span> {v.options}
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
-              )}
+                  )}
                   <ProductAmount>₦{Number(item.amount || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</ProductAmount>
                   <ProductStock>
                     {item.neverFinishes ? "∞ In Unlimited Stock" : `Stock: ${item.quantity ?? 0}`}
                   </ProductStock>
                 </ProductInfo>
+
                 <ButtonGroup>
+                  <ToggleContainer onClick={(e) => handleToggleLive(item, e)} title="Toggle Public Visibility">
+                    <ToggleSwitchBox $isChecked={item.isLive}>
+                      <ToggleThumb $isChecked={item.isLive} />
+                    </ToggleSwitchBox>
+                    <ToggleLabel>{item.isLive ? "On" : "Off"}</ToggleLabel>
+                  </ToggleContainer>
                   <EditButton onClick={(e) => handleEdit(item, e)}>Edit</EditButton>
                   <DeleteButton onClick={(e) => handleDelete(item.id, e)}>Delete</DeleteButton>
                 </ButtonGroup>
@@ -2084,114 +2328,121 @@ const handleAddVariation = () => {
                 required
               />
 
-              {/* 🌟 Features Textarea (Split by Enter for Bullet Points) */}
-            <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-              <label style={{ fontSize: "0.85rem", fontWeight: "700", color: Dark }}>
-                Product Features (Each line separated by Enter becomes a bullet point)
-              </label>
-              <StyledTextarea
-                placeholder="e.g. Waterproof material&#10;Easy to install&#10;Durable build"
-                value={featuresText}
-                onChange={(e) => setFeaturesText(e.target.value)}
-                style={{ minHeight: "80px" }}
-              />
-            </div>
-
-            {/* 🌟 Product Variations Section */}
-            <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <span style={{ fontSize: "0.85rem", fontWeight: "700", color: Dark }}>
-                  Product Variations (e.g., Size, Color)
-                </span>
-                <PrimaryButton type="button" onClick={handleAddVariation} style={{ padding: "4px 8px", fontSize: "0.75rem" }}>
-                  + Add Variation
-                </PrimaryButton>
+              {/* Stock Management Row */}
+              <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                {!form.neverFinishes && (
+                  <StyledInput
+                    type="number"
+                    placeholder="Stock Quantity"
+                    value={form.quantity}
+                    onChange={(e) => setForm({ ...form, quantity: e.target.value })}
+                  />
+                )}
+                <CheckboxRow>
+                  <input
+                    type="checkbox"
+                    checked={form.neverFinishes}
+                    onChange={(e) => setForm({ ...form, neverFinishes: e.target.checked })}
+                  />
+                  <span>Unlimited Stock (Never finishes)</span>
+                </CheckboxRow>
               </div>
 
-              {variations.map((v, index) => (
-                <div key={index} style={{ display: "flex", gap: "6px", alignItems: "center" }}>
-                  <StyledInput
-                    type="text"
-                    placeholder="Attribute (e.g. Size)"
-                    value={v.name}
-                    onChange={(e) => handleVariationChange(index, "name", e.target.value)}
-                  />
-                  <StyledInput
-                    type="text"
-                    placeholder="Options (e.g. S, M, L)"
-                    value={v.options}
-                    onChange={(e) => handleVariationChange(index, "options", e.target.value)}
-                  />
-                  <DeleteButton type="button" onClick={() => handleRemoveVariation(index)} style={{ padding: "8px 10px" }}>
-                    ✕
-                  </DeleteButton>
-                </div>
-              ))}
-            </div>
-              
-              {!form.neverFinishes && (
-                <StyledInput
-                  type="number"
-                  placeholder="Quantity"
-                  value={form.quantity}
-                  onChange={(e) => setForm({ ...form, quantity: e.target.value })}
-                />
-              )}
+              {/* Live Status Toggle in Form */}
+              <ToggleContainer onClick={() => setForm({ ...form, isLive: !form.isLive })}>
+                <ToggleSwitchBox $isChecked={form.isLive}>
+                  <ToggleThumb $isChecked={form.isLive} />
+                </ToggleSwitchBox>
+                <ToggleLabel>Product is {form.isLive ? "Live (Visible)" : "Hidden"}</ToggleLabel>
+              </ToggleContainer>
 
-              <CheckboxRow>
-                <input
-                  type="checkbox"
-                  checked={form.neverFinishes}
-                  onChange={(e) => setForm({ ...form, neverFinishes: e.target.checked })}
+              {/* 🌟 Features Textarea */}
+              <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                <label style={{ fontSize: "0.85rem", fontWeight: "700", color: Dark }}>
+                  Product Features (Each line separated by Enter becomes a bullet point)
+                </label>
+                <StyledTextarea
+                  placeholder="e.g. Waterproof material&#10;Easy to install&#10;Durable build"
+                  value={featuresText}
+                  onChange={(e) => setFeaturesText(e.target.value)}
+                  style={{ minHeight: "80px" }}
                 />
-                Product does not finish (Unlimited Stock)
-              </CheckboxRow>
+              </div>
 
+              {/* 🌟 Product Variations Section */}
               <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                <span style={{ fontSize: "0.85rem", fontWeight: "700", color: Dark }}>
-                  Product Images (Max 4 slots, compressed to 100kb max each):
-                </span>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <span style={{ fontSize: "0.85rem", fontWeight: "700", color: Dark }}>
+                    Product Variations (e.g., Size, Color)
+                  </span>
+                  <PrimaryButton type="button" onClick={handleAddVariation} style={{ padding: "4px 8px", fontSize: "0.75rem" }}>
+                    + Add Variation
+                  </PrimaryButton>
+                </div>
 
+                {variations.map((v, index) => (
+                  <div key={index} style={{ display: "flex", gap: "6px", alignItems: "center" }}>
+                    <StyledInput
+                      type="text"
+                      placeholder="Attribute (e.g. Size)"
+                      value={v.name}
+                      onChange={(e) => handleVariationChange(index, "name", e.target.value)}
+                    />
+                    <StyledInput
+                      type="text"
+                      placeholder="Options (e.g. S, M, L)"
+                      value={v.options}
+                      onChange={(e) => handleVariationChange(index, "options", e.target.value)}
+                    />
+                    <DeleteButton type="button" onClick={() => handleRemoveVariation(index)} style={{ padding: "8px 10px" }}>
+                      ✕
+                    </DeleteButton>
+                  </div>
+                ))}
+              </div>
+
+              {/* 🌟 4-Slot Image Upload Grid */}
+              <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                <label style={{ fontSize: "0.85rem", fontWeight: "700", color: Dark }}>
+                  Product Images (Slot 1 is Compulsory)
+                </label>
                 <ImageSlotsGrid>
-                  {[0, 1, 2, 3].map((slotIndex) => {
-                    const hasImage = imagePreviews[slotIndex] !== "";
-                    const isMain = slotIndex === 0;
-
-                    return (
-                      <ImageSlotCard key={slotIndex}>
-                        <SlotLabel>
-                          {isMain ? "Main Image (Required)" : `Image ${slotIndex + 1} (Optional)`}
-                        </SlotLabel>
-
-                        {hasImage ? (
-                          <SlotPreviewWrapper>
-                            <ProductImage src={imagePreviews[slotIndex]} alt={`Slot ${slotIndex + 1}`} />
-                            <RemoveSlotButton type="button" onClick={() => handleRemoveSlot(slotIndex)}>
-                              ✕
-                            </RemoveSlotButton>
-                          </SlotPreviewWrapper>
-                        ) : (
-                          <>
-                            <HiddenFileInput
-                              id={`slot-file-${slotIndex}`}
-                              type="file"
-                              accept="image/*"
-                              onChange={(e) => handleSlotFileChange(slotIndex, e)}
-                            />
-                            <UploadButtonLabel htmlFor={`slot-file-${slotIndex}`}>
-                              Select Image
-                            </UploadButtonLabel>
-                          </>
-                        )}
-                      </ImageSlotCard>
-                    );
-                  })}
+                  {[0, 1, 2, 3].map((slotIdx) => (
+                    <ImageSlotCard key={slotIdx}>
+                      <SlotLabel>Slot {slotIdx + 1} {slotIdx === 0 && "*"}</SlotLabel>
+                      {imagePreviews[slotIdx] ? (
+                        <SlotPreviewWrapper>
+                          <img 
+                            src={imagePreviews[slotIdx]} 
+                            alt={`Preview ${slotIdx + 1}`} 
+                            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                          />
+                          <RemoveSlotButton type="button" onClick={() => handleRemoveSlot(slotIdx)}>
+                            ✕
+                          </RemoveSlotButton>
+                        </SlotPreviewWrapper>
+                      ) : (
+                        <UploadButtonLabel>
+                          Choose File
+                          <HiddenFileInput 
+                            type="file" 
+                            accept="image/*"
+                            onChange={(e) => handleSlotFileChange(slotIdx, e)}
+                          />
+                        </UploadButtonLabel>
+                      )}
+                    </ImageSlotCard>
+                  ))}
                 </ImageSlotsGrid>
               </div>
 
               <ModalActions>
-                <CancelButton type="button" onClick={() => setShowModal(false)}>Cancel</CancelButton>
-                <SaveButton type="submit">{editingId ? "Save Changes" : "Create Product"}</SaveButton>
+                <CancelButton type="button" onClick={() => setShowModal(false)}>
+                  Cancel
+                </CancelButton>
+                <SaveButton type="submit">
+                  {editingId ? "Update Product" : "Save Product"}
+                </SaveButton>
               </ModalActions>
             </form>
           </ModalContainer>

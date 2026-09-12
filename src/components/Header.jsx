@@ -602,7 +602,7 @@ export default function Header() {
               </NavLink>
 
               <NavLink href="/about" $active={pathname === "/about"} onClick={() => setOpen(false)}>About Us</NavLink>
-              <NavLink href="/#testimonials" $active={pathname === "/"} onClick={() => setOpen(false)}>Reviews</NavLink>
+              <NavLink href="/testimonials" $active={pathname === "/testimonials"} onClick={() => setOpen(false)}>Reviews</NavLink>
               
               <NavLink href="/contact" $active={pathname === "/contact"} onClick={() => setOpen(false)}>Contact</NavLink>
  
