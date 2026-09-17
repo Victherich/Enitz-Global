@@ -1167,6 +1167,499 @@ const WhatsAppButton = styled.a`
   }
 `;
 
+// // --- COMPONENT ---
+// export default function ProductDetailPage({ params }) {
+//   const resolvedParams = use(params);
+//   const productId = resolvedParams.id;
+
+//   const router = useRouter();
+//   const [product, setProduct] = useState(null);
+//   const [categoryName, setCategoryName] = useState("Loading category...");
+//   const [loading, setLoading] = useState(true);
+//   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+//   const [isWishlisted, setIsWishlisted] = useState(false);
+//   const [feedback, setFeedback] = useState("");
+// // Add this inside ProductDetailPage component state
+//   const [selectedVariations, setSelectedVariations] = useState({});
+//   const [currentUser, setCurrentUser] = useState(null);
+//   const [userData, setUserData] = useState(null);
+//   const { addToCart } = useCart();
+
+//   // 1. Listen to authenticated user
+//   useEffect(() => {
+//     const unsubscribe = onAuthStateChanged(auth, async (user) => {
+//       if (user) {
+//         setCurrentUser(user);
+//         try {
+//           const userRef = doc(db, "users", user.uid);
+//           const userSnap = await getDoc(userRef);
+//           if (userSnap.exists()) {
+//             setUserData(userSnap.data());
+//           }
+//         } catch (error) {
+//           console.log(error);
+//         }
+//       } else {
+//         setCurrentUser(null);
+//         setUserData(null);
+//       }
+//     });
+
+//     return () => unsubscribe();
+//   }, []);
+
+//   // 2. Check if item is in wishlist on load
+//   useEffect(() => {
+//     async function checkWishlistStatus() {
+//       if (!productId || !currentUser) return;
+//       try {
+//         const wishlistDocId = `${currentUser.uid}_${productId}`;
+//         const wishlistRef = doc(db, "wishlists", wishlistDocId);
+//         const snap = await getDoc(wishlistRef);
+//         if (snap.exists()) {
+//           setIsWishlisted(true);
+//         }
+//       } catch (err) {
+//         console.error("Error checking wishlist:", err);
+//       }
+//     }
+//     checkWishlistStatus();
+//   }, [productId, currentUser]);
+
+//   const handleToggleWishlist = async () => {
+//     if (!currentUser) {
+//       setFeedback("⚠️ Please log in to manage your wishlist.");
+//       setTimeout(() => setFeedback(""), 3000);
+//       return;
+//     }
+
+//     const newStatus = !isWishlisted;
+//     setIsWishlisted(newStatus);
+
+//     try {
+//       const wishlistDocId = `${currentUser.uid}_${productId}`;
+//       const wishlistRef = doc(db, "wishlists", wishlistDocId);
+
+//       if (newStatus) {
+//         await setDoc(wishlistRef, {
+//           userId: currentUser.uid,
+//           productId: productId,
+//           addedAt: new Date()
+//         });
+//         setFeedback("✓ Added to your wishlist!");
+//         Swal.fire({ text: "Saved to wishlist!", icon: "success", timer: 2000, showConfirmButton: false, background: "#ffffff", color: "#0f172a" });
+//       } else {
+//         await deleteDoc(wishlistRef);
+//         setFeedback("Removed from your wishlist.");
+//         Swal.fire({ text: "Removed from wishlist!", icon: "info", timer: 2000, showConfirmButton: false, background: "#ffffff", color: "#0f172a" });
+//       }
+//     } catch (error) {
+//       console.error("Error updating wishlist in Firestore:", error);
+//       setIsWishlisted(!newStatus);
+//       setFeedback("Failed to update wishlist.");
+//     }
+
+//     setTimeout(() => setFeedback(""), 3000);
+//   };
+
+//   useEffect(() => {
+//     async function fetchProductDetails() {
+//       if (!productId) return;
+//       try {
+//         setLoading(true);
+//         const docRef = doc(db, "products", productId);
+//         const docSnap = await getDoc(docRef);
+
+//         if (docSnap.exists()) {
+//           const data = docSnap.data();
+//           const fetchedProduct = {
+//             id: docSnap.id,
+//             name: data.name || data.title || "Untitled Product",
+//             categoryId: data.categoryId || "",
+//             amount: Number(data.amount || data.price) || 0,
+//             description: data.description || "No description provided for this item.",
+//             images: data.images?.length > 0 ? data.images : data.image ? [data.image] : [],
+//             neverFinishes: data.neverFinishes ?? true,
+//             quantity: Number(data.quantity || 0),
+//             createdAt: data.createdAt ? new Date(data.createdAt.seconds * 1000).toLocaleDateString() : "Recent",
+//             reviews: data.reviews || [],
+//             averageRating: data.rating || 0,
+//             reviewCount: data.reviewCount || (data.reviews ? data.reviews.length : 0),
+//             variations: data.variations || [],
+//             features: data.features || [],
+//           };
+//           setProduct(fetchedProduct);
+
+//           if (fetchedProduct.categoryId) {
+//             const catRef = doc(db, "categories", fetchedProduct.categoryId);
+//             const catSnap = await getDoc(catRef);
+//             if (catSnap.exists()) {
+//               const catData = catSnap.data();
+//               const rawTitle = catData.title || "Collection";
+//               setCategoryName(rawTitle.charAt(0).toUpperCase() + rawTitle.slice(1));
+//             } else {
+//               setCategoryName("Signature Collection");
+//             }
+//           } else {
+//             setCategoryName("Signature Collection");
+//           }
+//         } else {
+//           setProduct(null);
+//         }
+//       } catch (error) {
+//         console.error("Error fetching product details:", error);
+//       } finally {
+//         setLoading(false);
+//       }
+//     }
+
+//     fetchProductDetails();
+//   }, [productId]);
+
+//   // const handleAddToCart = () => {
+//   //   if (!product) return;
+
+//   //   addToCart({
+//   //     id: product.id,
+//   //     name: product.name,
+//   //     price: product.amount,
+//   //     image: product.images[0] || "",
+//   //     // selectedColor: "Default",
+//   //     // selectedSize: "Standard",
+//   //     variations: selectedVariations,
+//   //     quantity: 1,
+//   //   });
+
+//   //   setFeedback("✓ Successfully added to your cart!");
+
+//   //   Swal.fire({
+//   //     title: "Added to cart!",
+//   //     text: "What would you like to do next?",
+//   //     icon: "success",
+//   //     showCancelButton: true,
+//   //     confirmButtonText: "Proceed to Cart",
+//   //     cancelButtonText: "Continue Shopping",
+//   //     confirmButtonColor: brandCyan,
+//   //     cancelButtonColor: textMuted,
+//   //     background: "#ffffff",
+//   //     color: "#0f172a"
+//   //   }).then((result) => {
+//   //     if (result.isConfirmed) {
+//   //       router.push("/cart");
+//   //     }
+//   //   });
+
+//   //   setTimeout(() => setFeedback(""), 3000);
+//   // };
+
+
+
+// const handleAddToCart = () => {
+//     if (!product) return;
+
+//     // 🌟 Check if product has variations defined
+//     if (product.variations && product.variations.length > 0) {
+//       for (const v of product.variations) {
+//         // Check if the user has selected an option for this variation name
+//         if (!selectedVariations[v.name] || selectedVariations[v.name].trim() === "") {
+//           Swal.fire({
+//             title: "Selection Required",
+//             text: `Please select a value for "${v.name}" before adding to cart.`,
+//             icon: "warning",
+//             confirmButtonColor: brandCyan,
+//             background: "#ffffff",
+//             color: "#0f172a"
+//           });
+//           return; // Stop execution if any variation is missing
+//         }
+//       }
+//     }
+
+//     addToCart({
+//       id: product.id,
+//       name: product.name,
+//       price: product.amount,
+//       image: product.images[0] || "",
+//       variations: selectedVariations,
+//       quantity: 1,
+//     });
+
+//     setFeedback("✓ Successfully added to your cart!");
+
+//     Swal.fire({
+//       title: "Added to cart!",
+//       text: "What would you like to do next?",
+//       icon: "success",
+//       showCancelButton: true,
+//       confirmButtonText: "Proceed to Cart",
+//       cancelButtonText: "Continue Shopping",
+//       confirmButtonColor: brandCyan,
+//       cancelButtonColor: textMuted,
+//       background: "#ffffff",
+//       color: "#0f172a"
+//     }).then((result) => {
+//       if (result.isConfirmed) {
+//         router.push("/cart");
+//       }
+//     });
+
+//     setTimeout(() => setFeedback(""), 3000);
+//   };
+
+
+
+// const handleWhatsAppOrder = (e) => {
+//     if (!product) return;
+
+//     // Validate variations if they exist
+//     if (product.variations && product.variations.length > 0) {
+//       for (const v of product.variations) {
+//         if (!selectedVariations[v.name] || selectedVariations[v.name].trim() === "") {
+//           e.preventDefault();
+//           Swal.fire({
+//             title: "Selection Required",
+//             text: `Please select a value for "${v.name}" before ordering via WhatsApp.`,
+//             icon: "warning",
+//             confirmButtonColor: brandCyan,
+//             background: "#ffffff",
+//             color: "#0f172a"
+//           });
+//           return;
+//         }
+//       }
+//     }
+
+//     // Format selected variations text for message
+//     const variationsText = Object.entries(selectedVariations)
+//       .map(([key, val]) => `*${key}*: ${val}`)
+//       .join(', ');
+
+//     // Construct your custom pre-filled message
+//     const message = encodeURIComponent(
+//       `Hello Enitz, I would like to order this item:\n\n*Product:* ${product.name}\n*ID:* ${product.id}\n*Price:* ₦${product.amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}${variationsText ? `\n*Variations:* ${variationsText}` : ''}`
+//     );
+
+//     // Replace with your actual WhatsApp support phone number (with country code, no + or spaces)
+//     const phoneNumber = "2349047103037"; 
+    
+//     // Set href dynamically or trigger window.open
+//     window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
+//   };
+
+
+
+//   if (loading) {
+//     return (
+//       <PageContainer>
+//         <StateContainer>Loading item specifications...</StateContainer>
+//       </PageContainer>
+//     );
+//   }
+
+//   if (!product) {
+//     return (
+//       <PageContainer>
+//         <StateContainer>
+//           <p>Product not found or has been removed.</p>
+//           <BackButton onClick={() => router.push('/store')}>← Return to Store</BackButton>
+//         </StateContainer>
+//       </PageContainer>
+//     );
+//   }
+
+//   const activeImage = product.images[selectedImageIndex] || "https://placehold.co/600x600?text=No+Image";
+//   const isInStock = product.neverFinishes || product.quantity > 0;
+
+//   return (
+//     <PageContainer>
+//       <ContentWrapper>
+//         <BackButton onClick={() => router.back()}>
+//           ← Back
+//         </BackButton>
+
+//         <ProductGrid>
+//           <GalleryContainer>
+//             <ImageWrapper>
+//               <FloatingWishlistIcon onClick={handleToggleWishlist} title={isWishlisted ? "Remove from Wishlist" : "Add to Wishlist"}>
+//                 {isWishlisted ? (
+//                   <span style={{ color: dangerRed, fontSize: "1.2rem" }}>❤️</span>
+//                 ) : (
+//                   <span style={{ color: textMain, fontSize: "1.2rem" }}>🤍</span>
+//                 )}
+//               </FloatingWishlistIcon>
+//               <img src={activeImage} alt={product.name} />
+//             </ImageWrapper>
+            
+//             <p style={{ fontSize: "12px", color: textMuted }}>Click thumbnail to view alternate angle</p>
+
+//             {product.images.length > 1 && (
+//               <ThumbnailsRow>
+//                 {product.images.map((imgUrl, index) => (
+//                   <Thumbnail
+//                     key={index}
+//                     $active={selectedImageIndex === index}
+//                     onClick={() => setSelectedImageIndex(index)}
+//                   >
+//                     <img src={imgUrl} alt={`${product.name} thumbnail ${index + 1}`} />
+//                   </Thumbnail>
+//                 ))}
+//               </ThumbnailsRow>
+//             )}
+//           </GalleryContainer>
+
+//           <InfoContainer>
+//             <CategoryBadge>{categoryName}</CategoryBadge>
+
+//             <ProductTitle>
+//               {product.name.charAt(0).toUpperCase() + product.name.slice(1)}
+//             </ProductTitle>
+//             <p style={{ fontSize: '0.75rem', color: textMuted, marginTop: '-10px' }}>ID: {product.id}</p>
+
+//             <PriceRow>
+//               <PriceText>
+//                 ₦{product.amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+//               </PriceText>
+//               <StockBadge $inStock={isInStock}>
+//                 {product.neverFinishes ? "In Stock" : product.quantity > 0 ? `${product.quantity} left` : "Out of Stock"}
+//               </StockBadge>
+//             </PriceRow>
+
+//             <DescriptionSection>
+//               <h3>Product Description</h3>
+//               <p>{product.description}</p>
+//             </DescriptionSection>
+
+// {/* 🌟 Product Variations Section */}
+//             {product.variations && product.variations.length > 0 && (
+//               <DescriptionSection>
+//                 <h3>Variations</h3>
+//                 <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+//                   {product.variations.map((v, idx) => (
+//                     <div key={idx} style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+//                       <span style={{ fontSize: "0.85rem", fontWeight: "600", color: textMain }}>{v.name}:</span>
+//                       <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
+//                         {v.options.split(",").map((opt, optIdx) => {
+//                           const optionTrimmed = opt.trim();
+//                           const isSelected = selectedVariations[v.name] === optionTrimmed;
+//                           return (
+//                             <button
+//                               key={optIdx}
+//                               type="button"
+//                               onClick={() => setSelectedVariations({ ...selectedVariations, [v.name]: optionTrimmed })}
+//                               style={{
+//                                 padding: "6px 12px",
+//                                 borderRadius: "8px",
+//                                 fontSize: "0.85rem",
+//                                 fontWeight: "600",
+//                                 cursor: "pointer",
+//                                 border: `1px solid ${isSelected ? brandCyan : borderColor}`,
+//                                 background: isSelected ? "#f0f9ff" : cardBg,
+//                                 color: isSelected ? brandCyan : textMain,
+//                               }}
+//                             >
+//                               {optionTrimmed}
+//                             </button>
+//                           );
+//                         })}
+//                       </div>
+//                     </div>
+//                   ))}
+//                 </div>
+//               </DescriptionSection>
+//             )}
+
+//             {/* 🌟 Product Features Section */}
+//             {product.features && product.features.length > 0 && (
+//               <DescriptionSection>
+//                 <h3>Key Features</h3>
+//                 <ul style={{ margin: 0, paddingLeft: "18px", display: "flex", flexDirection: "column", gap: "4px" }}>
+//                   {product.features.map((feat, idx) => (
+//                     <li key={idx} style={{ fontSize: "0.9rem", color: textMuted }}>
+//                       {feat}
+//                     </li>
+//                   ))}
+//                 </ul>
+//               </DescriptionSection>
+//             )}
+
+//             <MetaGrid>
+//               <MetaItem>
+//                 <span>Availability</span>
+//                 <span>{isInStock ? "Ready to Ship" : "Unavailable"}</span>
+//               </MetaItem>
+//               <MetaItem>
+//                 <span>Added On</span>
+//                 <span>{product.createdAt}</span>
+//               </MetaItem>
+//             </MetaGrid>
+
+//             {feedback && <StatusMessage>{feedback}</StatusMessage>}
+
+//             <ActionsRow>
+//               <AddToCartButton onClick={handleAddToCart}>
+//                 🛒 Add to Cart
+//               </AddToCartButton>
+//               <WishlistButton $wishlisted={isWishlisted} onClick={handleToggleWishlist}>
+//                 {isWishlisted ? "❤️ Saved" : "🤍 Wishlist"}
+//               </WishlistButton>
+
+//               <WhatsAppButton as="button" onClick={handleWhatsAppOrder}>
+//               💬 Order on WhatsApp
+//             </WhatsAppButton>
+//             </ActionsRow>
+
+//             {/* ⭐ Product Reviews Section */}
+//             <div style={{ marginTop: "16px", borderTop: `1px solid ${borderColor}`, paddingTop: "16px", display: "flex", flexDirection: "column", gap: "12px" }}>
+//               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+//                 <h3 style={{ fontSize: "1rem", fontWeight: "700", color: textMain, margin: 0 }}>
+//                   Customer Reviews ({product.reviewCount})
+//                 </h3>
+//                 <span style={{ fontSize: "0.9rem", fontWeight: "700", color: brandAmber }}>
+//                   ⭐ {product.averageRating > 0 ? product.averageRating : "No ratings yet"} / 5.0
+//                 </span>
+//               </div>
+
+//               {product.reviews?.length === 0 ? (
+//                 <p style={{ fontSize: "0.85rem", color: textMuted, margin: 0 }}>
+//                   Be the first to review this item after your purchase!
+//                 </p>
+//               ) : (
+//                 <div style={{ display: "flex", flexDirection: "column", gap: "10px", maxHeight: "250px", overflowY: "auto", paddingRight: "4px" }}>
+//                   {product.reviews.map((rev, idx) => (
+//                     <div key={idx} style={{ background: cardBg, border: `1px solid ${borderColor}`, padding: "12px", borderRadius: "10px", display: "flex", flexDirection: "column", gap: "4px" }}>
+//                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+//                         <span style={{ fontSize: "0.85rem", fontWeight: "700", color: textMain }}>
+//                           {rev.userName || "Customer"}
+//                         </span>
+//                         <span style={{ fontSize: "0.8rem", color: brandAmber }}>
+//                           {"⭐".repeat(Number(rev.rating) || 5)}
+//                         </span>
+//                       </div>
+//                       <p style={{ fontSize: "0.85rem", color: textMuted, margin: 0, wordBreak: "break-word" }}>
+//                         {rev.comment}
+//                       </p>
+//                       {rev.createdAt && (
+//                         <span style={{ fontSize: "0.7rem", color: "#94a3b8", marginTop: "2px" }}>
+//                           {new Date(rev.createdAt).toLocaleDateString()}
+//                         </span>
+//                       )}
+//                     </div>
+//                   ))}
+//                 </div>
+//               )}
+//             </div>
+//           </InfoContainer>
+//         </ProductGrid>
+//       </ContentWrapper>
+//     </PageContainer>
+//   );
+// }
+
+
+
+
+
+
 // --- COMPONENT ---
 export default function ProductDetailPage({ params }) {
   const resolvedParams = use(params);
@@ -1174,16 +1667,19 @@ export default function ProductDetailPage({ params }) {
 
   const router = useRouter();
   const [product, setProduct] = useState(null);
-  const [categoryName, setCategoryName] = useState("Loading category...");
+  const [categories, setCategories] = useState([]); // Multiple categories support
   const [loading, setLoading] = useState(true);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [feedback, setFeedback] = useState("");
-// Add this inside ProductDetailPage component state
   const [selectedVariations, setSelectedVariations] = useState({});
+  const [selectedTier, setSelectedTier] = useState(null); // Tiered pricing state
   const [currentUser, setCurrentUser] = useState(null);
   const [userData, setUserData] = useState(null);
   const { addToCart } = useCart();
+
+
+  console.log(product)
 
   // 1. Listen to authenticated user
   useEffect(() => {
@@ -1272,11 +1768,18 @@ export default function ProductDetailPage({ params }) {
 
         if (docSnap.exists()) {
           const data = docSnap.data();
+          
+          // Handle single amount/price vs tiered pricing setup
+          const basePrice = Number(data.amount || data.price) || 0;
+          const tiers = data.priceTiers || data.tieredPricing || [];
+
           const fetchedProduct = {
             id: docSnap.id,
             name: data.name || data.title || "Untitled Product",
-            categoryId: data.categoryId || "",
-            amount: Number(data.amount || data.price) || 0,
+            categoryIds: data.categoryIds || (data.categoryId ? [data.categoryId] : []),
+            amount: basePrice,
+            tieredPricing: tiers,
+            links: data.youtubeLinks || data.productLinks || [], // Product external links support
             description: data.description || "No description provided for this item.",
             images: data.images?.length > 0 ? data.images : data.image ? [data.image] : [],
             neverFinishes: data.neverFinishes ?? true,
@@ -1290,18 +1793,28 @@ export default function ProductDetailPage({ params }) {
           };
           setProduct(fetchedProduct);
 
-          if (fetchedProduct.categoryId) {
-            const catRef = doc(db, "categories", fetchedProduct.categoryId);
-            const catSnap = await getDoc(catRef);
-            if (catSnap.exists()) {
-              const catData = catSnap.data();
-              const rawTitle = catData.title || "Collection";
-              setCategoryName(rawTitle.charAt(0).toUpperCase() + rawTitle.slice(1));
-            } else {
-              setCategoryName("Signature Collection");
-            }
+          // Set default selected tier if tiered pricing exists
+          if (tiers.length > 0) {
+            setSelectedTier(tiers[0]);
+          }
+
+          // Fetch multiple categories
+          if (fetchedProduct.categoryIds.length > 0) {
+            const categoryPromises = fetchedProduct.categoryIds.map(async (catId) => {
+              const catRef = doc(db, "categories", catId);
+              const catSnap = await getDoc(catRef);
+              if (catSnap.exists()) {
+                const catData = catSnap.data();
+                const rawTitle = catData.title || catData.name || "Collection";
+                return rawTitle.charAt(0).toUpperCase() + rawTitle.slice(1);
+              }
+              return null;
+            });
+
+            const resolvedCategories = (await Promise.all(categoryPromises)).filter(Boolean);
+            setCategories(resolvedCategories.length > 0 ? resolvedCategories : ["Signature Collection"]);
           } else {
-            setCategoryName("Signature Collection");
+            setCategories(["Signature Collection"]);
           }
         } else {
           setProduct(null);
@@ -1316,51 +1829,15 @@ export default function ProductDetailPage({ params }) {
     fetchProductDetails();
   }, [productId]);
 
-  // const handleAddToCart = () => {
-  //   if (!product) return;
+  // Determine current active price (Tiered vs Single)
+  const currentActivePrice = selectedTier ? Number(selectedTier.price) : product?.amount || 0;
 
-  //   addToCart({
-  //     id: product.id,
-  //     name: product.name,
-  //     price: product.amount,
-  //     image: product.images[0] || "",
-  //     // selectedColor: "Default",
-  //     // selectedSize: "Standard",
-  //     variations: selectedVariations,
-  //     quantity: 1,
-  //   });
-
-  //   setFeedback("✓ Successfully added to your cart!");
-
-  //   Swal.fire({
-  //     title: "Added to cart!",
-  //     text: "What would you like to do next?",
-  //     icon: "success",
-  //     showCancelButton: true,
-  //     confirmButtonText: "Proceed to Cart",
-  //     cancelButtonText: "Continue Shopping",
-  //     confirmButtonColor: brandCyan,
-  //     cancelButtonColor: textMuted,
-  //     background: "#ffffff",
-  //     color: "#0f172a"
-  //   }).then((result) => {
-  //     if (result.isConfirmed) {
-  //       router.push("/cart");
-  //     }
-  //   });
-
-  //   setTimeout(() => setFeedback(""), 3000);
-  // };
-
-
-
-const handleAddToCart = () => {
+  const handleAddToCart = () => {
     if (!product) return;
 
     // 🌟 Check if product has variations defined
     if (product.variations && product.variations.length > 0) {
       for (const v of product.variations) {
-        // Check if the user has selected an option for this variation name
         if (!selectedVariations[v.name] || selectedVariations[v.name].trim() === "") {
           Swal.fire({
             title: "Selection Required",
@@ -1370,15 +1847,28 @@ const handleAddToCart = () => {
             background: "#ffffff",
             color: "#0f172a"
           });
-          return; // Stop execution if any variation is missing
+          return;
         }
       }
     }
 
+    // addToCart({
+    //   id: product.id,
+    //   name: product.name,
+    //   price: currentActivePrice,
+    //   tier: selectedTier ? selectedTier.name || selectedTier.label : null,
+    //   image: product.images[0] || "",
+    //   variations: selectedVariations,
+    //   quantity: 1,
+    // });
+
     addToCart({
       id: product.id,
       name: product.name,
-      price: product.amount,
+      price: currentActivePrice,
+      basePrice: product.amount, // 🌟 Store original single/base price
+      tieredPricing: product.tieredPricing || [], // 🌟 Pass tiered rules to cart
+      tier: selectedTier ? selectedTier.name || selectedTier.label : null,
       image: product.images[0] || "",
       variations: selectedVariations,
       quantity: 1,
@@ -1406,12 +1896,9 @@ const handleAddToCart = () => {
     setTimeout(() => setFeedback(""), 3000);
   };
 
-
-
-const handleWhatsAppOrder = (e) => {
+  const handleWhatsAppOrder = (e) => {
     if (!product) return;
 
-    // Validate variations if they exist
     if (product.variations && product.variations.length > 0) {
       for (const v of product.variations) {
         if (!selectedVariations[v.name] || selectedVariations[v.name].trim() === "") {
@@ -1429,24 +1916,19 @@ const handleWhatsAppOrder = (e) => {
       }
     }
 
-    // Format selected variations text for message
     const variationsText = Object.entries(selectedVariations)
       .map(([key, val]) => `*${key}*: ${val}`)
       .join(', ');
 
-    // Construct your custom pre-filled message
+    const tierText = selectedTier ? `\n*Pricing Tier:* ${selectedTier.name || selectedTier.label} (₦${currentActivePrice.toLocaleString()})` : '';
+
     const message = encodeURIComponent(
-      `Hello Enitz, I would like to order this item:\n\n*Product:* ${product.name}\n*ID:* ${product.id}\n*Price:* ₦${product.amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}${variationsText ? `\n*Variations:* ${variationsText}` : ''}`
+      `Hello Enitz, I would like to order this item:\n\n*Product:* ${product.name}\n*ID:* ${product.id}\n*Price:* ₦${currentActivePrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}${tierText}${variationsText ? `\n*Variations:* ${variationsText}` : ''}`
     );
 
-    // Replace with your actual WhatsApp support phone number (with country code, no + or spaces)
     const phoneNumber = "2349047103037"; 
-    
-    // Set href dynamically or trigger window.open
     window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
   };
-
-
 
   if (loading) {
     return (
@@ -1508,28 +1990,66 @@ const handleWhatsAppOrder = (e) => {
           </GalleryContainer>
 
           <InfoContainer>
-            <CategoryBadge>{categoryName}</CategoryBadge>
+            {/* 🌟 Multiple Categories Badges */}
+            <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", marginBottom: "8px" }}>
+              {categories.map((cat, idx) => (
+                <CategoryBadge key={idx}>{cat}</CategoryBadge>
+              ))}
+            </div>
 
             <ProductTitle>
               {product.name.charAt(0).toUpperCase() + product.name.slice(1)}
             </ProductTitle>
             <p style={{ fontSize: '0.75rem', color: textMuted, marginTop: '-10px' }}>ID: {product.id}</p>
 
+            {/* 🌟 Price & Tiered Pricing Selection Section */}
             <PriceRow>
               <PriceText>
-                ₦{product.amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                ₦{currentActivePrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </PriceText>
               <StockBadge $inStock={isInStock}>
                 {product.neverFinishes ? "In Stock" : product.quantity > 0 ? `${product.quantity} left` : "Out of Stock"}
               </StockBadge>
             </PriceRow>
 
+            {product.tieredPricing && product.tieredPricing.length > 0 && (
+              <DescriptionSection>
+                <h3>Bulk Pricing</h3>
+                <p>Applies to your cart price when Qty in cart is within the bulk ranges.</p>
+                <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+                  {product.tieredPricing.map((tier, idx) => {
+                    const isTierSelected = selectedTier === tier || selectedTier?.name === tier.name;
+                    return (
+                      <button
+                        key={idx}
+                        type="button"
+                        // onClick={() => setSelectedTier(tier)}
+                        style={{
+                          padding: "8px 14px",
+                          borderRadius: "8px",
+                          fontSize: "0.85rem",
+                          fontWeight: "600",
+                          // cursor: "pointer",
+                          border:"none",
+                          // border: `1px solid ${isTierSelected ? brandCyan : borderColor}`,
+                          background: isTierSelected ? "#f0f9ff" : cardBg,
+                          color: isTierSelected ? brandCyan : textMain,
+                        }}
+                      >
+                        Qty: {tier.minQty} to {tier.maxQty} = (₦{Number(tier.price).toLocaleString()})
+                      </button>
+                    );
+                  })}
+                </div>
+              </DescriptionSection>
+            )}
+
             <DescriptionSection>
               <h3>Product Description</h3>
               <p>{product.description}</p>
             </DescriptionSection>
 
-{/* 🌟 Product Variations Section */}
+            {/* 🌟 Product Variations Section */}
             {product.variations && product.variations.length > 0 && (
               <DescriptionSection>
                 <h3>Variations</h3>
@@ -1568,6 +2088,8 @@ const handleWhatsAppOrder = (e) => {
               </DescriptionSection>
             )}
 
+            
+
             {/* 🌟 Product Features Section */}
             {product.features && product.features.length > 0 && (
               <DescriptionSection>
@@ -1579,6 +2101,31 @@ const handleWhatsAppOrder = (e) => {
                     </li>
                   ))}
                 </ul>
+              </DescriptionSection>
+            )}
+
+            {/* 🌟 Product Links Section */}
+            {product.links && product.links.length > 0 && (
+              <DescriptionSection>
+                <h3>Related Links & Resources</h3>
+                <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                  {product.links.map((linkItem, idx) => (
+                    <a
+                      key={idx}
+                      href={linkItem}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        fontSize: "0.85rem",
+                        color: brandCyan,
+                        textDecoration: "underline",
+                        fontWeight: "500",
+                      }}
+                    >
+                      🔗 {linkItem}
+                    </a>
+                  ))}
+                </div>
               </DescriptionSection>
             )}
 
@@ -1604,8 +2151,8 @@ const handleWhatsAppOrder = (e) => {
               </WishlistButton>
 
               <WhatsAppButton as="button" onClick={handleWhatsAppOrder}>
-              💬 Order on WhatsApp
-            </WhatsAppButton>
+                💬 Order on WhatsApp
+              </WhatsAppButton>
             </ActionsRow>
 
             {/* ⭐ Product Reviews Section */}

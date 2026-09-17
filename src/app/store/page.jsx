@@ -2,6 +2,7 @@
 
 
 
+
 // "use client";
 
 // import { useState, useEffect } from "react";
@@ -9,15 +10,15 @@
 // import Link from "next/link";
 // import { useRouter } from "next/navigation";
 // import { db, auth } from "@/firebaseConfig";
-// import { collection, getDocs, doc, setDoc, deleteDoc, query, where } from "firebase/firestore";
+// import { collection, getDocs, doc, setDoc, deleteDoc, query, where ,onSnapshot} from "firebase/firestore";
 // import { onAuthStateChanged } from "firebase/auth";
 // import Swal from "sweetalert2";
 
 // /* ================= THEME & COLORS ================= */
 
-// const primaryPink = '#ec4899';
-// const primaryAmber = '#f59e0b';
-// const brandGradient = 'linear-gradient(135deg, #ec4899 0%, #f59e0b 50%, #06b6d4 100%)';
+// const brandCyan = '#00aeef';
+// const brandDarkNavy = '#0b1b48';
+// const brandGradient = 'linear-gradient(135deg, #00aeef 0%, #0b1b48 100%)';
 // const cardBg = '#ffffff';
 // const borderColor = '#e2e8f0';
 // const textMain = '#0f172a';
@@ -62,7 +63,7 @@
 //     content: "";
 //     position: absolute;
 //     inset: 0;
-//     background: rgba(15, 23, 42, 0.65);
+//     background: rgba(11, 27, 72, 0.75);
 //     z-index: 1;
 //   }
 // `;
@@ -105,7 +106,7 @@
 
 // const HeroSubtitle = styled.p`
 //   font-size: clamp(0.95rem, 1.8vw, 1.15rem);
-//   color: ${borderColor};
+//   color: #e2e8f0;
 //   line-height: 1.6;
 //   margin: 0;
 // `;
@@ -129,8 +130,8 @@
 //   }
 
 //   &:focus {
-//     border-color: ${primaryPink};
-//     box-shadow: 0 10px 35px rgba(236, 72, 153, 0.2);
+//     border-color: ${brandCyan};
+//     box-shadow: 0 10px 35px rgba(0, 174, 239, 0.2);
 //   }
 // `;
 
@@ -202,12 +203,12 @@
 //   cursor: pointer;
 //   transition: all 0.2s ease;
 //   white-space: nowrap;
-//   box-shadow: ${(props) => (props.$active ? '0 4px 15px rgba(236, 72, 153, 0.25)' : 'none')};
+//   box-shadow: ${(props) => (props.$active ? '0 4px 15px rgba(0, 174, 239, 0.25)' : 'none')};
 
 //   &:hover {
 //     background: ${(props) => (props.$active ? brandGradient : softBg)};
-//     border-color: ${(props) => (props.$active ? 'transparent' : primaryPink)};
-//     color: ${(props) => (props.$active ? '#ffffff' : primaryPink)};
+//     border-color: ${(props) => (props.$active ? 'transparent' : brandCyan)};
+//     color: ${(props) => (props.$active ? '#ffffff' : brandCyan)};
 //   }
 // `;
 
@@ -262,7 +263,7 @@
 //   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
 
 //   &:focus {
-//     border-color: ${primaryPink};
+//     border-color: ${brandCyan};
 //   }
 // `;
 
@@ -389,7 +390,7 @@
 //   font-size: 0.85rem;
 //   font-weight: 700;
 //   cursor: pointer;
-//   box-shadow: 0 4px 12px rgba(236, 72, 153, 0.25);
+//   box-shadow: 0 4px 12px rgba(0, 174, 239, 0.25);
 //   transition: all 0.2s ease;
 
 //   &:hover {
@@ -422,7 +423,7 @@
 //   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 
 //   &:focus {
-//     border-color: ${primaryPink};
+//     border-color: ${brandCyan};
 //   }
 
 //   @media (max-width: 968px) {
@@ -444,29 +445,91 @@
 //   const [wishlistIds, setWishlistIds] = useState([]);
 
 //   // Fetch products and categories from Firestore
+//   // useEffect(() => {
+//   //   async function fetchStoreData() {
+//   //     try {
+//   //       setLoading(true);
+
+//   //       const [productsSnapshot, categoriesSnapshot] = await Promise.all([
+//   //         getDocs(collection(db, "products")),
+//   //         getDocs(collection(db, "categories")),
+//   //       ]);
+
+//   //       const fetchedProducts = productsSnapshot.docs.map((doc) => {
+//   //         const data = doc.data();
+//   //         return {
+//   //           id: doc.id,
+//   //           name: data.name || "Untitled Product",
+//   //           categoryId: data.categoryId || "",
+//   //           amount: Number(data.amount) || 0,
+//   //           images: data.images || [],
+//   //           image: data.image || "",
+//   //           variations: data.variations || [],
+//   //           createdAt: data.createdAt,
+//   //         };
+//   //       });
+
+//   //       const fetchedCategories = categoriesSnapshot.docs.map((doc) => {
+//   //         const data = doc.data();
+//   //         return {
+//   //           id: doc.id,
+//   //           title: data.title || "Untitled Category",
+//   //           description: data.description || "",
+//   //         };
+//   //       });
+
+//   //       setProducts(fetchedProducts);
+//   //       setCategories(fetchedCategories);
+//   //     } catch (error) {
+//   //       console.error("Error fetching store data:", error);
+//   //     } finally {
+//   //       setLoading(false);
+//   //     }
+//   //   }
+
+//   //   fetchStoreData();
+//   // }, []);
+
+
+//   // Real-time listener for products and categories
 //   useEffect(() => {
-//     async function fetchStoreData() {
-//       try {
-//         setLoading(true);
+//     setLoading(true);
 
-//         const [productsSnapshot, categoriesSnapshot] = await Promise.all([
-//           getDocs(collection(db, "products")),
-//           getDocs(collection(db, "categories")),
-//         ]);
+//     // 1. Set up real-time listener for products
+//     const unsubscribeProducts = onSnapshot(
+//       collection(db, "products"),
+//       (productsSnapshot) => {
+//         const fetchedProducts = productsSnapshot.docs
+//           .map((doc) => {
+//             const data = doc.data();
+//             return {
+//               id: doc.id,
+//               name: data.name || "Untitled Product",
+//               categoryId: data.categoryId || "",
+//               amount: Number(data.amount) || 0,
+//               images: data.images || [],
+//               image: data.image || "",
+//               variations: data.variations || [],
+//               createdAt: data.createdAt,
+//               isLive: data.isLive === true,
+//             };
+//           })
+//           // Keep only live products
+//           .filter((product) => product.isLive);
 
-//         const fetchedProducts = productsSnapshot.docs.map((doc) => {
-//           const data = doc.data();
-//           return {
-//             id: doc.id,
-//             name: data.name || "Untitled Product",
-//             categoryId: data.categoryId || "",
-//             amount: Number(data.amount) || 0,
-//             images: data.images || [],
-//             image: data.image || "",
-//             createdAt: data.createdAt,
-//           };
-//         });
+//         setProducts(fetchedProducts);
+//         setLoading(false);
+//       },
+//       (error) => {
+//         console.error("Error listening to products:", error);
+//         setLoading(false);
+//       }
+//     );
 
+//     // 2. Set up real-time listener for categories
+//     const unsubscribeCategories = onSnapshot(
+//       collection(db, "categories"),
+//       (categoriesSnapshot) => {
 //         const fetchedCategories = categoriesSnapshot.docs.map((doc) => {
 //           const data = doc.data();
 //           return {
@@ -476,17 +539,21 @@
 //           };
 //         });
 
-//         setProducts(fetchedProducts);
 //         setCategories(fetchedCategories);
-//       } catch (error) {
-//         console.error("Error fetching store data:", error);
-//       } finally {
-//         setLoading(false);
+//       },
+//       (error) => {
+//         console.error("Error listening to categories:", error);
 //       }
-//     }
+//     );
 
-//     fetchStoreData();
+//     // Cleanup listeners on unmount
+//     return () => {
+//       unsubscribeProducts();
+//       unsubscribeCategories();
+//     };
 //   }, []);
+
+
 
 //   // Filter products by active category ID and search query
 //   const filteredProducts = products.filter((item) => {
@@ -540,7 +607,7 @@
 //         title: "Please Login",
 //         text: "Please log in to manage your wishlist.",
 //         icon: "warning",
-//         confirmButtonColor: "#ec4899",
+//         confirmButtonColor: "#00aeef",
 //         background: "#ffffff",
 //         color: "#0f172a"
 //       });
@@ -585,12 +652,13 @@
 //       {/* Store Hero Banner with Search Bar */}
 //       <StoreHero>
 //         <HeroImage
-//           src="./bag1.png"
+//           src="./shop.png"
 //           alt="Store Hero Banner"
 //         />
 //         <HeroContent>
 //           <HeroTitle>
-//             <span>Shop Our Collections</span>
+//             Shop Our Products
+//             {/* <span>Shop Our Collections</span> */}
 //           </HeroTitle>
 //           <HeroSubtitle>
 //             Explore premium accessories, bespoke products, and quality items designed to elevate your lifestyle.
@@ -693,6 +761,17 @@
 //                     <ProductTitle>
 //                       {product.name ? product.name.charAt(0).toUpperCase() + product.name.slice(1) : ""}
 //                     </ProductTitle>
+
+//                     {/* 🌟 Variations displayed on store card */}
+//                 {/* {product.variations && product.variations.length > 0 && (
+//                   <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+//                     {product.variations.map((v, idx) => (
+//                       <div key={idx} style={{ fontSize: "0.75rem", color: textMuted, fontWeight: "600" }}>
+//                         <span style={{ color: brandCyan }}>{v.name}:</span> {v.options}
+//                       </div>
+//                     ))}
+//                   </div>
+//                 )} */}
                     
 //                     <ProductPriceRow>
 //                       <PriceText>
@@ -721,6 +800,10 @@
 
 
 
+
+
+
+
 "use client";
 
 import { useState, useEffect } from "react";
@@ -728,7 +811,7 @@ import styled, { keyframes } from "styled-components";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { db, auth } from "@/firebaseConfig";
-import { collection, getDocs, doc, setDoc, deleteDoc, query, where ,onSnapshot} from "firebase/firestore";
+import { collection, getDocs, doc, setDoc, deleteDoc, query, where, onSnapshot } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import Swal from "sweetalert2";
 
@@ -765,7 +848,6 @@ const PageContainer = styled.div`
   padding-bottom: 60px;
 `;
 
-/* --- Store Hero Banner --- */
 const StoreHero = styled.section`
   position: relative;
   height: 45vh;
@@ -814,12 +896,6 @@ const HeroTitle = styled.h1`
   color: #ffffff;
   letter-spacing: -0.5px;
   margin: 0;
-
-  span {
-    background: ${brandGradient};
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
 `;
 
 const HeroSubtitle = styled.p`
@@ -853,7 +929,6 @@ const SearchInput = styled.input`
   }
 `;
 
-/* --- Main Layout Container --- */
 const StoreLayout = styled.div`
   max-width: 1200px;
   margin: auto;
@@ -871,7 +946,6 @@ const StoreLayout = styled.div`
   }
 `;
 
-/* --- Categories Sidebar --- */
 const Sidebar = styled.aside`
   background: ${softBg};
   border: 1px solid ${borderColor};
@@ -930,7 +1004,6 @@ const CategoryButton = styled.button`
   }
 `;
 
-/* --- Products Section --- */
 const ProductsWrapper = styled.main`
   display: flex;
   flex-direction: column;
@@ -1006,7 +1079,7 @@ const ProductCard = styled.div`
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
   cursor: pointer;
   transition: all 0.25s ease;
   width: 100%;
@@ -1077,6 +1150,17 @@ const ProductTitle = styled.h4`
   line-height: 1.4;
 `;
 
+const ProductcategoryBadge = styled.span`
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  background: ${softBg};
+  color: ${brandCyan};
+  border: 1px solid ${borderColor};
+  border-radius: 6px;
+  display: inline-block;
+`;
+
 const ProductPriceRow = styled.div`
   display: flex;
   justify-content: space-between;
@@ -1126,7 +1210,6 @@ const LoadingText = styled.div`
   grid-column: 1 / -1;
 `;
 
-/* --- Mobile Category Select Dropdown --- */
 const MobileCategorySelect = styled.select`
   display: none;
   width: 100%;
@@ -1162,67 +1245,31 @@ export default function StorePage() {
   const [currentUser, setCurrentUser] = useState(null);
   const [wishlistIds, setWishlistIds] = useState([]);
 
-  // Fetch products and categories from Firestore
-  // useEffect(() => {
-  //   async function fetchStoreData() {
-  //     try {
-  //       setLoading(true);
-
-  //       const [productsSnapshot, categoriesSnapshot] = await Promise.all([
-  //         getDocs(collection(db, "products")),
-  //         getDocs(collection(db, "categories")),
-  //       ]);
-
-  //       const fetchedProducts = productsSnapshot.docs.map((doc) => {
-  //         const data = doc.data();
-  //         return {
-  //           id: doc.id,
-  //           name: data.name || "Untitled Product",
-  //           categoryId: data.categoryId || "",
-  //           amount: Number(data.amount) || 0,
-  //           images: data.images || [],
-  //           image: data.image || "",
-  //           variations: data.variations || [],
-  //           createdAt: data.createdAt,
-  //         };
-  //       });
-
-  //       const fetchedCategories = categoriesSnapshot.docs.map((doc) => {
-  //         const data = doc.data();
-  //         return {
-  //           id: doc.id,
-  //           title: data.title || "Untitled Category",
-  //           description: data.description || "",
-  //         };
-  //       });
-
-  //       setProducts(fetchedProducts);
-  //       setCategories(fetchedCategories);
-  //     } catch (error) {
-  //       console.error("Error fetching store data:", error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   }
-
-  //   fetchStoreData();
-  // }, []);
-
+  // Helper to get category title by ID
+  const getCategoryName = (catId) => {
+    const found = categories.find((c) => c.id === catId);
+    return found ? found.title : "";
+  };
 
   // Real-time listener for products and categories
   useEffect(() => {
     setLoading(true);
 
-    // 1. Set up real-time listener for products
     const unsubscribeProducts = onSnapshot(
       collection(db, "products"),
       (productsSnapshot) => {
         const fetchedProducts = productsSnapshot.docs
           .map((doc) => {
             const data = doc.data();
+            let catIds = data.categoryIds || [];
+            if (catIds.length === 0 && data.categoryId) {
+              catIds = [data.categoryId];
+            }
+
             return {
               id: doc.id,
               name: data.name || "Untitled Product",
+              categoryIds: catIds,
               categoryId: data.categoryId || "",
               amount: Number(data.amount) || 0,
               images: data.images || [],
@@ -1232,7 +1279,6 @@ export default function StorePage() {
               isLive: data.isLive === true,
             };
           })
-          // Keep only live products
           .filter((product) => product.isLive);
 
         setProducts(fetchedProducts);
@@ -1244,7 +1290,6 @@ export default function StorePage() {
       }
     );
 
-    // 2. Set up real-time listener for categories
     const unsubscribeCategories = onSnapshot(
       collection(db, "categories"),
       (categoriesSnapshot) => {
@@ -1264,19 +1309,17 @@ export default function StorePage() {
       }
     );
 
-    // Cleanup listeners on unmount
     return () => {
       unsubscribeProducts();
       unsubscribeCategories();
     };
   }, []);
 
-
-
   // Filter products by active category ID and search query
   const filteredProducts = products.filter((item) => {
+    const itemCats = item.categoryIds || (item.categoryId ? [item.categoryId] : []);
     const matchesCategory =
-      activeCategoryId === "all" || item.categoryId === activeCategoryId;
+      activeCategoryId === "all" || itemCats.includes(activeCategoryId);
     const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
@@ -1367,17 +1410,10 @@ export default function StorePage() {
 
   return (
     <PageContainer>
-      {/* Store Hero Banner with Search Bar */}
       <StoreHero>
-        <HeroImage
-          src="./shop.png"
-          alt="Store Hero Banner"
-        />
+        <HeroImage src="./shop.png" alt="Store Hero Banner" />
         <HeroContent>
-          <HeroTitle>
-            Shop Our Products
-            {/* <span>Shop Our Collections</span> */}
-          </HeroTitle>
+          <HeroTitle>Shop Our Products</HeroTitle>
           <HeroSubtitle>
             Explore premium accessories, bespoke products, and quality items designed to elevate your lifestyle.
           </HeroSubtitle>
@@ -1390,13 +1426,10 @@ export default function StorePage() {
         </HeroContent>
       </StoreHero>
 
-      {/* Main Layout */}
       <StoreLayout>
-        {/* Categories Sidebar */}
         <Sidebar>
           <SidebarTitle>Categories</SidebarTitle>
 
-          {/* Mobile Dropdown Select */}
           <MobileCategorySelect
             value={activeCategoryId}
             onChange={(e) => setActiveCategoryId(e.target.value)}
@@ -1409,7 +1442,6 @@ export default function StorePage() {
             ))}
           </MobileCategorySelect>
 
-          {/* Desktop Sidebar Button List */}
           <CategoryList>
             <CategoryButton
               $active={activeCategoryId === "all"}
@@ -1430,9 +1462,7 @@ export default function StorePage() {
           </CategoryList>
         </Sidebar>
 
-        {/* Products Section */}
         <ProductsWrapper>
-          {/* Controls Bar */}
           <StoreControls>
             <ResultsCount>
               Showing <span>{sortedProducts.length}</span> curated items
@@ -1445,7 +1475,6 @@ export default function StorePage() {
             </SortSelect>
           </StoreControls>
 
-          {/* Grid */}
           <ProductsGrid>
             {loading ? (
               <LoadingText>Loading curated collections...</LoadingText>
@@ -1480,16 +1509,22 @@ export default function StorePage() {
                       {product.name ? product.name.charAt(0).toUpperCase() + product.name.slice(1) : ""}
                     </ProductTitle>
 
-                    {/* 🌟 Variations displayed on store card */}
-                {/* {product.variations && product.variations.length > 0 && (
-                  <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
-                    {product.variations.map((v, idx) => (
-                      <div key={idx} style={{ fontSize: "0.75rem", color: textMuted, fontWeight: "600" }}>
-                        <span style={{ color: brandCyan }}>{v.name}:</span> {v.options}
-                      </div>
-                    ))}
-                  </div>
-                )} */}
+                    {/* Multiple Category Badges */}
+                    <div style={{ display: "flex", gap: "4px", flexWrap: "wrap", marginTop: "4px" }}>
+                      {(() => {
+                        const itemCats = product.categoryIds || (product.categoryId ? [product.categoryId] : []);
+                        if (itemCats.length === 0) return <ProductcategoryBadge>Uncategorized</ProductcategoryBadge>;
+                        
+                        return itemCats.map((catId, idx) => {
+                          const name = getCategoryName(catId);
+                          return name ? (
+                            <ProductcategoryBadge key={idx}>
+                              {name.charAt(0).toUpperCase() + name.slice(1)}
+                            </ProductcategoryBadge>
+                          ) : null;
+                        });
+                      })()}
+                    </div>
                     
                     <ProductPriceRow>
                       <PriceText>

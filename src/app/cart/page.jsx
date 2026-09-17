@@ -793,13 +793,214 @@ const ShopNowButton = styled(Link)`
   }
 `;
 
+// export default function CartPage() {
+//   const { cart, updateQuantity, removeFromCart, clearCart, cartTotalItems, cartSubtotal } = useCart();
+//   const router = useRouter();
+//   const [user, setUser] = useState(null);
+//   const [userData, setUserData] = useState(null);
+
+//   const total = cartSubtotal;
+
+//   useEffect(() => {
+//     const unsubscribe = onAuthStateChanged(auth, async (authUser) => {
+//       if (authUser) {
+//         setUser(authUser);
+//         try {
+//           const userRef = doc(db, "users", authUser.uid);
+//           const userSnap = await getDoc(userRef);
+
+//           if (userSnap.exists()) {
+//             setUserData(userSnap.data());
+//           }
+//         } catch (error) {
+//           console.log(error);
+//         }
+//       } else {
+//         setUser(null);
+//         setUserData(null);
+//       }
+//     });
+
+//     return () => unsubscribe();
+//   }, []);
+
+//   const handleCheckout = () => {
+//     if (user) {
+//       router.push('/dashboard/addressmanager');
+//     } else {
+//       Swal.fire({
+//         title: "Please Login to Proceed",
+//         text: "You need to be logged in to complete your checkout. If you don't have an account, please sign up.",
+//         icon: "warning",
+//         showCancelButton: true,
+//         confirmButtonText: "Login / Sign Up",
+//         cancelButtonText: "Cancel",
+//         confirmButtonColor: "#00AEEF",
+//         cancelButtonColor: "#475569",
+//         background: "#ffffff",
+//         color: "#0f172a"
+//       }).then((result) => {
+//         if (result.isConfirmed) {
+//           router.push('/login');
+//         }
+//       });
+//     }
+//   };
+
+//   if (cart.length === 0) {
+//     return (
+//       <PageWrapper>
+//         <EmptyContainer>
+//           <EmptyIcon>🛒</EmptyIcon>
+//           <EmptyTitle>Your cart is empty</EmptyTitle>
+//           <EmptyText>Discover our signature products and add your favorites to the cart.</EmptyText>
+//           <ShopNowButton href="/store">Continue Shopping</ShopNowButton>
+//         </EmptyContainer>
+//       </PageWrapper>
+//     );
+//   }
+
+//   return (
+//     <PageWrapper>
+//       <CartHeader>
+//         <Title>Shopping Cart</Title>
+//         <ItemCount>{cartTotalItems} items</ItemCount>
+//       </CartHeader>
+
+//       <CartContent>
+//         {/* Items List */}
+//         {/* <ItemsList>
+//           {cart.map((item) => {
+//             const itemPrice = item.price || item.amount || 0;
+//             return (
+//               <CartCard key={`${item.id}-${item.selectedColor}-${item.selectedSize}`}>
+//                 <ItemImage src={item.image || "https://placehold.co/90x90?text=No+Image"} alt={item.name} />
+                
+//                 <ItemDetails>
+//                   <ItemName>{item.name}</ItemName>
+//                   <ItemPrice>₦{itemPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</ItemPrice>
+//                 </ItemDetails>
+
+//                 <QuantityWrapper>
+//                   <QtyBtn onClick={() => updateQuantity(item.id, item.selectedColor, item.selectedSize, -1)}>-</QtyBtn>
+//                   <QtyDisplay>{item.quantity}</QtyDisplay>
+//                   <QtyBtn onClick={() => updateQuantity(item.id, item.selectedColor, item.selectedSize, 1)}>+</QtyBtn>
+//                 </QuantityWrapper>
+
+//                 <ItemTotal>₦{(itemPrice * item.quantity).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</ItemTotal>
+
+//                 <RemoveButton onClick={() => removeFromCart(item.id, item.selectedColor, item.selectedSize)} title="Remove item">
+//                   &times;
+//                 </RemoveButton>
+//               </CartCard>
+//             );
+//           })}
+
+//           <ClearCartButton onClick={clearCart}>Clear Cart</ClearCartButton>
+//         </ItemsList> */}
+
+//      {/* Items List */}
+//         <ItemsList>
+//           {cart.map((item) => {
+//             const itemPrice = item.price || item.amount || 0;
+//             return (
+//               <CartCard key={`${item.id}-${JSON.stringify(item.variations)}`}>
+//                 <ItemImage src={item.image || "https://placehold.co/90x90?text=No+Image"} alt={item.name} />
+                
+//                 <ItemDetails>
+//                   <ItemName>{item.name}</ItemName>
+                  
+//                   {/* 🌟 Dynamically display object variations */}
+//                   {item.variations && typeof item.variations === 'object' && Object.keys(item.variations).length > 0 && (
+//                     <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginTop: "4px", marginBottom: "4px" }}>
+//                       {Object.entries(item.variations).map(([key, value]) => (
+//                         <span key={key} style={{ fontSize: "0.75rem", color: textMuted, background: "#f1f5f9", padding: "2px 6px", borderRadius: "4px", fontWeight: "600", textTransform: "capitalize" }}>
+//                           {key}: <strong style={{ color: textMain }}>{String(value)}</strong>
+//                         </span>
+//                       ))}
+//                     </div>
+//                   )}
+
+//                   <ItemPrice>₦{itemPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</ItemPrice>
+//                 </ItemDetails>
+
+//                 <QuantityWrapper>
+//                   <QtyBtn onClick={() => updateQuantity(item.id, item.selectedColor, item.selectedSize, -1)}>-</QtyBtn>
+//                   <QtyDisplay>{item.quantity}</QtyDisplay>
+//                   <QtyBtn onClick={() => updateQuantity(item.id, item.selectedColor, item.selectedSize, 1)}>+</QtyBtn>
+//                 </QuantityWrapper>
+
+//                 <ItemTotal>₦{(itemPrice * item.quantity).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</ItemTotal>
+
+//                 <RemoveButton onClick={() => removeFromCart(item.id, item.selectedColor, item.selectedSize)} title="Remove item">
+//                   &times;
+//                 </RemoveButton>
+//               </CartCard>
+//             );
+//           })}
+
+//           <ClearCartButton onClick={clearCart}>Clear Cart</ClearCartButton>
+//         </ItemsList>
+
+//         {/* Order Summary */}
+//         <SummaryCard>
+//           <SummaryTitle>Cart Summary</SummaryTitle>
+          
+//           <SummaryRow>
+//             <span>Subtotal</span>
+//             <span>₦{cartSubtotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+//           </SummaryRow>
+
+//           <Divider />
+
+//           <SummaryRow $total>
+//             <span>Total</span>
+//             <span>₦{total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+//           </SummaryRow>
+
+//           <CheckoutButton onClick={handleCheckout}>
+//             Proceed to Checkout
+//           </CheckoutButton>
+//         </SummaryCard>
+//       </CartContent>
+//     </PageWrapper>
+//   );
+// }
+
+
+
+
+
+
 export default function CartPage() {
   const { cart, updateQuantity, removeFromCart, clearCart, cartTotalItems, cartSubtotal } = useCart();
   const router = useRouter();
   const [user, setUser] = useState(null);
   const [userData, setUserData] = useState(null);
 
-  const total = cartSubtotal;
+  // 🌟 Helper function to compute active price (Tiered vs Single) based on item quantity
+  const getEffectiveUnitPrice = (item) => {
+    const basePrice = Number(item.basePrice || item.price || item.amount) || 0;
+    
+    // If no tiered pricing exists, return standard base price
+    if (!item.tieredPricing || !Array.isArray(item.tieredPricing) || item.tieredPricing.length === 0) {
+      return basePrice;
+    }
+
+    const currentQty = Number(item.quantity) || 1;
+
+    // Find matching tier range
+    const matchedTier = item.tieredPricing.find((tier) => {
+      const min = Number(tier.minQty) || 0;
+      const max = (tier.maxQty !== undefined && tier.maxQty !== null && tier.maxQty !== '') 
+        ? Number(tier.maxQty) 
+        : Infinity;
+      
+      return currentQty >= min && currentQty <= max;
+    });
+
+    return matchedTier ? Number(matchedTier.price) : basePrice;
+  };
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (authUser) => {
@@ -860,6 +1061,12 @@ export default function CartPage() {
     );
   }
 
+  // 🌟 Compute dynamic subtotal incorporating real-time tiered pricing
+  const dynamicCartSubtotal = cart.reduce((acc, item) => {
+    const unitPrice = getEffectiveUnitPrice(item);
+    return acc + (unitPrice * (Number(item.quantity) || 1));
+  }, 0);
+
   return (
     <PageWrapper>
       <CartHeader>
@@ -869,40 +1076,11 @@ export default function CartPage() {
 
       <CartContent>
         {/* Items List */}
-        {/* <ItemsList>
-          {cart.map((item) => {
-            const itemPrice = item.price || item.amount || 0;
-            return (
-              <CartCard key={`${item.id}-${item.selectedColor}-${item.selectedSize}`}>
-                <ItemImage src={item.image || "https://placehold.co/90x90?text=No+Image"} alt={item.name} />
-                
-                <ItemDetails>
-                  <ItemName>{item.name}</ItemName>
-                  <ItemPrice>₦{itemPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</ItemPrice>
-                </ItemDetails>
-
-                <QuantityWrapper>
-                  <QtyBtn onClick={() => updateQuantity(item.id, item.selectedColor, item.selectedSize, -1)}>-</QtyBtn>
-                  <QtyDisplay>{item.quantity}</QtyDisplay>
-                  <QtyBtn onClick={() => updateQuantity(item.id, item.selectedColor, item.selectedSize, 1)}>+</QtyBtn>
-                </QuantityWrapper>
-
-                <ItemTotal>₦{(itemPrice * item.quantity).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</ItemTotal>
-
-                <RemoveButton onClick={() => removeFromCart(item.id, item.selectedColor, item.selectedSize)} title="Remove item">
-                  &times;
-                </RemoveButton>
-              </CartCard>
-            );
-          })}
-
-          <ClearCartButton onClick={clearCart}>Clear Cart</ClearCartButton>
-        </ItemsList> */}
-
-     {/* Items List */}
         <ItemsList>
           {cart.map((item) => {
-            const itemPrice = item.price || item.amount || 0;
+            const itemPrice = getEffectiveUnitPrice(item);
+            const itemTotalCost = itemPrice * (Number(item.quantity) || 1);
+
             return (
               <CartCard key={`${item.id}-${JSON.stringify(item.variations)}`}>
                 <ItemImage src={item.image || "https://placehold.co/90x90?text=No+Image"} alt={item.name} />
@@ -910,7 +1088,6 @@ export default function CartPage() {
                 <ItemDetails>
                   <ItemName>{item.name}</ItemName>
                   
-                  {/* 🌟 Dynamically display object variations */}
                   {item.variations && typeof item.variations === 'object' && Object.keys(item.variations).length > 0 && (
                     <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginTop: "4px", marginBottom: "4px" }}>
                       {Object.entries(item.variations).map(([key, value]) => (
@@ -921,18 +1098,29 @@ export default function CartPage() {
                     </div>
                   )}
 
-                  <ItemPrice>₦{itemPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</ItemPrice>
+                  {/* Real-time active price per unit */}
+                  <ItemPrice>
+                    ₦{itemPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} per unit
+                  </ItemPrice>
                 </ItemDetails>
 
-                <QuantityWrapper>
-                  <QtyBtn onClick={() => updateQuantity(item.id, item.selectedColor, item.selectedSize, -1)}>-</QtyBtn>
+                {/* 🌟 Fixed: Pass item.id and delta (+1 / -1) correctly */}
+                {/* <QuantityWrapper>
+                  <QtyBtn onClick={() => updateQuantity(item.id, -1)}>-</QtyBtn>
                   <QtyDisplay>{item.quantity}</QtyDisplay>
-                  <QtyBtn onClick={() => updateQuantity(item.id, item.selectedColor, item.selectedSize, 1)}>+</QtyBtn>
-                </QuantityWrapper>
+                  <QtyBtn onClick={() => updateQuantity(item.id, 1)}>+</QtyBtn>
+                </QuantityWrapper> */}
 
-                <ItemTotal>₦{(itemPrice * item.quantity).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</ItemTotal>
+                
+                 <QuantityWrapper>
+                   <QtyBtn onClick={() => updateQuantity(item.id, item.selectedColor, item.selectedSize, -1)}>-</QtyBtn>
+                   <QtyDisplay>{item.quantity}</QtyDisplay>
+                   <QtyBtn onClick={() => updateQuantity(item.id, item.selectedColor, item.selectedSize, 1)}>+</QtyBtn>
+                 </QuantityWrapper>
 
-                <RemoveButton onClick={() => removeFromCart(item.id, item.selectedColor, item.selectedSize)} title="Remove item">
+                <ItemTotal>₦{itemTotalCost.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</ItemTotal>
+
+                <RemoveButton onClick={() => removeFromCart(item.id)} title="Remove item">
                   &times;
                 </RemoveButton>
               </CartCard>
@@ -948,14 +1136,14 @@ export default function CartPage() {
           
           <SummaryRow>
             <span>Subtotal</span>
-            <span>₦{cartSubtotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+            <span>₦{dynamicCartSubtotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
           </SummaryRow>
 
           <Divider />
 
           <SummaryRow $total>
             <span>Total</span>
-            <span>₦{total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+            <span>₦{dynamicCartSubtotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
           </SummaryRow>
 
           <CheckoutButton onClick={handleCheckout}>
