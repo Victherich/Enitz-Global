@@ -224,6 +224,7 @@ const ButtonGroup = styled.div`
   display: flex;
   gap: 10px;
   justify-content: flex-end;
+  flex-wrap:wrap;
   margin-top: auto;
   align-items: center;
 `;
