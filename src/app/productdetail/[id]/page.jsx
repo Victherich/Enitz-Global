@@ -1777,6 +1777,7 @@ export default function ProductDetailPage({ params }) {
             id: docSnap.id,
             name: data.name || data.title || "Untitled Product",
             categoryIds: data.categoryIds || (data.categoryId ? [data.categoryId] : []),
+            pricingType: data.pricingType || (tiers.length > 0 ? "tiered" : "single"), // 🌟 Track pricing type
             amount: basePrice,
             tieredPricing: tiers,
             links: data.youtubeLinks || data.productLinks || [], // Product external links support
@@ -1920,10 +1921,18 @@ export default function ProductDetailPage({ params }) {
       .map(([key, val]) => `*${key}*: ${val}`)
       .join(', ');
 
-    const tierText = selectedTier ? `\n*Pricing Tier:* ${selectedTier.name || selectedTier.label} (₦${currentActivePrice.toLocaleString()})` : '';
+    // const tierText = selectedTier ? `\n*Pricing Tier:* ${selectedTier.name || selectedTier.label} (₦${currentActivePrice.toLocaleString()})` : '';
+
+const tierLabel = selectedTier 
+      ? (product.pricingType === "singleqtytiered" ? `Exact Qty: ${selectedTier.minQty}` : `${selectedTier.minQty} - ${selectedTier.maxQty}`)
+      : '';
+    const tierText = selectedTier ? `\n*Pricing Option:* ${tierLabel} (₦${currentActivePrice.toLocaleString()})` : '';
+
 
     const message = encodeURIComponent(
-      `Hello Enitz, I would like to order this item:\n\n*Product:* ${product.name}\n*ID:* ${product.id}\n*Price:* ₦${currentActivePrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}${tierText}${variationsText ? `\n*Variations:* ${variationsText}` : ''}`
+      // `Hello Enitz, I would like to order this item:\n\n*Product:* ${product.name}\n*ID:* ${product.id}\n*Price:* ₦${currentActivePrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}${tierText}${variationsText ? `\n*Variations:* ${variationsText}` : ''}`
+     `Hello Enitz, I would like to order this item:\n\n*Product:* ${product.name}\n*ID:* ${product.id}\n${variationsText ? `\n*Variations:* ${variationsText}` : ''}`
+   
     );
 
     const phoneNumber = "2349047103037"; 
@@ -2012,7 +2021,7 @@ export default function ProductDetailPage({ params }) {
               </StockBadge>
             </PriceRow>
 
-            {product.tieredPricing && product.tieredPricing.length > 0 && (
+            {/* {product.tieredPricing && product.tieredPricing.length > 0 && (
               <DescriptionSection>
                 <h3>Bulk Pricing</h3>
                 <p>Applies to your cart price when Qty in cart is within the bulk ranges.</p>
@@ -2042,7 +2051,48 @@ export default function ProductDetailPage({ params }) {
                   })}
                 </div>
               </DescriptionSection>
-            )}
+            )} */}
+
+            {product.tieredPricing && product.tieredPricing.length > 0 && (
+            <DescriptionSection>
+              <h3>{product.pricingType === "singleqtytiered" ? "Quantity Pricing Options" : "Bulk Pricing"}</h3>
+              <p>
+                {product.pricingType === "singleqtytiered" 
+                  ? "Select the exact quantities below in your cart to apply" 
+                  : "Applies to your cart price when Qty in cart is within the bulk ranges."}
+              </p>
+              <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+                {product.tieredPricing.map((tier, idx) => {
+                  const isTierSelected = selectedTier === tier || selectedTier?.minQty === tier.minQty;
+                  return (
+                    <button
+                      key={idx}
+                      type="button"
+                      // onClick={() => setSelectedTier(isTierSelected ? null : tier)}
+                      style={{
+                        padding: "8px 14px",
+                        borderRadius: "8px",
+                        fontSize: "0.85rem",
+                        fontWeight: "600",
+
+                        // cursor: "pointer",
+                        // border: `1px solid ${isTierSelected ? brandCyan : borderColor}`,
+                        border:"none",
+                        background:"none",
+                        // background: isTierSelected ? "#f0f9ff" : cardBg,
+                        color:brandCyan,
+                      }}
+                    >
+                      {product.pricingType === "singleqtytiered"
+  ? `Qty: ${tier.minQty} = ₦${Number(tier.price).toLocaleString()}`
+  : tier.maxQty == null
+  ? `Qty: ${tier.minQty} and Above = ₦${Number(tier.price).toLocaleString()}`
+  : `Qty: ${tier.minQty} to ${tier.maxQty} = ₦${Number(tier.price).toLocaleString()}`} </button>
+                  );
+                })}
+              </div>
+            </DescriptionSection>
+          )}
 
             <DescriptionSection>
               <h3>Product Description</h3>

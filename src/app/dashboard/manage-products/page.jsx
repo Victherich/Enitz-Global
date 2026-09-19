@@ -1417,6 +1417,13 @@ export default function ProductsCrudPage() {
         });
       }
 
+     if (form.pricingType === "singleqtytiered" && (priceTiers.length === 0 || priceTiers.some(t => !t.minQty || !t.price))) {
+  return Swal.fire({
+    icon: "warning",
+    text: "Please provide both quantity and price for all single quantity tiers.",
+  });
+}
+
       if (form.pricingType === "tiered" && priceTiers.length === 0) {
         return Swal.fire({
           icon: "warning",
@@ -1485,18 +1492,50 @@ export default function ProductsCrudPage() {
         .map((item) => item.trim())
         .filter((item) => item.length > 0);
 
-      const formattedTiers = priceTiers.map(tier => ({
-        minQty: Number(tier.minQty || 1),
-        maxQty: tier.maxQty ? Number(tier.maxQty) : null,
-        price: Number(tier.price || 0)
-      }));
+      // const formattedTiers = priceTiers.map(tier => ({
+      //   minQty: Number(tier.minQty || 1),
+      //   maxQty: tier.maxQty ? Number(tier.maxQty) : null,
+      //   price: Number(tier.price || 0)
+      // }));
+
+      const formattedTiers = form.pricingType === "singleqtytiered" 
+  ? priceTiers.map(tier => ({
+      minQty: Number(tier.minQty || 1),
+      maxQty: Number(tier.minQty || 1), // Exact match quantity
+      price: Number(tier.price || 0)
+    }))
+  : form.pricingType === "tiered" 
+  ? priceTiers.map(tier => ({
+      minQty: Number(tier.minQty || 1),
+      maxQty: tier.maxQty ? Number(tier.maxQty) : null,
+      price: Number(tier.price || 0)
+    }))
+  : [];
+
+      // const payload = {
+      //   name: form.name,
+      //   description: form.description,
+      //   pricingType: form.pricingType,
+      //   amount: form.pricingType === "single" ? Number(form.amount) : Number(priceTiers[0]?.price || 0),
+      //   priceTiers: form.pricingType === "tiered" ? formattedTiers : [],
+      //   quantity: form.neverFinishes ? 0 : Number(form.quantity || 0),
+      //   neverFinishes: form.neverFinishes,
+      //   images: finalImageUrls,
+      //   image: finalImageUrls[0] || "",
+      //   categoryIds: form.categoryIds,
+      //   categoryId: form.categoryIds[0] || "",
+      //   isLive: form.isLive,
+      //   variations: variations.filter((v) => v.name.trim() !== "" && v.options.trim() !== ""),
+      //   features: featuresList,
+      //   youtubeLinks: youtubeLinksList,
+      // };
 
       const payload = {
         name: form.name,
         description: form.description,
         pricingType: form.pricingType,
-        amount: form.pricingType === "single" ? Number(form.amount) : Number(priceTiers[0]?.price || 0),
-        priceTiers: form.pricingType === "tiered" ? formattedTiers : [],
+        amount: form.pricingType === "single" ? Number(form.amount) : Number(formattedTiers[0]?.price || 0),
+        priceTiers: form.pricingType === "single" ? [] : formattedTiers,
         quantity: form.neverFinishes ? 0 : Number(form.quantity || 0),
         neverFinishes: form.neverFinishes,
         images: finalImageUrls,
@@ -1584,7 +1623,12 @@ export default function ProductsCrudPage() {
     setShowModal(true);
     setVariations(item.variations || []);
     setFeaturesText(item.features ? item.features.join("\n") : "");
-    setPriceTiers(item.priceTiers && item.priceTiers.length > 0 ? item.priceTiers : [{ minQty: 1, maxQty: 1, price: item.amount || "" }]);
+    // setPriceTiers(item.priceTiers && item.priceTiers.length > 0 ? item.priceTiers : [{ minQty: 1, maxQty: 1, price: item.amount || "" }]);
+   setPriceTiers(
+    item.priceTiers && item.priceTiers.length > 0 
+      ? item.priceTiers 
+      : [{ minQty: 1, maxQty: 1, price: item.amount || "" }]
+  );
     setYoutubeLinksText(item.youtubeLinks ? item.youtubeLinks.join("\n") : "");
   };
 
@@ -1793,12 +1837,20 @@ export default function ProductsCrudPage() {
                     </div>
                   )}
 
-                  <ProductAmount>
+                  {/* <ProductAmount>
                       ₦{Number(item.amount || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                   </ProductAmount>
                       <ProductAmount>
                     {item.pricingType === "tiered"&&<span style={{ fontSize: "0.85rem", color: PrimaryNavy }}>Bulk Pricing Available</span>}
-                  </ProductAmount>
+                  </ProductAmount> */}
+
+                 <ProductAmount>
+  ₦{Number(item.amount || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+</ProductAmount>
+<ProductAmount>
+  {item.pricingType === "tiered" && <span style={{ fontSize: "0.85rem", color: PrimaryNavy }}>Range Qty Tiered Pricing Available</span>}
+  {item.pricingType === "singleqtytiered" && <span style={{ fontSize: "0.85rem", color: PrimaryNavy }}>Single Qty Tiered Pricing Available</span>}
+</ProductAmount>
 
                   <ProductStock>
                     {item.neverFinishes ? "∞ In Unlimited Stock" : `Stock: ${item.quantity ?? 0}`}
@@ -1896,6 +1948,17 @@ export default function ProductsCrudPage() {
                     />
                     Single Price Option
                   </label>
+
+<label style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.85rem", cursor: "pointer" }}>
+      <input
+        type="radio"
+        name="pricingType"
+        checked={form.pricingType === "singleqtytiered"}
+        onChange={() => setForm({ ...form, pricingType: "singleqtytiered" })}
+      />
+      Single Qty Tiered (1 Qty & Price)
+    </label>
+
                   <label style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.85rem", cursor: "pointer" }}>
                     <input
                       type="radio"
@@ -1903,7 +1966,7 @@ export default function ProductsCrudPage() {
                       checked={form.pricingType === "tiered"}
                       onChange={() => setForm({ ...form, pricingType: "tiered" })}
                     />
-                    Tiered / Quantity-Based Pricing
+                    Range Quantity-Based Pricing
                   </label>
                 </div>
               </div>
@@ -1916,8 +1979,47 @@ export default function ProductsCrudPage() {
                   onChange={(e) => setForm({ ...form, amount: e.target.value })}
                   required
                 />
-              ) : (
-                <div style={{ display: "flex", flexDirection: "column", gap: "6px", background: "#f9f9f9", padding: "10px", borderRadius: "6px", border: `1px solid ${Border}` }}>
+              ) : form.pricingType === "singleqtytiered" ? (
+  <div style={{ display: "flex", flexDirection: "column", gap: "6px", background: "#f9f9f9", padding: "10px", borderRadius: "6px", border: `1px solid ${Border}` }}>
+    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+      <span style={{ fontSize: "0.85rem", fontWeight: "700", color: Dark }}>
+        Single Quantity Price Tiers (Exact Qty & Price)
+      </span>
+      <PrimaryButton type="button" onClick={handleAddTier} style={{ padding: "4px 8px", fontSize: "0.75rem" }}>
+        + Add Qty Tier
+      </PrimaryButton>
+    </div>
+
+    {priceTiers.map((tier, index) => (
+      <div key={index} style={{ display: "flex", gap: "6px", alignItems: "center" }}>
+        <StyledInput
+          type="number"
+          placeholder="Exact Qty (e.g. 5)"
+          value={tier.minQty}
+          onChange={(e) => {
+            const val = e.target.value;
+            handleTierChange(index, "minQty", val);
+            handleTierChange(index, "maxQty", val); // Keep maxQty equal to minQty
+          }}
+          required
+        />
+        <StyledInput
+          type="number"
+          placeholder="Price (₦)"
+          value={tier.price}
+          onChange={(e) => handleTierChange(index, "price", e.target.value)}
+          required
+        />
+        <DeleteButton type="button" onClick={() => handleRemoveTier(index)} style={{ padding: "8px 10px" }}>
+          ✕
+        </DeleteButton>
+      </div>
+    ))}
+    <p style={{ color: "#666", fontSize: "0.8rem", margin: 0 }}>
+      Customer must buy the exact specified quantity to get this tier price.
+    </p>
+  </div>
+) : ( <div style={{ display: "flex", flexDirection: "column", gap: "6px", background: "#f9f9f9", padding: "10px", borderRadius: "6px", border: `1px solid ${Border}` }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                     <span style={{ fontSize: "0.85rem", fontWeight: "700", color: Dark }}>
                       Price Ranges Based on Quantity
