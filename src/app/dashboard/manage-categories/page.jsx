@@ -998,8 +998,85 @@ export default function CategoriesCrudPage() {
     }
   };
 
-  const handleDeleteCategory = async (categoryToDelete) => {
+  // const handleDeleteCategory = async (categoryToDelete) => {
+  //   try {
+  //     const productsQuery = query(collection(db, "products"), where("categoryId", "==", categoryToDelete.id));
+  //     const productsSnapshot = await getDocs(productsQuery);
+
+  //     if (!productsSnapshot.empty) {
+  //       const categoryOptions = categories
+  //         .filter(cat => cat.id !== categoryToDelete.id)
+  //         .reduce((acc, cat) => {
+  //           acc[cat.id] = cat.title;
+  //           return acc;
+  //         }, { "uncategorized": "Move to Uncategorized" });
+
+  //       const { value: targetChoice } = await Swal.fire({
+  //         title: "Category Contains Products!",
+  //         text: `There are ${productsSnapshot.size} product(s) in "${categoryToDelete.title}". Where should these products go before deletion?`,
+  //         input: "select",
+  //         inputOptions: categoryOptions,
+  //         inputPlaceholder: "Select a fallback category",
+  //         showCancelButton: true,
+  //         confirmButtonText: "Proceed & Reassign",
+  //         confirmButtonColor: PrimaryCyan,
+  //         cancelButtonColor: TextMuted,
+  //       });
+
+  //       if (!targetChoice) return;
+
+  //       const batch = writeBatch(db);
+
+  //       productsSnapshot.forEach((productDoc) => {
+  //         batch.update(productDoc.ref, { 
+  //           categoryId: targetChoice === "uncategorized" ? null : targetChoice,
+  //           categoryName: targetChoice === "uncategorized" ? "Uncategorized" : categoryOptions[targetChoice]
+  //         });
+  //       });
+
+  //       const categoryRef = doc(db, "categories", categoryToDelete.id);
+  //       batch.delete(categoryRef);
+
+  //       await batch.commit();
+  //       Swal.fire("Success!", "Category deleted and products safely reassigned.", "success");
+  //       fetchCategories();
+  //       return;
+  //     }
+
+  //     const result = await Swal.fire({
+  //       title: "Are you sure?",
+  //       text: "This action cannot be undone!",
+  //       icon: "warning",
+  //       showCancelButton: true,
+  //       confirmButtonColor: Danger,
+  //       cancelButtonColor: TextMuted,
+  //       confirmButtonText: "Yes, delete it!",
+  //     });
+
+  //     if (result.isConfirmed) {
+  //       await deleteDoc(doc(db, "categories", categoryToDelete.id));
+  //       Swal.fire("Deleted!", "Category has been removed.", "success");
+  //       fetchCategories();
+  //     }
+  //   } catch (error) {
+  //     Swal.fire("Error", "Could not delete category.", "error");
+  //   }
+  // };
+
+ 
+ const handleDeleteCategory = async (categoryToDelete) => {
     try {
+      // Prevent deletion if the category has a fixed type field
+      if (categoryToDelete.type === "fixed") {
+        await Swal.fire({
+          title: "Cannot Delete",
+          text: `"${categoryToDelete.title}" is a protected fixed category and cannot be deleted.`,
+          icon: "error",
+          confirmButtonColor: PrimaryCyan,
+        });
+        return;
+      }
+
       const productsQuery = query(collection(db, "products"), where("categoryId", "==", categoryToDelete.id));
       const productsSnapshot = await getDocs(productsQuery);
 
@@ -1062,7 +1139,8 @@ export default function CategoriesCrudPage() {
       Swal.fire("Error", "Could not delete category.", "error");
     }
   };
-
+ 
+ 
   const filteredCategories = categories.filter((cat) =>
     cat.title.toLowerCase().includes(searchQuery.toLowerCase())
   );

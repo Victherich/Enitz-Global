@@ -1231,42 +1231,6 @@ export default function LandingPage() {
         </ProductContainer>
       </ProductShowcaseSection>
 
-      {/* 4. SIGNATURE COLLECTIONS GALLERY */}
-      <GallerySection>
-        <SectionHeader>
-          <div className="badge-pill">
-            <Star className="w-4 h-4 text-cyan-500" /> Explore Catalog
-          </div>
-          <h2>Our Core Categories</h2>
-          <p>Discover thoughtfully chosen personal, household, and lifestyle merchandise tailored to your everyday needs.</p>
-        </SectionHeader>
-
-        <GalleryGrid>
-          <GalleryCard>
-            <img src="./h3.png" alt="Personal Products" />
-            <div className="overlay">
-              <h4>Personal Products</h4>
-              <p>Carefully selected items for your daily routine</p>
-            </div>
-          </GalleryCard>
-
-          <GalleryCard>
-            <img src="./h4.png" alt="Household Goods" />
-            <div className="overlay">
-              <h4>Household Goods</h4>
-              <p>Practical essentials to simplify your home space</p>
-            </div>
-          </GalleryCard>
-
-          <GalleryCard>
-            <img src="./h2.png" alt="Lifestyle Collection" />
-            <div className="overlay">
-              <h4>Lifestyle Collection</h4>
-              <p>Quality merchandise with seamless ordering</p>
-            </div>
-          </GalleryCard>
-        </GalleryGrid>
-      </GallerySection>
     </PageWrapper>
   );
 }
