@@ -221,6 +221,19 @@ const softBg = '#f8fafc';
 const brandCyan = '#00aeef';
 const dangerRed = '#ef4444';
 
+
+
+// --- HELPER FUNCTION ---
+const createSlug = (name, id) => {
+  const cleanName = (name || "product")
+    .toLowerCase()
+    .replace(/[^a-z0-9 ]/g, "")
+    .trim()
+    .replace(/\s+/g, "-");
+  return `${cleanName}-${id}`;
+};
+
+
 export default function ProductCard({ product, isWishlisted, onToggleWishlist, getCategoryName }) {
   const router = useRouter();
 
@@ -229,7 +242,10 @@ export default function ProductCard({ product, isWishlisted, onToggleWishlist, g
 
   const displayImg = product.images?.[0] || product.image || "https://placehold.co/400x300?text=No+Image";
   const productPrice = Number(product.amount || 0);
-  const detailUrl = `/productdetail/${product.id}`;
+  // const detailUrl = `/productdetail/${product.id}`;
+  // 🌟 Generate slugged URL using name + ID
+  const productSlug = createSlug(product.name, product.id);
+  const detailUrl = `/productdetail/${productSlug}`;
 
   const handleCardClick = (e) => {
     // If middle-clicked, or modifier keys are pressed, let the native link behavior handle it

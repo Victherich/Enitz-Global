@@ -4,6 +4,8 @@ import React from "react";
 import styled, { keyframes } from "styled-components";
 import Link from "next/link";
 import { ShieldCheck, Truck, Headphones, Award, ArrowRight, CheckCircle2, Globe, HeartHandshake } from "lucide-react";
+import EnitzAboutSections from "@/components/EnitzAboutSections";
+import EnitzCategoriesSection from "@/components/EnitzCategoriesSection";
 
 /* ================= THEME STYLES (ENITZ) ================= */
 const ThemeGradient = "linear-gradient(135deg, #00aeef 0%, #0b1b48 100%)";
@@ -68,7 +70,7 @@ const HeroSection = styled.section`
   }
 
   h1 {
-    font-size: 2.75rem;
+    font-size: 2rem;
     font-weight: 900;
     line-height: 1.2;
     margin-bottom: 1.5rem;
@@ -328,20 +330,22 @@ export default function AboutPage() {
             <Globe className="w-4 h-4" /> About Enitz
           </div>
           <h1>
-            Redefining Retail & Merchandise Excellence with <span>Integrity and Trust</span>
+            QUALITY WITHIN REACH <span>Making quality everyday products easier to access.</span>
           </h1>
           <p>
-            At Enitz, we are dedicated to bringing high-standard products, dependable service, and a seamless shopping experience closer to households and modern consumers.
-          </p>
+           At ENITZ, we believe customers should be able to access quality products at reasonable prices without compromising on convenience, trust or customer care.   </p>
           <PrimaryButton href="/store">
-            Explore Our Catalog
+            Explore Our Store
             <ArrowRight className="w-5 h-5" />
           </PrimaryButton>
         </div>
       </HeroSection>
 
+      <EnitzAboutSections/>
+      <EnitzCategoriesSection/>
+
       {/* --- OUR STORY SECTION --- */}
-      <StorySection>
+      {/* <StorySection>
         <div className="grid">
           <div className="content">
             <h2>Built on a Passion for Quality and Customer Satisfaction</h2>
@@ -364,17 +368,17 @@ export default function AboutPage() {
             </ul>
           </div>
           <div className="image-wrapper">
-            {/* Unsplash image: Modern retail / workspace / lifestyle */}
+      
             <img 
               src="./h5.png" 
               alt="Enitz retail merchandise experience" 
             />
           </div>
         </div>
-      </StorySection>
+      </StorySection> */}
 
       {/* --- CORE VALUES SECTION --- */}
-      <ValuesSection>
+      {/* <ValuesSection>
         <div className="container">
           <div className="section-header">
             <h2>Our Core Pillars</h2>
@@ -414,7 +418,7 @@ export default function AboutPage() {
             </ValueCard>
           </div>
         </div>
-      </ValuesSection>
+      </ValuesSection> */}
 
       {/* --- VISUAL SHOWCASE SECTION --- */}
       <ShowcaseSection>
@@ -431,12 +435,13 @@ export default function AboutPage() {
             />
           </div>
           <div className="content">
-            <h2>Delivering Value That Matters to Your Everyday Life</h2>
+            <h2>Quality Within Reach. Every Day.</h2>
             <p>
-              Whether you are upgrading your home essentials, searching for practical lifestyle items, or exploring our latest featured arrivals, Enitz is your trusted partner for a smooth, stress-free retail journey.
-            </p>
+            “Whether you're shopping for your home, family, personal needs or lifestyle, ENITZ is here to make quality products easier to find, order and enjoy.
+
+We are building a brand founded on quality, value and trust — one customer at a time.” </p>
             <PrimaryButton href="/store">
-              Browse Store Items
+              Shop ENITZ
               <ArrowRight className="w-5 h-5" />
             </PrimaryButton>
           </div>

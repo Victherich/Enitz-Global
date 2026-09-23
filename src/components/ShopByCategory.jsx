@@ -1,11 +1,20 @@
 
 
 
+
+
+
+
 // "use client";
 
 // import React, { useState, useEffect, useRef } from "react";
 // import styled, { keyframes } from "styled-components";
-// import { ChevronLeft, ChevronRight, Loader2, Sparkles, Package, ShoppingBag, Tag, Layers, Gift } from "lucide-react";
+// import { 
+//   ChevronLeft, ChevronRight, Loader2, 
+//   Sparkles, Package, ShoppingBag, Tag, Layers, Gift, 
+//   Heart, Star, ShieldCheck, Zap, Smile, Coffee, BookOpen, 
+//   Home, Compass, Award, Bookmark, Flame 
+// } from "lucide-react";
 // // Import your initialized firebase db instance here (adjust path to match your project setup)
 // import { db } from "@/firebaseConfig"; 
 // import { collection, getDocs } from "firebase/firestore";
@@ -41,8 +50,9 @@
 
 //   .header-content {
 //     h2 {
-//       font-size: 2.25rem;
+//       font-size: 2rem;
 //       font-weight: 800;
+//       text-align:center;
 //       color: ${TextPrimary};
 //       letter-spacing: -0.02em;
 //       @media (min-width: 768px) { font-size: 3rem; }
@@ -119,7 +129,7 @@
 //   display: flex;
 //   gap: 1.5rem;
 //   width: max-content;
-//   animation: ${scrollInfinite} 30s linear infinite;
+//   animation: ${scrollInfinite} 80s linear infinite;
 //   padding: 1rem 3rem;
 // `;
 
@@ -260,17 +270,23 @@
 //     fetchCategories();
 //   }, []);
 
-//   // Helper function to assign an icon based on category title/index
-//   const getCategoryIcon = (title = "", index = 0) => {
-//     const lower = title.toLowerCase();
-//     if (lower.includes("gift") || lower.includes("special")) return <Gift />;
-//     if (lower.includes("home") || lower.includes("house") || lower.includes("decor")) return <Package />;
-//     if (lower.includes("shop") || lower.includes("store") || lower.includes("bag")) return <ShoppingBag />;
-//     if (lower.includes("tag") || lower.includes("sale") || lower.includes("deal")) return <Tag />;
-    
-//     // Default pool of icons cycled through based on index
-//     const iconList = [<Sparkles />, <Package />, <ShoppingBag />, <Tag />, <Layers />];
-//     return iconList[index % iconList.length];
+//   // Comprehensive pool of diverse category icons
+//   const ICON_POOL = [
+//     Sparkles, Package, ShoppingBag, Tag, Layers, Gift, 
+//     Heart, Star, ShieldCheck, Zap, Smile, Coffee, BookOpen, 
+//     Home, Compass, Award, Bookmark, Flame
+//   ];
+
+//   // String hash algorithm to consistently assign a unique icon per category ID/title
+//   const getHashIcon = (uniqueKey = "") => {
+//     let hash = 0;
+//     const str = String(uniqueKey);
+//     for (let i = 0; i < str.length; i++) {
+//       hash = str.charCodeAt(i) + ((hash << 5) - hash);
+//     }
+//     const index = Math.abs(hash) % ICON_POOL.length;
+//     const SelectedIcon = ICON_POOL[index];
+//     return <SelectedIcon />;
 //   };
 
 //   const scrollLeft = () => {
@@ -314,7 +330,7 @@
 //                   href={`/categories/${cat.id}`}
 //                 >
 //                   <div className="icon-container">
-//                     {getCategoryIcon(cat.title, index)}
+//                     {getHashIcon(cat.id || cat.title)}
 //                   </div>
 //                   <h4>{cat.title}</h4>
 //                 </CategoryCard>
@@ -330,8 +346,6 @@
 //     </SectionContainer>
 //   );
 // }
-
-
 
 
 
@@ -385,7 +399,7 @@ const SectionHeader = styled.div`
     h2 {
       font-size: 2rem;
       font-weight: 800;
-      text-align:center;
+      text-align: center;
       color: ${TextPrimary};
       letter-spacing: -0.02em;
       @media (min-width: 768px) { font-size: 3rem; }
@@ -470,14 +484,14 @@ const CategoryCard = styled.a`
   flex: 0 0 200px;
   width: 200px;
   height: 200px;
-  background: #ffffff;
+  background: ${({ $bgImage }) => ($bgImage ? `url(${$bgImage}) center/cover no-repeat` : "#ffffff")};
   border-radius: 1.75rem;
   border: 1px solid ${BorderColor};
   box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
   padding: 1.5rem;
   cursor: pointer;
   transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
@@ -491,14 +505,38 @@ const CategoryCard = styled.a`
     height: 240px;
   }
 
+  /* 🌟 Dark gradient overlay when card has a background image */
+  &::before {
+    content: ${({ $bgImage }) => ($bgImage ? '""' : "none")};
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(15, 23, 42, 0.85) 0%,
+      rgba(15, 23, 42, 0.4) 50%,
+      rgba(15, 23, 42, 0.1) 100%
+    );
+    z-index: 1;
+    transition: opacity 0.3s ease;
+  }
+
+  .content-wrapper {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
   .icon-container {
-    width: 80px;
-    height: 80px;
+    width: 70px;
+    height: 70px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 1.25rem;
+    margin-bottom: 0.75rem;
     background: linear-gradient(135deg, rgba(0, 174, 239, 0.12), rgba(11, 27, 72, 0.08));
     border: 1px solid rgba(0, 174, 239, 0.25);
     box-shadow: 0 8px 20px rgba(0, 174, 239, 0.08);
@@ -506,27 +544,28 @@ const CategoryCard = styled.a`
     transition: all 0.4s ease;
 
     @media (min-width: 768px) {
-      width: 95px;
-      height: 95px;
+      width: 85px;
+      height: 85px;
     }
 
     svg {
-      width: 36px;
-      height: 36px;
+      width: 32px;
+      height: 32px;
       transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
       @media (min-width: 768px) {
-        width: 42px;
-        height: 42px;
+        width: 38px;
+        height: 38px;
       }
     }
   }
 
   h4 {
-    color: ${TextPrimary};
+    color: ${({ $bgImage }) => ($bgImage ? "#ffffff" : TextPrimary)};
     font-size: 1.05rem;
     font-weight: 700;
     text-align: center;
     margin: 0;
+    text-shadow: ${({ $bgImage }) => ($bgImage ? "0 2px 4px rgba(0,0,0,0.5)" : "none")};
     transition: color 0.3s ease;
 
     @media (min-width: 768px) {
@@ -661,11 +700,16 @@ export default function ShopByCategory() {
                 <CategoryCard 
                   key={`${cat.id}-${index}`} 
                   href={`/categories/${cat.id}`}
+                  $bgImage={cat.image}
                 >
-                  <div className="icon-container">
-                    {getHashIcon(cat.id || cat.title)}
+                  <div className="content-wrapper">
+                    {!cat.image && (
+                      <div className="icon-container">
+                        {getHashIcon(cat.id || cat.title)}
+                      </div>
+                    )}
+                    <h4>{cat.title}</h4>
                   </div>
-                  <h4>{cat.title}</h4>
                 </CategoryCard>
               ))}
             </MarqueeTrack>

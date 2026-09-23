@@ -916,6 +916,60 @@ const SaveButton = styled.button`
   }
 `;
 
+
+// 🔹 Compression utility function
+const compressImage = (file, maxSizeKB = 100) => {
+  return new Promise((resolve, reject) => {
+    if (!file) return reject(new Error("No file provided"));
+
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      const img = document.createElement("img");
+      img.src = e.target.result;
+
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        const MAX_WIDTH = 800;
+        const scaleSize = img.width > MAX_WIDTH ? MAX_WIDTH / img.width : 1;
+
+        canvas.width = img.width * scaleSize;
+        canvas.height = img.height * scaleSize;
+
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+        let quality = 0.7;
+
+        const compressLoop = () => {
+          canvas.toBlob(
+            (blob) => {
+              if (!blob) return reject(new Error("Compression failed"));
+
+              const sizeKB = blob.size / 1024;
+              if (sizeKB <= maxSizeKB || quality <= 0.1) {
+                resolve(blob);
+              } else {
+                quality -= 0.1;
+                compressLoop();
+              }
+            },
+            "image/jpeg",
+            quality
+          );
+        };
+
+        compressLoop();
+      };
+
+      img.onerror = () => reject(new Error("Image load failed"));
+    };
+
+    reader.onerror = () => reject(new Error("File reading failed"));
+    reader.readAsDataURL(file);
+  });
+};
+
 export default function CategoriesCrudPage() {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -926,6 +980,14 @@ export default function CategoriesCrudPage() {
   const [titleInput, setTitleInput] = useState("");
   const [descInput, setDescInput] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
+// Image States for Category
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState("");
+  const [existingImageUrl, setExistingImageUrl] = useState("");
+
+
+
+
 
   const fetchCategories = async () => {
     try {
@@ -947,10 +1009,35 @@ export default function CategoriesCrudPage() {
     fetchCategories();
   }, []);
 
+  // const openAddModal = () => {
+  //   setEditingId(null);
+  //   setTitleInput("");
+  //   setDescInput("");
+  //   setIsModalOpen(true);
+  // };
+  
+
+  // const openEditModal = (cat) => {
+  //   setEditingId(cat.id);
+  //   setTitleInput(cat.title);
+  //   setDescInput(cat.description || "");
+  //   setIsModalOpen(true);
+  // };
+
+  // const closeModal = () => {
+  //   setIsModalOpen(false);
+  //   setTitleInput("");
+  //   setDescInput("");
+  //   setEditingId(null);
+  // };
+
   const openAddModal = () => {
     setEditingId(null);
     setTitleInput("");
     setDescInput("");
+    setImageFile(null);
+    setImagePreview("");
+    setExistingImageUrl("");
     setIsModalOpen(true);
   };
 
@@ -958,6 +1045,9 @@ export default function CategoriesCrudPage() {
     setEditingId(cat.id);
     setTitleInput(cat.title);
     setDescInput(cat.description || "");
+    setExistingImageUrl(cat.image || "");
+    setImagePreview(cat.image || "");
+    setImageFile(null);
     setIsModalOpen(true);
   };
 
@@ -965,38 +1055,63 @@ export default function CategoriesCrudPage() {
     setIsModalOpen(false);
     setTitleInput("");
     setDescInput("");
+    setImageFile(null);
+    setImagePreview("");
+    setExistingImageUrl("");
+    setIsModalOpen(false);
     setEditingId(null);
   };
 
-  const handleSaveCategory = async (e) => {
-    e.preventDefault();
-    if (!titleInput.trim()) {
-      Swal.fire("Validation", "Please enter a category title.", "warning");
-      return;
-    }
 
-    try {
-      if (editingId) {
-        const docRef = doc(db, "categories", editingId);
-        await updateDoc(docRef, {
-          title: titleInput,
-          description: descInput,
-        });
-        Swal.fire("Updated!", "Category updated successfully.", "success");
-      } else {
-        await addDoc(collection(db, "categories"), {
-          title: titleInput,
-          description: descInput,
-          createdAt: serverTimestamp(),
-        });
-        Swal.fire("Success!", "Category added successfully.", "success");
-      }
-      closeModal();
-      fetchCategories();
-    } catch (error) {
-      Swal.fire("Error", "Could not save category.", "error");
-    }
+
+
+const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setImageFile(file);
+    setImagePreview(URL.createObjectURL(file));
+    setExistingImageUrl("");
+    e.target.value = "";
   };
+
+  const handleRemoveImage = () => {
+    setImageFile(null);
+    setImagePreview("");
+    setExistingImageUrl("");
+  };
+
+
+
+  // const handleSaveCategory = async (e) => {
+  //   e.preventDefault();
+  //   if (!titleInput.trim()) {
+  //     Swal.fire("Validation", "Please enter a category title.", "warning");
+  //     return;
+  //   }
+
+  //   try {
+  //     if (editingId) {
+  //       const docRef = doc(db, "categories", editingId);
+  //       await updateDoc(docRef, {
+  //         title: titleInput,
+  //         description: descInput,
+  //       });
+  //       Swal.fire("Updated!", "Category updated successfully.", "success");
+  //     } else {
+  //       await addDoc(collection(db, "categories"), {
+  //         title: titleInput,
+  //         description: descInput,
+  //         createdAt: serverTimestamp(),
+  //       });
+  //       Swal.fire("Success!", "Category added successfully.", "success");
+  //     }
+  //     closeModal();
+  //     fetchCategories();
+  //   } catch (error) {
+  //     Swal.fire("Error", "Could not save category.", "error");
+  //   }
+  // };
 
   // const handleDeleteCategory = async (categoryToDelete) => {
   //   try {
@@ -1062,6 +1177,73 @@ export default function CategoriesCrudPage() {
   //     Swal.fire("Error", "Could not delete category.", "error");
   //   }
   // };
+
+const handleSaveCategory = async (e) => {
+    e.preventDefault();
+    if (!titleInput.trim()) {
+      return Swal.fire("Validation", "Please enter a category title.", "warning");
+    }
+
+    try {
+      Swal.fire({
+        text: "Processing...",
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading(),
+      });
+
+      let finalImageUrl = existingImageUrl;
+
+      if (imageFile) {
+        const compressedBlob = await compressImage(imageFile, 100);
+
+        const data = new FormData();
+        data.append("file", compressedBlob, "category.jpg");
+        data.append("upload_preset", "bees_interior");
+        data.append("folder", "categories_enitz_global");
+
+        const res = await fetch(
+          "https://api.cloudinary.com/v1_1/aqxyleoh/image/upload",
+          {
+            method: "POST",
+            body: data,
+          }
+        );
+
+        const result = await res.json();
+
+        if (!res.ok) {
+          throw new Error(result.error?.message || "Image upload failed");
+        }
+
+        finalImageUrl = result.secure_url;
+      }
+
+      const payload = {
+        title: titleInput,
+        description: descInput,
+        image: finalImageUrl,
+      };
+
+      if (editingId) {
+        const docRef = doc(db, "categories", editingId);
+        await updateDoc(docRef, payload);
+        Swal.close();
+        Swal.fire("Updated!", "Category updated successfully.", "success");
+      } else {
+        await addDoc(collection(db, "categories"), {
+          ...payload,
+          createdAt: serverTimestamp(),
+        });
+        Swal.close();
+        Swal.fire("Success!", "Category added successfully.", "success");
+      }
+      closeModal();
+      fetchCategories();
+    } catch (error) {
+      Swal.close();
+      Swal.fire("Error", error.message || "Could not save category.", "error");
+    }
+  };
 
  
  const handleDeleteCategory = async (categoryToDelete) => {
@@ -1175,9 +1357,14 @@ export default function CategoriesCrudPage() {
       {filteredCategories.length === 0 ? (
         <LoadingContainer>No categories found. Click "+ Add Category" to create one.</LoadingContainer>
       ) : (
-        <CategoriesGrid>
+       <CategoriesGrid>
           {filteredCategories.map((cat) => (
             <CategoryCard key={cat.id}>
+              {cat.image && (
+                <div style={{ width: "100%", height: "140px", overflow: "hidden", borderRadius: "8px 8px 0 0" }}>
+                  <img src={cat.image} alt={cat.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                </div>
+              )}
               <CardHeader>
                 <CategoryName>
                   {cat.title ? cat.title.charAt(0).toUpperCase() + cat.title.slice(1) : ""}
@@ -1198,7 +1385,7 @@ export default function CategoriesCrudPage() {
         </CategoriesGrid>
       )}
 
-      {/* 🌟 Custom Form Modal */}
+     {/* 🌟 Custom Form Modal */}
       {isModalOpen && (
         <ModalOverlay onClick={closeModal}>
           <ModalContainer onClick={(e) => e.stopPropagation()}>
@@ -1216,6 +1403,34 @@ export default function CategoriesCrudPage() {
                 value={descInput} 
                 onChange={(e) => setDescInput(e.target.value)} 
               />
+
+              {/* 🌟 Category Image Upload & Preview Field */}
+              <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                <label style={{ fontSize: "0.85rem", fontWeight: "700", color: "#333" }}>
+                  Category Image
+                </label>
+                <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
+                  <input 
+                    type="file" 
+                    accept="image/*" 
+                    onChange={handleFileChange} 
+                    style={{ fontSize: "0.85rem" }}
+                  />
+                  {imagePreview && (
+                    <div style={{ position: "relative", width: "50px", height: "50px", borderRadius: "6px", overflow: "hidden", border: "1px solid #ccc" }}>
+                      <img src={imagePreview} alt="Preview" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                      <button 
+                        type="button" 
+                        onClick={handleRemoveImage}
+                        style={{ position: "absolute", top: 0, right: 0, background: "red", color: "white", border: "none", fontSize: "10px", cursor: "pointer", padding: "2px 4px" }}
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+
               <ModalActions>
                 <CancelButton type="button" onClick={closeModal}>Cancel</CancelButton>
                 <SaveButton type="submit">{editingId ? "Save Changes" : "Create Category"}</SaveButton>

@@ -1663,7 +1663,21 @@ const WhatsAppButton = styled.a`
 // --- COMPONENT ---
 export default function ProductDetailPage({ params }) {
   const resolvedParams = use(params);
-  const productId = resolvedParams.id;
+  // const productId = resolvedParams.id;
+  const slug = resolvedParams.slug; // e.g., "pepper-soup-spice-mix-3oTVRDE..."
+  
+  // 🌟 Extract the Firestore document ID from the end of the slug string
+  // const productId = slug ? slug.split("-").pop() : null;
+
+
+  // console.log(productId)
+  // console.log(slug)
+
+  const parts = slug ? slug.split("-") : [];
+  const productId = parts.length > 0 ? parts[parts.length - 1] : null;
+
+  // console.log("Full Slug:", slug);
+  // console.log("Extracted Product ID:", productId);
 
   const router = useRouter();
   const [product, setProduct] = useState(null);
@@ -1897,7 +1911,50 @@ export default function ProductDetailPage({ params }) {
     setTimeout(() => setFeedback(""), 3000);
   };
 
-  const handleWhatsAppOrder = (e) => {
+//   const handleWhatsAppOrder = (e) => {
+//     if (!product) return;
+
+//     if (product.variations && product.variations.length > 0) {
+//       for (const v of product.variations) {
+//         if (!selectedVariations[v.name] || selectedVariations[v.name].trim() === "") {
+//           e.preventDefault();
+//           Swal.fire({
+//             title: "Selection Required",
+//             text: `Please select a value for "${v.name}" before ordering via WhatsApp.`,
+//             icon: "warning",
+//             confirmButtonColor: brandCyan,
+//             background: "#ffffff",
+//             color: "#0f172a"
+//           });
+//           return;
+//         }
+//       }
+//     }
+
+//     const variationsText = Object.entries(selectedVariations)
+//       .map(([key, val]) => `*${key}*: ${val}`)
+//       .join(', ');
+
+//     // const tierText = selectedTier ? `\n*Pricing Tier:* ${selectedTier.name || selectedTier.label} (₦${currentActivePrice.toLocaleString()})` : '';
+
+// const tierLabel = selectedTier 
+//       ? (product.pricingType === "singleqtytiered" ? `Exact Qty: ${selectedTier.minQty}` : `${selectedTier.minQty} - ${selectedTier.maxQty}`)
+//       : '';
+//     const tierText = selectedTier ? `\n*Pricing Option:* ${tierLabel} (₦${currentActivePrice.toLocaleString()})` : '';
+
+
+//     const message = encodeURIComponent(
+//       // `Hello Enitz, I would like to order this item:\n\n*Product:* ${product.name}\n*ID:* ${product.id}\n*Price:* ₦${currentActivePrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}${tierText}${variationsText ? `\n*Variations:* ${variationsText}` : ''}`
+//      `Hello Enitz, I would like to order this item:\n\n*Product:* ${product.name}\n*ID:* ${product.id}\n${variationsText ? `\n*Variations:* ${variationsText}` : ''}`
+   
+//     );
+
+//     const phoneNumber = "2349047103037"; 
+//     window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
+//   };
+
+
+const handleWhatsAppOrder = (e) => {
     if (!product) return;
 
     if (product.variations && product.variations.length > 0) {
@@ -1921,18 +1978,21 @@ export default function ProductDetailPage({ params }) {
       .map(([key, val]) => `*${key}*: ${val}`)
       .join(', ');
 
-    // const tierText = selectedTier ? `\n*Pricing Tier:* ${selectedTier.name || selectedTier.label} (₦${currentActivePrice.toLocaleString()})` : '';
-
-const tierLabel = selectedTier 
+    const tierLabel = selectedTier 
       ? (product.pricingType === "singleqtytiered" ? `Exact Qty: ${selectedTier.minQty}` : `${selectedTier.minQty} - ${selectedTier.maxQty}`)
       : '';
     const tierText = selectedTier ? `\n*Pricing Option:* ${tierLabel} (₦${currentActivePrice.toLocaleString()})` : '';
 
+    // 🌟 Generate the clean slugged product link for WhatsApp
+    const cleanSlug = (product.name || "product")
+      .toLowerCase()
+      .replace(/[^a-z0-9 ]/g, "")
+      .trim()
+      .replace(/\s+/g, "-");
+    const productUrl = `https://enitzglobal.vercel.app/productdetail/${cleanSlug}-${product.id}`;
 
     const message = encodeURIComponent(
-      // `Hello Enitz, I would like to order this item:\n\n*Product:* ${product.name}\n*ID:* ${product.id}\n*Price:* ₦${currentActivePrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}${tierText}${variationsText ? `\n*Variations:* ${variationsText}` : ''}`
-     `Hello Enitz, I would like to order this item:\n\n*Product:* ${product.name}\n*ID:* ${product.id}\n${variationsText ? `\n*Variations:* ${variationsText}` : ''}`
-   
+      `Hello Enitz, I would like to order this item:\n\n*Product:* ${product.name}\n*Link:* ${productUrl}\n*Price:* ₦${currentActivePrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}${tierText}${variationsText ? `\n*Variations:* ${variationsText}` : ''}`
     );
 
     const phoneNumber = "2349047103037"; 

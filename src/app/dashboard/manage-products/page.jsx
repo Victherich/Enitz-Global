@@ -1299,6 +1299,15 @@ const compressImage = (file, maxSizeKB = 100) => {
 //   );
 // }
 
+// --- HELPER FUNCTION ---
+const createSlug = (name, id) => {
+  const cleanName = (name || "product")
+    .toLowerCase()
+    .replace(/[^a-z0-9 ]/g, "")
+    .trim()
+    .replace(/\s+/g, "-");
+  return `${cleanName}-${id}`;
+};
 
 
 
@@ -1803,7 +1812,7 @@ export default function ProductsCrudPage() {
           {filteredData.map((item) => {
             const displayImg = item.images?.[0] || item.image || "https://placehold.co/400x300?text=No+Image";
             return (
-              <ProductCard key={item.id} onClick={() => router.push(`/productdetail/${item.id}`)}>
+              <ProductCard key={item.id} onClick={() => router.push(`/productdetail/${createSlug(item.name, item.id)}`)}>
                 <ProductImageContainer>
                   <ProductImage src={displayImg} alt={item.name} />
                 </ProductImageContainer>
