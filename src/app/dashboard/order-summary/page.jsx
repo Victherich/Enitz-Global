@@ -1190,8 +1190,8 @@ export default function OrderSummaryPage() {
 
     try {
       const buyerEmail = currentUser?.email || userData?.email || '';
-      // const sellerEmail = 'enitzglobal@gmail.com';
-      const sellerEmail = 'esomesther@gmail.com';
+      const sellerEmail = 'enitzglobal@gmail.com';
+      // const sellerEmail = 'esomesther@gmail.com';
       const uniqueOrderNumber = `ORDER-${Date.now().toString().slice(-6)}${Math.floor(Math.random() * 900 + 100)}`;
 
       const ordersRef = collection(db, "orders");

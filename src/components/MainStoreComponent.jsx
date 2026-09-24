@@ -939,6 +939,8 @@ export default function MainStoreComponent() {
   const [currentUser, setCurrentUser] = useState(null);
   const [wishlistIds, setWishlistIds] = useState([]);
 
+  // console.log(products)
+
   
 
   // Helper to get category title by ID
@@ -973,6 +975,7 @@ export default function MainStoreComponent() {
               variations: data.variations || [],
               createdAt: data.createdAt,
               isLive: data.isLive === true,
+              strikeAmount:data.strikeAmount,
             };
           })
           .filter((product) => product.isLive);

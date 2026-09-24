@@ -148,6 +148,7 @@ export default function FeaturedProducts() {
               variations: data.variations || [],
               createdAt: data.createdAt,
               isLive: data.isLive === true,
+              strikeAmount:data.strikeAmount,
             };
           })
           .filter((product) => {

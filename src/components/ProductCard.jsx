@@ -237,6 +237,8 @@ const createSlug = (name, id) => {
 export default function ProductCard({ product, isWishlisted, onToggleWishlist, getCategoryName }) {
   const router = useRouter();
 
+  console.log(product)
+
   // Safety check: if product is undefined/null, don't crash
   if (!product) return null;
 
@@ -247,6 +249,17 @@ export default function ProductCard({ product, isWishlisted, onToggleWishlist, g
   const productSlug = createSlug(product.name, product.id);
   const detailUrl = `/productdetail/${productSlug}`;
 
+  // 🌟 Check if product belongs to the Bestseller category
+  const itemCats = product.categoryIds || (product.categoryId ? [product.categoryId] : []);
+  const isBestseller = itemCats.includes("HXEy3XhgQJgtJ1fJUgxP");
+
+  const strikePrice = Number(product.strikeAmount || 0);
+  const hasDiscount = strikePrice > productPrice;
+  const discountPercent = hasDiscount 
+    ? Math.round(((strikePrice - productPrice) / strikePrice) * 100) 
+    : 0;
+  
+  
   const handleCardClick = (e) => {
     // If middle-clicked, or modifier keys are pressed, let the native link behavior handle it
     if (e.button === 0 && !e.ctrlKey && !e.metaKey && !e.shiftKey && !e.altKey) {
@@ -258,6 +271,11 @@ export default function ProductCard({ product, isWishlisted, onToggleWishlist, g
   return (
     <CardContainer href={detailUrl} onClick={handleCardClick}>
       <CardImageWrapper>
+        {isBestseller && (
+          <BestsellerBadge>
+          Bestseller
+          </BestsellerBadge>
+        )}
         <CardLoveIcon 
           onClick={(e) => {
             e.preventDefault();
@@ -280,10 +298,37 @@ export default function ProductCard({ product, isWishlisted, onToggleWishlist, g
         {product.name ? product.name.charAt(0).toUpperCase() + product.name.slice(1) : "Untitled"}
       </ProductTitle>
       
-      <ProductPriceRow>
+      {/* <ProductPriceRow>
         <PriceText>
           ₦{productPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
         </PriceText>
+        <AddButton onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          router.push(detailUrl);
+        }}>
+          Buy Now
+        </AddButton>
+      </ProductPriceRow> */}
+
+      <ProductPriceRow>
+        <PriceInfoContainer>
+          <PriceText>
+            ₦{productPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+          </PriceText>
+          
+          {hasDiscount && (
+            <DiscountRow>
+              <StrikePriceText>
+                ₦{strikePrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              </StrikePriceText>
+              <DiscountBadge>
+                -{discountPercent}%
+              </DiscountBadge>
+            </DiscountRow>
+          )}
+        </PriceInfoContainer>
+
         <AddButton onClick={(e) => {
           e.preventDefault();
           e.stopPropagation();
@@ -337,8 +382,8 @@ const CardImageWrapper = styled.div`
 
 const CardLoveIcon = styled.button`
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 5px;
+  right: 5px;
   background: rgba(255, 255, 255, 0.9);
   border: 1px solid ${borderColor};
   border-radius: 50%;
@@ -416,4 +461,51 @@ const AddButton = styled.button`
     opacity: 0.92;
     transform: translateY(-1px);
   }
+`;
+
+const BestsellerBadge = styled.div`
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  // background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  background:${brandGradient};
+  color: #ffffff;
+  font-size: 0.7rem;
+  // font-weight: 800;
+  padding: 3px 5px;
+  border-radius: 20px;
+  z-index: 5;
+  box-shadow: 0 4px 10px rgba(245, 158, 11, 0.3);
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+`;
+
+
+const PriceInfoContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+`;
+
+const DiscountRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+`;
+
+const StrikePriceText = styled.span`
+  font-size: 0.8rem;
+  color: #94a3b8;
+  text-decoration: line-through;
+  font-weight: 600;
+`;
+
+const DiscountBadge = styled.span`
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: #16a34a;
+  background: #dcfce7;
+  padding: 1px 5px;
+  border-radius: 4px;
 `;

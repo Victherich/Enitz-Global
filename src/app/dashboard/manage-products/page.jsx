@@ -1326,6 +1326,7 @@ export default function ProductsCrudPage() {
     name: "",
     description: "",
     amount: "",
+    strikeAmount: "",
     quantity: "",
     neverFinishes: false,
     categoryIds: [],
@@ -1522,23 +1523,7 @@ export default function ProductsCrudPage() {
     }))
   : [];
 
-      // const payload = {
-      //   name: form.name,
-      //   description: form.description,
-      //   pricingType: form.pricingType,
-      //   amount: form.pricingType === "single" ? Number(form.amount) : Number(priceTiers[0]?.price || 0),
-      //   priceTiers: form.pricingType === "tiered" ? formattedTiers : [],
-      //   quantity: form.neverFinishes ? 0 : Number(form.quantity || 0),
-      //   neverFinishes: form.neverFinishes,
-      //   images: finalImageUrls,
-      //   image: finalImageUrls[0] || "",
-      //   categoryIds: form.categoryIds,
-      //   categoryId: form.categoryIds[0] || "",
-      //   isLive: form.isLive,
-      //   variations: variations.filter((v) => v.name.trim() !== "" && v.options.trim() !== ""),
-      //   features: featuresList,
-      //   youtubeLinks: youtubeLinksList,
-      // };
+    
 
       const payload = {
         name: form.name,
@@ -1546,6 +1531,7 @@ export default function ProductsCrudPage() {
         pricingType: form.pricingType,
         amount: form.pricingType === "single" ? Number(form.amount) : Number(formattedTiers[0]?.price || 0),
         priceTiers: form.pricingType === "single" ? [] : formattedTiers,
+        strikeAmount: form.strikeAmount ? Number(form.strikeAmount) : 0, // 🌟 Save strike amount
         quantity: form.neverFinishes ? 0 : Number(form.quantity || 0),
         neverFinishes: form.neverFinishes,
         images: finalImageUrls,
@@ -1610,6 +1596,7 @@ export default function ProductsCrudPage() {
       name: item.name || "",
       description: item.description || "",
       amount: item.pricingType === "single" ? (item.amount || "") : "",
+      strikeAmount: item.strikeAmount || "", // 🌟 Load existing strike-through price
       quantity: item.quantity || "",
       neverFinishes: item.neverFinishes || false,
       categoryIds: loadedCategories,
@@ -1857,10 +1844,37 @@ export default function ProductsCrudPage() {
                  <ProductAmount>
   ₦{Number(item.amount || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
 </ProductAmount>
+{/* 🌟 Product Amount with Optional Strike-through Price */}
+                   
+                    {Number(item.strikeAmount) > 0 && (
+                      <span style={{ 
+                        fontSize: "0.85rem", 
+                        color: "#797d85", 
+                        textDecoration: "line-through",
+                        fontWeight: "500" 
+                      }}>
+                        ₦{Number(item.strikeAmount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                      </span>
+                    )}
+
+                    {item.strikeAmount&&<span style={{
+                          fontSize: "0.75rem",
+                          fontWeight: "700",
+                          color: "#16a34a",
+                          background: "#dcfce7",
+                          padding: "2px 6px",
+                          borderRadius: "4px"
+                        }}>
+                          {Math.round(((Number(item.strikeAmount) - Number(item.amount)) / Number(item.strikeAmount)) * 100)}% OFF
+                        </span>}
+
 <ProductAmount>
   {item.pricingType === "tiered" && <span style={{ fontSize: "0.85rem", color: PrimaryNavy }}>Range Qty Tiered Pricing Available</span>}
   {item.pricingType === "singleqtytiered" && <span style={{ fontSize: "0.85rem", color: PrimaryNavy }}>Single Qty Tiered Pricing Available</span>}
 </ProductAmount>
+
+
+                
 
                   <ProductStock>
                     {item.neverFinishes ? "∞ In Unlimited Stock" : `Stock: ${item.quantity ?? 0}`}
@@ -2067,6 +2081,14 @@ export default function ProductsCrudPage() {
                   <p style={{color:"red", fontSize:"0.8rem", fontWeight:"bold"}}>Max Qty of highest range should be left blank for infinity</p>
                 </div>
               )}
+
+              {/* 🌟 Added Strike-through Price Input */}
+              <StyledInput
+                type="number"
+                placeholder="Strike-through Price / Old Amount (₦) - Optional"
+                value={form.strikeAmount}
+                onChange={(e) => setForm({ ...form, strikeAmount: e.target.value })}
+              />
 
               {/* Stock Management Row */}
               <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>

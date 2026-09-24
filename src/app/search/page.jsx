@@ -532,6 +532,7 @@ function SearchContent() {
             images: data.images || [],
             image: data.image || "",
             isLive: data.isLive === true,
+            strikeAmount:data.strikeAmount,
           };
         });
 
