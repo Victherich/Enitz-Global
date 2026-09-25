@@ -2,6 +2,7 @@
 
 
 import { Geist, Geist_Mono } from "next/font/google";
+import StyledComponentsRegistry from './registry';
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -34,7 +35,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        
+        <StyledComponentsRegistry>
+
+      
           <CartProvider>
              <ContextProvider>
           <Header />
@@ -42,6 +45,7 @@ export default function RootLayout({ children }) {
           <Footer />
           </ContextProvider>
           </CartProvider>
+            </StyledComponentsRegistry>
         
       </body>
     </html>

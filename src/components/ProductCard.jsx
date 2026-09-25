@@ -470,7 +470,7 @@ const BestsellerBadge = styled.div`
   // background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
   background:${brandGradient};
   color: #ffffff;
-  font-size: 0.7rem;
+  font-size: 0.6rem;
   // font-weight: 800;
   padding: 3px 5px;
   border-radius: 20px;

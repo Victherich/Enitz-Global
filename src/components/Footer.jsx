@@ -182,7 +182,7 @@
 //     font-size: 0.85rem;
 //     transition: color 0.2s ease;
 
-//     fn &:hover {
+//     &:hover {
 //       color: ${White};
 //     }
 //   }
@@ -216,6 +216,9 @@
 
 // export default function Footer() {
 //   const currentYear = new Date().getFullYear();
+//   const whatsappMessage = encodeURIComponent(
+//     "Hello Enitz, I just visited your website. I would love to order some products from your website."
+//   );
 
 //   return (
 //     <>
@@ -226,12 +229,12 @@
 //             <Link href="/" style={{ textDecoration: 'none' }}>
 //               <img src='./logo.jpeg' alt='Enitz Limited Logo' style={{width:'50px', borderRadius:"10px"}}/>
 //               <Logo>
-//                 ENITZ 
-//                 {/* <span>GLOBAL</span> */}
+//                 Enitz
 //               </Logo>
+//               <p style={{fontStyle:"italic", fontSize:"0.9rem"}}>Quality Within Reach</p>
 //             </Link>
 //             <FooterText>
-//               Enitz Global Limited offers quality personal and household products at great prices, making everyday living easy with convenient ordering and delivery.
+//               Enitz Global Limited offers quality personal and household products at affordable prices, making everyday living easy with convenient ordering and delivery.
 //             </FooterText>
 //           </FooterCol>
 
@@ -241,6 +244,11 @@
 //             <FooterLink href="/">Home</FooterLink>
 //             <FooterLink href="/about">About Us</FooterLink>
 //             <FooterLink href="/store">Store</FooterLink>
+            
+//             <FooterLink href="/terms-conditions">Terms & Conditions</FooterLink>
+//             <FooterLink href="/privacy-policy">Privacy Policy</FooterLink>
+//             <FooterLink href="/delivery-policy">Delivery Policy</FooterLink>
+//             <FooterLink href="/return-refund-policy">Return/Refund Policy</FooterLink>
 //             <FooterLink href="/contact">Contact Us</FooterLink>
 //           </FooterCol>
 
@@ -255,25 +263,37 @@
 //           </FooterCol>
 
 //           {/* Col 4: Social Media */}
-//           <FooterCol>
-//             <ColTitle>Connect With Us</ColTitle>
-//             <FooterText>
-//               Follow us on Instagram for updates on new product arrivals and special offers.
-//             </FooterText>
-//             <SocialIconsContainer>
-//               {/* Instagram */}
-//               <SocialIconLink 
-//                 href="https://www.instagram.com/enitzglobalconcept/" 
-//                 target="_blank" 
-//                 rel="noopener noreferrer"
-//                 aria-label="Instagram"
-//               >
-//                 <svg viewBox="0 0 24 24">
-//                   <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-//                 </svg>
-//               </SocialIconLink>
-//             </SocialIconsContainer>
-//           </FooterCol>
+//          <FooterCol>
+//            <ColTitle>Connect With Us</ColTitle>
+//            <FooterText>
+//              Follow us on Instagram and Facebook for updates on new product arrivals and special offers.
+//            </FooterText>
+//            <SocialIconsContainer>
+//              {/* Instagram */}
+//              <SocialIconLink 
+//                href="https://www.instagram.com/enitzglobalconcept/" 
+//                target="_blank" 
+//                rel="noopener noreferrer"
+//                aria-label="Instagram"
+//              >
+//                <svg viewBox="0 0 24 24">
+//                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+//                </svg>
+//              </SocialIconLink>
+
+//              {/* Facebook */}
+//              <SocialIconLink 
+//                href="https://www.facebook.com/share/1H5LuogNcg/" 
+//                target="_blank" 
+//                rel="noopener noreferrer"
+//                aria-label="Facebook"
+//              >
+//                <svg viewBox="0 0 24 24">
+//                  <path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z"/>
+//                </svg>
+//              </SocialIconLink>
+//            </SocialIconsContainer>
+//          </FooterCol>
 //         </FooterInner>
 
 //         {/* Bottom Bar */}
@@ -289,9 +309,9 @@
 //         </BottomBarWrapper>
 //       </FooterContainer>
 
-//       {/* Floating WhatsApp Icon */}
+//       {/* Floating WhatsApp Icon with Pre-filled Text */}
 //       <WhatsAppFloat 
-//         href="https://wa.me/2349047103037" 
+//         href={`https://wa.me/2349047103037?text=${whatsappMessage}`} 
 //         target="_blank" 
 //         rel="noopener noreferrer"
 //         aria-label="Chat on WhatsApp"
@@ -308,8 +328,10 @@
 // }
 
 
+
 "use client";
 
+import { useState } from "react";
 import styled from "styled-components";
 import Link from "next/link";
 import Image from "next/image";
@@ -519,6 +541,131 @@ const WhatsAppFloat = styled.a`
   }
 `;
 
+/* ================= NEWSLETTER & MODAL STYLES ================= */
+
+const NewsletterButton = styled.button`
+  background: ${ThemeGradient};
+  color: ${White};
+  border: none;
+  padding: 0.75rem 1.25rem;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  margin-top: 0.55rem;
+  width: fit-content;
+
+  &:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+  }
+`;
+
+const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(11, 27, 72, 0.7);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+`;
+
+const ModalContent = styled.div`
+  background: ${Dark};
+  border: 1px solid ${Border};
+  padding: 2.5rem 2rem;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  color: ${White};
+`;
+
+const CloseButton = styled.button`
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  color: ${TextMuted};
+  font-size: 1.25rem;
+  cursor: pointer;
+
+  &:hover {
+    color: ${White};
+  }
+`;
+
+const ModalTitle = styled.h3`
+  font-size: 1.4rem;
+  font-weight: 800;
+  margin: 0;
+  color: ${White};
+`;
+
+const ModalSubtitle = styled.p`
+  color: ${TextMuted};
+  font-size: 0.9rem;
+  margin: 0;
+  line-height: 1.5;
+`;
+
+const FormInput = styled.input`
+  width: 100%;
+  padding: 0.85rem 1rem;
+  background: #1e293b;
+  border: 1px solid ${Border};
+  border-radius: 8px;
+  color: ${White};
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s;
+
+  &:focus {
+    border-color: ${PrimaryAccent};
+  }
+`;
+
+const SubmitButton = styled.button`
+  background: ${ThemeGradient};
+  color: ${White};
+  border: none;
+  padding: 0.85rem;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 0.9;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+`;
+
+const SuccessMessage = styled.p`
+  color: #22c55e;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin: 0;
+  text-align: center;
+`;
+
 /* ================= COMPONENT ================= */
 
 export default function Footer() {
@@ -526,6 +673,48 @@ export default function Footer() {
   const whatsappMessage = encodeURIComponent(
     "Hello Enitz, I just visited your website. I would love to order some products from your website."
   );
+
+  // Modal and Form state
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const handleSubscribe = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setErrorMessage("");
+
+    try {
+      const res = await fetch("/api/newsletter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || "Failed to subscribe");
+      }
+
+      setSuccess(true);
+      setName("");
+      setEmail("");
+      
+      // Close modal automatically after 3 seconds on success
+      setTimeout(() => {
+        setIsModalOpen(false);
+        setSuccess(false);
+      }, 3000);
+    } catch (err) {
+      setErrorMessage(err.message || "Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -569,38 +758,43 @@ export default function Footer() {
             </ContactInfo>
           </FooterCol>
 
-          {/* Col 4: Social Media */}
-         <FooterCol>
-           <ColTitle>Connect With Us</ColTitle>
-           <FooterText>
-             Follow us on Instagram and Facebook for updates on new product arrivals and special offers.
-           </FooterText>
-           <SocialIconsContainer>
-             {/* Instagram */}
-             <SocialIconLink 
-               href="https://www.instagram.com/enitzglobalconcept/" 
-               target="_blank" 
-               rel="noopener noreferrer"
-               aria-label="Instagram"
-             >
-               <svg viewBox="0 0 24 24">
-                 <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-               </svg>
-             </SocialIconLink>
+          {/* Col 4: Social Media & Newsletter */}
+          <FooterCol>
+            <ColTitle>Connect With Us</ColTitle>
+            <FooterText>
+              Follow us on Instagram and Facebook for updates on new product arrivals and special offers.
+            </FooterText>
+            <SocialIconsContainer>
+              {/* Instagram */}
+              <SocialIconLink 
+                href="https://www.instagram.com/enitzglobalconcept/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                aria-label="Instagram"
+              >
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                </svg>
+              </SocialIconLink>
 
-             {/* Facebook */}
-             <SocialIconLink 
-               href="https://www.facebook.com/share/1H5LuogNcg/" 
-               target="_blank" 
-               rel="noopener noreferrer"
-               aria-label="Facebook"
-             >
-               <svg viewBox="0 0 24 24">
-                 <path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z"/>
-               </svg>
-             </SocialIconLink>
-           </SocialIconsContainer>
-         </FooterCol>
+              {/* Facebook */}
+              <SocialIconLink 
+                href="https://www.facebook.com/share/1H5LuogNcg/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                aria-label="Facebook"
+              >
+                <svg viewBox="0 0 24 24">
+                  <path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z"/>
+                </svg>
+              </SocialIconLink>
+            </SocialIconsContainer>
+
+            {/* Newsletter Button */}
+            <NewsletterButton onClick={() => setIsModalOpen(true)}>
+              Subscribe to Newsletter
+            </NewsletterButton>
+          </FooterCol>
         </FooterInner>
 
         {/* Bottom Bar */}
@@ -615,6 +809,48 @@ export default function Footer() {
           </BottomBar>
         </BottomBarWrapper>
       </FooterContainer>
+
+      {/* Subscription Modal */}
+      {isModalOpen && (
+        <ModalOverlay onClick={() => setIsModalOpen(false)}>
+          <ModalContent onClick={(e) => e.stopPropagation()}>
+            <CloseButton onClick={() => setIsModalOpen(false)}>&times;</CloseButton>
+            <ModalTitle>Join Our Newsletter</ModalTitle>
+            <ModalSubtitle>
+              Get updates on new product arrivals and exclusive discount offers directly to your inbox.
+            </ModalSubtitle>
+
+            {success ? (
+              <SuccessMessage>
+                🎉 Thank you for subscribing! We have received your details.
+              </SuccessMessage>
+            ) : (
+              <form onSubmit={handleSubscribe} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+                <FormInput
+                  type="text"
+                  placeholder="Your Full Name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                />
+                <FormInput
+                  type="email"
+                  placeholder="Your Email Address"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+                {errorMessage && (
+                  <p style={{ color: "#ef4444", fontSize: "0.85rem", margin: 0 }}>{errorMessage}</p>
+                )}
+                <SubmitButton type="submit" disabled={loading}>
+                  {loading ? "Subscribing..." : "Subscribe Now"}
+                </SubmitButton>
+              </form>
+            )}
+          </ModalContent>
+        </ModalOverlay>
+      )}
 
       {/* Floating WhatsApp Icon with Pre-filled Text */}
       <WhatsAppFloat 
