@@ -252,6 +252,7 @@ export default function ProductCard({ product, isWishlisted, onToggleWishlist, g
   // 🌟 Check if product belongs to the Bestseller category
   const itemCats = product.categoryIds || (product.categoryId ? [product.categoryId] : []);
   const isBestseller = itemCats.includes("HXEy3XhgQJgtJ1fJUgxP");
+  const isFreeDelivery = itemCats.includes("dbjTg6uxfFkqwPWrnrLN"); // Replace with actual ID if needed
 
   const strikePrice = Number(product.strikeAmount || 0);
   const hasDiscount = strikePrice > productPrice;
@@ -271,11 +272,18 @@ export default function ProductCard({ product, isWishlisted, onToggleWishlist, g
   return (
     <CardContainer href={detailUrl} onClick={handleCardClick}>
       <CardImageWrapper>
-        {isBestseller && (
-          <BestsellerBadge>
-          Bestseller
-          </BestsellerBadge>
+        <BadgeContainer>
+          {isBestseller && (
+            <BestsellerBadge>
+              Bestseller
+            </BestsellerBadge>
+          )}
+         {isFreeDelivery && (
+          <FreeDeliveryBadge>
+          Free Delivery
+          </FreeDeliveryBadge>
         )}
+        </BadgeContainer>
         <CardLoveIcon 
           onClick={(e) => {
             e.preventDefault();
@@ -463,10 +471,18 @@ const AddButton = styled.button`
   }
 `;
 
-const BestsellerBadge = styled.div`
+const BadgeContainer = styled.div`
   position: absolute;
-  top: 5px;
+   top: 5px;
   left: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+`;
+
+const BestsellerBadge = styled.div`
+
+ 
   // background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
   background:${brandGradient};
   color: #ffffff;
@@ -479,6 +495,22 @@ const BestsellerBadge = styled.div`
   letter-spacing: 0.3px;
   text-transform: uppercase;
 `;
+
+
+const FreeDeliveryBadge = styled.div`
+  // background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  background:${brandGradient};
+  color: #ffffff;
+  font-size: 0.6rem;
+  // font-weight: 800;
+  padding: 3px 5px;
+  border-radius: 20px;
+  z-index: 5;
+  box-shadow: 0 4px 10px rgba(245, 158, 11, 0.3);
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+`;
+
 
 
 const PriceInfoContainer = styled.div`

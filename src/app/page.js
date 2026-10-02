@@ -15,6 +15,7 @@ import NewArrivals from '@/components/NewArrivals';
 import BestSellers from '@/components/BestSellers';
 import GallerySection from '@/components/GallerySection';
 import ShopByCategory from '@/components/ShopByCategory';
+import FreeDeliveries from '@/components/FreeDeliveries';
 
 
 
@@ -523,6 +524,7 @@ export default function CompleteLandingPage() {
     <HeroSection2/>
     <SearchBar/>
     <FeaturedProducts/>
+    <FreeDeliveries/>
     <GallerySection/>
     <ShopByCategory/>
     <NewArrivals/>
