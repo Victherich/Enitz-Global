@@ -907,7 +907,17 @@ const DashboardHome = () => {
               </MenuContent>
               <MenuIcon>🌐</MenuIcon>
             </MenuCard>
+
+                <MenuCard clickable onClick={() => router.push("/dashboard/marketing-pixels")}>
+              <MenuContent>
+                <MenuTitle>Manage Marketing Pixels</MenuTitle>
+                <MenuDesc>View and manage marketing pixels</MenuDesc>
+              </MenuContent>
+              <MenuIcon>📊</MenuIcon>
+            </MenuCard>
           </MenuGrid>
+
+          
         </>
       )}
 

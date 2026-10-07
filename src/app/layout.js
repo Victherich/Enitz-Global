@@ -8,6 +8,9 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { ContextProvider } from "@/components/Context";
 import { CartProvider } from "@/components/CartContext";
+import MetaPixel from "@/components/pixels/MetaPixel";
+import TikTokPixel from "@/components/pixels/TikTokPixel";
+import GoogleAdsPixel from "@/components/pixels/GoogleAdsPixel";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,6 +43,9 @@ export default function RootLayout({ children }) {
       
           <CartProvider>
              <ContextProvider>
+              <MetaPixel/>
+              <TikTokPixel/>
+              <GoogleAdsPixel/>
           <Header />
           {children}
           <Footer />
